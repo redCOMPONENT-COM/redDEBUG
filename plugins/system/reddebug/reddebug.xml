@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system">
+	<name>RedDebug</name>
+	<version>1.0.0</version>
+	<creationDate>September 2014</creationDate>
+	<author>redCOMPONENT</author>
+	<copyright>redCOMPONENT.com</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>RedDebug</description>
+	<files>
+		<filename plugin="reddebug">redshop.php</filename>
+		<filename>index.html</filename>
+	</files>
+</extension>

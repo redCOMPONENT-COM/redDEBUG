@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="RedDebug" default="site" basedir=".">
+    <target name="site" depends="init, libraries, plugins" description="Do a full build"/>
+	<!-- Global config -->
+	<property file="build.properties" override="true"/>
+	<property name="src" value="./"/>
+
+	<!-- Do initialization stuff -->
+	<target name="init">
+		<if>
+			<not>
+				<isset property="comp.name" />
+			</not>
+			<then>
+				<fail message="Component not specified, specify comp.name in build.properties file"/>
+			</then>
+		</if>
+		<if>
+			<not>
+				<isset property="www.dir" />
+			</not>
+			<then>
+				<fail message="www folder not specified, specify www.dir in build.properties file"/>
+			</then>
+		</if>
+	</target>
+	<target name="libraries" description="libraries">
+		<!-- Libraries -->
+		<copy todir="${www.dir}/libraries" overwrite="true">
+			<fileset dir="${src}/libraries">
+				<include name="**"/>
+			</fileset>
+		</copy>
+		<!-- redDebug - Library Manifest -->
+		<copy file="${src}/libraries/reddebug/reddebug.xml"
+			  tofile="${www.dir}/administrator/manifests/libraries/reddebug.xml" overwrite="true"/>
+	</target>
+	<target name="plugins" description="plugins">
+		<!-- Plugins -->
+		<copy todir="${www.dir}/plugins" overwrite="true">
+			<fileset dir="${src}/plugins">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+</project>

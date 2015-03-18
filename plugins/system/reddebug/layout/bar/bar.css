@@ -1,0 +1,313 @@
+#redDebug {
+    display: none;
+    direction: ltr;
+}
+
+body#redDebug {
+    margin: 5px 5px 0;
+    display: block;
+}
+
+body #redDebug {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+#redDebug * {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-align: inherit;
+    list-style: inherit;
+    opacity: 1;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+#redDebug b, #redDebug strong {
+    font-weight: bold;
+}
+
+#redDebug i, #redDebug em {
+    font-style: italic;
+}
+
+#redDebug a {
+    color: #125EAE;
+    text-decoration: none;
+}
+
+#redDebug .reddebug-panel a {
+    color: #125EAE;
+    text-decoration: none;
+}
+
+#redDebug a:hover, #redDebug a:active, #redDebug a:focus {
+    background-color: #125EAE;
+    color: white;
+}
+
+#redDebug .reddebug-panel h2, #redDebug .reddebug-panel h3, #redDebug .reddebug-panel p {
+    margin: .4em 0;
+}
+
+#redDebug .reddebug-panel table {
+    border-collapse: collapse;
+    background: #FDF5CE;
+}
+
+#redDebug .reddebug-panel tr:nth-child(2n) td {
+    background: #F7F0CB;
+}
+
+#redDebug .reddebug-panel td, #redDebug .reddebug-panel th {
+    border: 1px solid #E6DFBF;
+    padding: 2px 5px;
+    vertical-align: top;
+    text-align: left;
+}
+
+#redDebug .reddebug-panel th {
+    background: #F4F3F1;
+    color: #655E5E;
+    font-size: 90%;
+    font-weight: bold;
+}
+
+#redDebug .reddebug-panel pre,
+#redDebug .reddebug-panel code
+{
+    font: 9pt/1.5 Consolas, monospace;
+}
+
+#redDebug table .reddebug-right {
+    text-align: right;
+}
+
+
+/* bar */
+#redDebug-bar
+{
+    font: normal normal 13px/1.55 Tahoma, sans-serif;
+    color: #333;
+    border: 1px solid #c9c9c9;
+    background: #EDEAE0;
+    background-size: 1em;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+
+    min-width: 50px;
+    white-space: nowrap;
+
+    z-index: 30000;
+    opacity: .9;
+    transition: opacity 0.2s;
+
+    border-radius: 3px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, .15);
+    width: 100%;
+}
+
+#redDebug-bar:hover {
+    opacity: 1;
+    transition: opacity 0.1s;
+}
+
+#redDebug-bar ul {
+    list-style: none none;
+    clear: left;
+}
+
+#redDebug-bar li {
+    float: left;
+}
+
+#redDebug-bar ul.reddebug-previous li {
+    opacity: .6;
+    background: #F5F3EE;
+}
+
+#redDebug-bar ul.reddebug-previous li:first-child {
+    width: 4.1em;
+    text-align: right;
+}
+
+#redDebug-bar img {
+    vertical-align: bottom;
+    position: relative;
+    top: -2px;
+}
+
+#redDebug-bar svg {
+    vertical-align: bottom;
+    width: 1.23em;
+    height: 1.55em;
+}
+
+#redDebug-bar .reddebug-label {
+    margin-left: .2em;
+}
+
+#redDebug-bar li > a, #redDebug-bar li > span {
+    color: #000;
+    display: block;
+    padding: 0 .4em;
+}
+
+#redDebug-bar li > a:hover {
+    color: black;
+    background: #c3c1b8;
+}
+
+#redDebug-logo {
+    cursor: move;
+}
+
+#redDebug-logo svg {
+    width: 3.4em;
+    margin: 0 .2em 0 .5em;
+}
+
+
+/* panels */
+#redDebug .reddebug-panel {
+    font: normal normal 12px/1.5 sans-serif;
+    background: white;
+    color: #333;
+    text-align: left;
+    z-index: 20001;
+    display: none;
+}
+
+#redDebug h1 {
+    font: normal normal 23px/1.4 Tahoma, sans-serif;
+    color: #575753;
+    margin: -5px -5px 5px;
+    padding: 0 25px 5px 5px;
+}
+
+#redDebug .reddebug-mode-peek .reddebug-inner, #redDebug .reddebug-mode-float .reddebug-inner {
+    max-width: 700px;
+    max-height: 500px;
+    overflow: auto;
+}
+
+#redDebug .reddebug-panel .reddebug-icons {
+    display: none;
+}
+
+#redDebug .reddebug-mode-peek {
+    display: none;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    min-width: 150px;
+    min-height: 50px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 20px rgba(102, 102, 102, 0.36);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#redDebug .reddebug-mode-peek h1 {
+    cursor: move;
+}
+
+#redDebug .reddebug-mode-float {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    min-width: 150px;
+    min-height: 50px;
+    border-radius: 5px;
+    opacity: .95;
+    transition: opacity 0.2s;
+    box-shadow: 1px 1px 30px rgba(102, 102, 102, 0.36);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#redDebug .reddebug-focused {
+    opacity: 1;
+    transition: opacity 0.1s;
+}
+
+#redDebug .reddebug-mode-float h1 {
+    cursor: move;
+}
+
+#redDebug .reddebug-mode-float .reddebug-icons {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 5px;
+    font-size: 18px;
+}
+
+#redDebug .reddebug-icons a {
+    color: #575753;
+}
+
+#redDebug .reddebug-icons a:hover {
+    color: white;
+}
+
+
+/* dump */
+#redDebug pre.reddebug-dump div {
+    padding-left: 3ex;
+}
+
+#redDebug pre.reddebug-dump div div {
+    border-left: 1px solid rgba(0, 0, 0, .1);
+    margin-left: .5ex;
+}
+
+#redDebug pre.reddebugy-dump {
+    background: #FDF5CE;
+    padding: .4em .7em;
+    border: 1px dotted silver;
+    overflow: auto;
+}
+
+#redDebug table pre.reddebug-dump {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+#redDebug .reddebug-dump-array, #redDebug .reddebug-dump-object {
+    color: #C22;
+}
+
+#redDebug .reddebug-dump-string {
+    color: #35D;
+}
+
+#redDebug .reddebug-dump-number {
+    color: #090;
+}
+
+#redDebug .reddebug-dump-null, #redDebug .reddebug-dump-bool {
+    color: #850;
+}
+
+#redDebug .reddebug-dump-visibility, #redDebug .reddebug-dump-hash {
+    font-size: 85%; color: #999;
+}
+
+#redDebug .reddebug-dump-indent {
+    display: none;
+}
+
+
+@media print {
+    #redDebug * {
+        display: none;
+    }
+}
