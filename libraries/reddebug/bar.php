@@ -37,13 +37,18 @@ class RedDebugBar
 			 * fix id to htmlID
 			 */
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id);
-
+			$class = get_class($panel);
 			try
 			{
 				$panel->directory	= $this->directory;
 				$tab				= (string) $panel->getTab();
 				$panelHtml			= $tab ? (string) $panel->getPanel() : null;
-				$panels[]			= array('id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml);
+				$panels[]			= array(
+					'id' => $idHtml,
+					'tab' => $tab,
+					'class' => $class,
+					'panel' => $panelHtml
+				);
 			}
 			// If exception so give us some report into debugbar
 			catch (Exception $e)
@@ -57,6 +62,7 @@ class RedDebugBar
 				$panels[] = array(
 					'id' => "error-$idHtml",
 					'tab' => "Error in $id",
+					'class' => $class,
 					'panel' => $out
 				);
 
@@ -103,6 +109,7 @@ class RedDebugBar
 			$panels[] = array(
 				'tab' => '<span title="Previous request before redirect">previous</span>',
 				'panel' => null,
+				'class' => null,
 				'previous' => null,
 			);
 

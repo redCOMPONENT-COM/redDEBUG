@@ -1,10 +1,12 @@
 <?php ob_start() ?>
 <style id="redDebug-style" class="redDebug">
-	<?php echo file_get_contents(__DIR__ . '/bar.css') ?>
+	<?php echo file_get_contents(__DIR__ . '/../bootstrap.css'); ?>
+	<?php echo file_get_contents(__DIR__ . '/bar.css'); ?>
 </style>
 
 <script id="redDebug-script">
-	<?php echo file_get_contents(__DIR__ . '/bar.js') ?>
+	<?php echo file_get_contents(__DIR__ . '/../modal.js'); ?>
+	<?php echo file_get_contents(__DIR__ . '/bar.js'); ?>
 </script>
 <?php
 /**
@@ -12,9 +14,23 @@
  */
 ?>
 <?php foreach ($panels as $panel): if (!empty($panel['previous'])) continue ?>
-	<div class="reddebug-panel" id="redDebug-panel-<?php echo $panel['id'] ?>">
-		<?php if ($panel['panel']): echo $panel['panel']; endif; ?>
-	</div>
+	<?php if(!empty($panel['panel']) && $panel['panel'] != null): ?>
+		<div class="modal reddebug-panel <?php echo trim($panel['class']) ?>" id="redDebug-panel-<?php echo $panel['id'] ?>">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+					<h4 class="modal-title" id="modal-title"><?php echo trim($panel['tab']) ?>
+						<a class="anchorjs-link" href="#modal-title">
+							<span class="anchorjs-icon"></span>
+						</a>
+					</h4>
+				</div>
+				<div class="modal-body">
+					<?php if ($panel['panel']): echo $panel['panel']; endif; ?>
+				</div>
+			</div>
+		</div>
+	<?php endif; ?>
 <?php endforeach ?>
 <?php
 /**

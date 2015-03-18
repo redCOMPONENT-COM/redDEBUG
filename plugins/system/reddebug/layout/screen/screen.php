@@ -9,7 +9,7 @@
 		</h1>
 		<p>
 			<?php echo htmlspecialchars($exception->getMessage()) ?>
-			<a href="https://www.google.com/search?sourceid=tracy&amp;q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>">search</a>
+			<a href="https://www.google.com/search?q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>">search</a>
 		</p>
 	</div>
 </div>

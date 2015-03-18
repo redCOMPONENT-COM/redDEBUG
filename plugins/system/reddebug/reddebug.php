@@ -189,7 +189,7 @@ class PlgSystemRedDebug extends JPlugin
 		);
 
 		$config = (array) new JConfig;
-		unset($config['password'], $config['ftp_pass'], $config['smtppass']);
+		unset($config['password'], $config['ftp_pass'], $config['smtppass'], $config['secret']);
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
@@ -245,7 +245,7 @@ class PlgSystemRedDebug extends JPlugin
 		$declared_classes = get_declared_classes();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'files:',
+				'classes:',
 				$declared_classes,
 				count($declared_classes),
 				'default'
@@ -279,7 +279,7 @@ class PlgSystemRedDebug extends JPlugin
 				'Session:',
 				$_SESSION,
 				count($_SESSION),
-				'default'
+				'ini'
 			),
 			'session'
 		);

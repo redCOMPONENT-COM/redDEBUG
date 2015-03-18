@@ -19,9 +19,9 @@ $info = array_filter(
 	)
 );
 ?>
+<h1>System info</h1>
 <div id="redDebug-info">
-	<h1>System info</h1>
-	<table >
+	<table class="table">
 		<?php foreach ($info as $key => $val): ?>
 			<tr>
 				<td><?php echo htmlspecialchars($key, null, 'UTF-8') ?></td>
