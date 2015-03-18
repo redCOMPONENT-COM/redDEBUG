@@ -1,0 +1,44 @@
+# OSX
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# PHPStorm
+.idea/
+
+# Sublime Text
+*.sublime*
+sftp-config.json
+
+# Eclipse
+.buildpath
+.project
+.settings
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+*~.nib
+*~
+
+# Test config and logs
+tests/system/servers/configdef.php
+tests/system/webdriver/tests/logs
+
+# Build config
+build.properties
+build.tpl.properties
+
+# Never ignore
+!.gitignore
+!index.html
+!index.php
+
+/redCORE/
+phpunit.xml

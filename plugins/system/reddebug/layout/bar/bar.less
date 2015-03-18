@@ -1,0 +1,160 @@
+#redDebug {
+    .text-center{
+      text-align: center;
+    }
+    display: none;
+    direction: ltr;
+    body&{
+      margin: 5px 5px 0;
+      display: block;
+    }
+    * {
+      font: inherit;
+      color: inherit;
+      background: transparent;
+      margin: 0;
+      padding: 0;
+      border: none;
+      text-align: inherit;
+      list-style: inherit;
+      opacity: 1;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    b, strong{
+      font-weight: bold;
+    }
+    i, em{
+      font-style: italic;
+    }
+    a{
+      color: #125EAE;
+      text-decoration: none;
+      &:hover, &:active, a:focus{
+        background-color: #125EAE;
+        color: white;
+      }
+    }
+  table{
+    .reddebug-right
+    {
+      text-align: right;
+    }
+  }
+  /* bar */
+  #redDebug-bar
+  {
+    font: normal normal 13px/1.55 Tahoma, sans-serif;
+    color: #333;
+    border: 1px solid #c9c9c9;
+    background: #EDEAE0;
+    background-size: 1em;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+
+    min-width: 50px;
+    white-space: nowrap;
+
+    z-index: 30000;
+    opacity: .9;
+    transition: opacity 0.2s;
+
+    border-radius: 3px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, .15);
+    width: 100%;
+    &:hover{
+      opacity: 1;
+      transition: opacity 0.1s;
+    }
+    img{
+      vertical-align: bottom;
+      position: relative;
+      top: -2px;
+    }
+    .reddebug-label {
+      margin-left: .2em;
+    }
+
+    ul{
+      list-style: none none;
+      clear: left;
+      li{
+        float: left;
+      }
+      &.reddebug-previous{
+        li{
+          opacity: .6;
+          background: #F5F3EE;
+          &:first-child{
+            width: 4.1em;
+            text-align: right;
+          }
+        }
+      }
+    }
+    li{
+      > a, > span{
+        color: #000;
+        display: block;
+        padding: 0 .4em;
+      }
+      > a{
+        &:hover{
+          color: black;
+          background: #c3c1b8;
+        }
+      }
+    }
+  }
+  #redDebug-logo {
+    cursor: move;
+  }
+  .modal {
+    top: auto;
+    bottom: 20px;
+    max-width: 700px;
+    font: normal normal 13px/1.55 Tahoma, sans-serif;
+    .modal-body{
+      max-height: 500px;
+      overflow: auto;
+      margin: 0px;
+      width: 100%;
+      .table{
+        &.default-panel{
+          width: 500px;
+        }
+      }
+    }
+    &#redDebug-panel-event, &#redDebug-panel-modules, &#redDebug-panel-plugin{
+      width: 900px;
+      max-width: 900px;
+    }
+    &#redDebug-panel-info{
+      width: 301px;
+      max-width: 301px;
+    }
+  }
+  h1 {
+    font: normal normal 23px/1.4 Tahoma, sans-serif;
+    color: #575753;
+    margin: -5px -5px 5px;
+    padding: 0 25px 5px 5px;
+  }
+  textarea{
+    height: 200px;
+  }
+}
+
+body{
+  #redDebug {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}
+@media print {
+    #redDebug * {
+        display: none;
+    }
+}
