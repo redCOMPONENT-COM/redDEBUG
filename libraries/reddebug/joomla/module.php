@@ -1,13 +1,13 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2014 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 /**
  * Class RedDebugJoomlaModule
+ * Here we made mvc change for debug will working on this level
  *
- * here we made mvc change for debug will working on this level
  * @since  1
  */
 class RedDebugJoomlaModule
@@ -66,7 +66,6 @@ class RedDebugJoomlaModule
 
 			include_once $code_file;
 		}
-
 	}
 
 	/**
@@ -81,8 +80,8 @@ class RedDebugJoomlaModule
 		// Check that $module is a valid module object
 		if (!is_object($module) || !isset($module->module) || !isset($module->params))
 		{
+			// Not using time to save this
 			return false;
-			//not using time to save this
 		}
 
 		if (!isset(self::$logger[$module->id]))
@@ -119,6 +118,14 @@ class RedDebugJoomlaModule
 		return self::$logger;
 	}
 
+	/**
+	 * renderModule
+	 *
+	 * @param   string  $module   Module
+	 * @param   array   $attribs  Module attributes
+	 *
+	 * @return array
+	 */
 	public static function renderModule($module, $attribs = array())
 	{
 		self::debugger($module, 'before');

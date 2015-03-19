@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2014 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
@@ -38,6 +38,7 @@ class RedDebugBar
 			 */
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id);
 			$class = get_class($panel);
+
 			try
 			{
 				$panel->directory	= $this->directory;
