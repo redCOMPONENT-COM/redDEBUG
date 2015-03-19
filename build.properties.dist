@@ -5,6 +5,9 @@
 # Extension details (plugin):
 comp.name=reddebug
 
+# Zip name used by extension_packager.xml
+zip.name=reddebug-free
+
 # Folder to create the extension .zip build package used by extension_packager.xml
 package.dir=
 
