@@ -178,7 +178,7 @@
 
 		<property
 				name="zip.name"
-				value="reddebug-free"
+				value="reddebug"
 				override="false"/>
 
 		<property
