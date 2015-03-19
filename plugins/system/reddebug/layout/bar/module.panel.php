@@ -33,9 +33,6 @@
 					<textarea style="width: 200px; resize: none;"><?php echo htmlentities($row->content); ?></textarea>
 				</td>
 				<td>
-					<textarea style="width: 200px; resize: none;"><?php print_r($row); ?></textarea>
-				</td>
-				<td>
 					<textarea style="width: 200px; resize: none;"><?php print_r(json_decode($row->params)); ?></textarea>
 				</td>
 			</tr>
