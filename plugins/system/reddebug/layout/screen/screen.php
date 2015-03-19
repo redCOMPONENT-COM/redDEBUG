@@ -1,4 +1,13 @@
-<?php ob_start(); ?>
+<?php
+/**
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
+ */
+
+defined('_JEXEC') or die;
+
+ob_start();
+?>
 <style type="text/css">
 	<?php echo file_get_contents(__DIR__ . '/screen.css'); ?>
 </style>
@@ -9,7 +18,9 @@
 		</h1>
 		<p>
 			<?php echo htmlspecialchars($exception->getMessage()) ?>
-			<a href="https://www.google.com/search?q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>">search</a>
+			<a href="https://www.google.com/search?q=<?php
+				echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage()))
+				?>">search</a>
 		</p>
 	</div>
 </div>
