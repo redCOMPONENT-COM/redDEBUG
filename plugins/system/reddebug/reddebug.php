@@ -284,6 +284,16 @@ class PlgSystemRedDebug extends JPlugin
 			'session'
 		);
 
+		$debug->getBar()->addPanel(
+			new RedDebugPanelList(
+				'Cookie:',
+				$_COOKIE,
+				count($_COOKIE),
+				'default'
+			),
+			'cookie'
+		);
+
 		$configs = ini_get_all();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
