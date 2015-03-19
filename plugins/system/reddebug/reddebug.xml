@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="system">
-	<name>RedDebug</name>
+	<name>redDEBUG</name>
 	<version>1.0.0</version>
-	<creationDate>September 2014</creationDate>
+	<creationDate>March 2015</creationDate>
 	<author>redCOMPONENT</author>
-	<copyright>redCOMPONENT.com</copyright>
+	<copyright>Copyright (C) 2015 - 2015 redCOMPONENT.com. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<description>RedDebug</description>
+	<description>redDEBUG</description>
 	<files>
 		<filename plugin="reddebug">reddebug.php</filename>
 		<filename>index.html</filename>

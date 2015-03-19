@@ -13,7 +13,6 @@ Desktop.ini
 
 # Sublime Text
 *.sublime*
-sftp-config.json
 
 # Eclipse
 .buildpath
@@ -27,18 +26,35 @@ sftp-config.json
 *~.nib
 *~
 
-# Test config and logs
-tests/system/servers/configdef.php
-tests/system/webdriver/tests/logs
-
-# Build config
+# Phing
 build.properties
-build.tpl.properties
+phing-latest.phar
+
+# Github pages and Jekyll files
+/_site/
+/Gemfile
+/Gemfile.lock
+
+# phpunit
+tests/unit/phpunit.xml
+
+# composer
+composer.lock
+composer.phar
+vendor/*
+
+# LESS Transpiler
+npm-debug.log
+
+# Test related files
+/tests/system/servers/configdef.php
+/tests/system/webdriver/tests/logs/
+/tests/acceptance.suite.yml
+codecept.phar
+tests/*/*Tester.php
+
 
 # Never ignore
 !.gitignore
 !index.html
 !index.php
-
-/redCORE/
-phpunit.xml
