@@ -40,7 +40,8 @@
 <div id="redDebug-bar">
 	<ul>
 		<li>
-			<a title="debug bar">
+			<a href="http://redcomponent.com" title="redcomponent" target="_blank">
+				<img src="data:image/png;base64,<?php echo base64_encode(file_get_contents(__DIR__ . '/../reddebug_16x16.png')); ?>" alt="*Logo*" />
 				RedDebug
 			</a>
 		</li>
