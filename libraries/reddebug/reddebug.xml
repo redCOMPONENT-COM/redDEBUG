@@ -11,7 +11,7 @@
 	<version>1.0.0</version>
 	<description>RedDebug library</description>
 	<files>
-		<filename>index.xml</filename>
+		<filename>index.html</filename>
 		<filename>reddebug.xml</filename>
 		<filename>library.php</filename>
 		<filename>bar.php</filename>
