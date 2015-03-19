@@ -41,7 +41,32 @@ class RedDebugJoomlaModule
 			)
 		);
 
-		eval($code);
+		/**
+		 * Fix if you server not support for eval
+		 */
+		try
+		{
+			if (!@eval("return true;"))
+			{
+				throw new Exception('PHP');
+			}
+
+			eval($code);
+		}
+		catch (Exception $e)
+		{
+			$update_time = filemtime(JPATH_LIBRARIES . '/cms/module/helper.php');
+			$code_file = JPATH_CACHE . '/module_helper.php';
+			$code_update = file_exists($code_file) ? filemtime($code_file) : 0;
+
+			if ($update_time > $code_update)
+			{
+				file_put_contents($code_file, "<?php \n" . $code);
+			}
+
+			include_once $code_file;
+		}
+
 	}
 
 	/**
