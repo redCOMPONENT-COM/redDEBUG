@@ -16,9 +16,24 @@
 				<td><?php echo $row->id;?></td>
 				<td><?php echo $row->title;?></td>
 				<td><?php echo empty($row->position) ? 'none' : $row->position;?></td>
-				<td><?php echo $row->module;?></td>
+				<td>
+					<?php echo $row->module;?>
+					<table>
+						<tr>
+							<td>Time:</td>
+							<td><?php echo number_format(($row->close_time - $row->start_time) * 100, 2); ?> ms</td>
+						</tr>
+						<tr>
+							<td>memory:</td>
+							<td><?php echo number_format(($row->start_memory - $row->close_memory) * 100, 2); ?> KB</td>
+						</tr>
+					</table>
+				</td>
 				<td>
 					<textarea style="width: 200px; resize: none;"><?php echo htmlentities($row->content); ?></textarea>
+				</td>
+				<td>
+					<textarea style="width: 200px; resize: none;"><?php print_r($row); ?></textarea>
 				</td>
 				<td>
 					<textarea style="width: 200px; resize: none;"><?php print_r(json_decode($row->params)); ?></textarea>
