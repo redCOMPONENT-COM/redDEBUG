@@ -41,8 +41,7 @@
 	<ul>
 		<li>
 			<a href="http://redcomponent.com" title="redcomponent" target="_blank">
-				<img src="data:image/png;base64,<?php echo base64_encode(file_get_contents(__DIR__ . '/../reddebug_16x16.png')); ?>" alt="*Logo*" />
-				RedDebug
+				<img src="data:image/png;base64,<?php echo base64_encode(file_get_contents(__DIR__ . '/../reddebug_65x20.png')); ?>" alt="*Logo*" />
 			</a>
 		</li>
 		<?php foreach ($panels as $panel): if (!$panel['tab']) continue; ?>
