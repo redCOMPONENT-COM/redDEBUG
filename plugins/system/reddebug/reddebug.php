@@ -40,7 +40,7 @@ class PlgSystemRedDebug extends JPlugin
 		if ($version == 2)
 		{
 			/**
-			 * in old joomla we not have this event.
+			 * In old joomla we not have this event.
 			 * but maybe we need to move change this onAfterRespond
 			 * so we get last events from plugin
 			 */
@@ -131,7 +131,6 @@ class PlgSystemRedDebug extends JPlugin
 				 */
 				$event[$type][$method]['args'] = is_array($row['args']) ? $row['args'] : array();
 				$event[$type][$method]['class'][$keyname] = $plugin[$type][$keyname]['method'][$method]['count'];
-
 			}
 		}
 

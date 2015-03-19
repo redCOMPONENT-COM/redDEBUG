@@ -38,6 +38,7 @@ class RedDebugBar
 			 */
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id);
 			$class = get_class($panel);
+
 			try
 			{
 				$panel->directory	= $this->directory;
