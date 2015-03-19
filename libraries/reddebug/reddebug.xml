@@ -11,8 +11,14 @@
 	<version>1.0.0</version>
 	<description>RedDebug library</description>
 	<files>
-		<filename>library.php</filename>
+		<filename>index.xml</filename>
 		<filename>reddebug.xml</filename>
-		<filename>panel</filename>
+		<filename>library.php</filename>
+		<filename>bar.php</filename>
+		<filename>debugger.php</filename>
+		<filename>helper.php</filename>
+		<filename>screen.php</filename>
+		<folder>panel</folder>
+		<folder>joomla</folder>
 	</files>
 </extension>

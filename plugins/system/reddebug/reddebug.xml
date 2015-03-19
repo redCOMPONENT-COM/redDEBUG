@@ -10,5 +10,7 @@
 	<files>
 		<filename plugin="reddebug">redshop.php</filename>
 		<filename>index.html</filename>
+		<folder>form</folder>
+		<folder>layout</folder>
 	</files>
 </extension>
