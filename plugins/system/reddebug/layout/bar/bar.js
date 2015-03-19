@@ -23,8 +23,4 @@ jQuery(document).ready(function(){
 
 
     });
-
-    var ModalPrefix = function(){
-
-    }
 });
