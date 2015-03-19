@@ -29,12 +29,19 @@ class RedDebugJoomlaModule
 			$code,
 			array(
 				'abstract class JModuleHelper' => 'class JModuleHelper extends RedDebugJoomlaModule',
-				'JDEBUG' => 'self::debugger($module)',
+				"renderModule(" => 'xRenderModule(&',
+			)
+		);
+
+		$code = strtr(
+			$code,
+			array(
+				'JDEBUG' => 'REDDEBUG',
 				'<?php' => '',
 			)
 		);
-		eval($code);
 
+		eval($code);
 	}
 
 	/**
@@ -50,6 +57,7 @@ class RedDebugJoomlaModule
 		if (!is_object($module) || !isset($module->module) || !isset($module->params))
 		{
 			return false;
+			//not using time to save this
 		}
 
 		if (!isset(self::$logger[$module->id]))
@@ -84,5 +92,15 @@ class RedDebugJoomlaModule
 	public static function getLog()
 	{
 		return self::$logger;
+	}
+
+	public static function renderModule($module, $attribs = array())
+	{
+		self::debugger($module, 'before');
+		$content = JModuleHelper::xRenderModule($module, $attribs);
+		$module->content = $content;
+		self::debugger($module, 'after', $content);
+
+		return $content;
 	}
 }
