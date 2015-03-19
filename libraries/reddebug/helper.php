@@ -92,4 +92,25 @@ class RedDebugHelper
 
 		return isset($ErrorTypes[$code]) ? $ErrorTypes[$code] : JText::_('E_UDEFINE');
 	}
+
+	/**
+	 * findJoomlaClassFile
+	 *
+	 * @param   string  $class    ClassName
+	 * @param   mixed   $default  DefaultValue
+	 *
+	 * @return null|string
+	 */
+	public static function findJoomlaClassFile($class, $default = null)
+	{
+		// Autoload class
+		if (class_exists($class, true))
+		{
+			$class = new ReflectionClass($class);
+
+			return $class->getFileName();
+		}
+
+		return null;
+	}
 }

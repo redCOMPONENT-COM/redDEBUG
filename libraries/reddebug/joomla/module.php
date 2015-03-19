@@ -19,11 +19,13 @@ class RedDebugJoomlaModule
 	 *
 	 * To change joomla core for fixed this
 	 *
+	 * @param   string  $filename  FileName
+	 *
 	 * @return void
 	 */
-	public static function changeJoomlaCode()
+	public static function changeJoomlaCode($filename)
 	{
-		$code = file_get_contents(JPATH_LIBRARIES . '/cms/module/helper.php');
+		$code = file_get_contents($filename);
 
 		$code = strtr(
 			$code,
