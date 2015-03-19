@@ -35,6 +35,8 @@ class PlgSystemRedDebug extends JPlugin
 		$jVersion = new JVersion;
 		$version = (int) $jVersion->RELEASE;
 
+		RedDebugJoomlaModule::changeJoomlaCode();
+
 		if ($version == 2)
 		{
 			/**
@@ -85,9 +87,7 @@ class PlgSystemRedDebug extends JPlugin
 		static::$afterRespond = true;
 
 		$app = JFactory::getApplication();
-		$method = new ReflectionMethod('JModuleHelper', 'load');
-		$method->setAccessible(true);
-		$methods = $method->invoke(null);
+		$methods = RedDebugJoomlaModule::getLog();
 
 		$plugin = array();
 		$event = array();
