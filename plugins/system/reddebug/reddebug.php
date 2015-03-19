@@ -5,6 +5,7 @@
  */
 
 defined('_JEXEC') or die;
+define('REDDEBUG', 0);
 
 JLoader::import('reddebug.library');
 
@@ -26,16 +27,57 @@ class PlgSystemRedDebug extends JPlugin
 	public static $afterRespond = false;
 
 	/**
+	 * @var bool
+	 */
+	protected static $reset = false;
+
+	/**
+	 * @var string
+	 */
+	protected static $ModuleHelperName = 'default';
+
+	/**
+	 * __construct
+	 *
+	 * @param   object  &$subject  Subject
+	 * @param   array   $config    Config
+	 *
+	 * @throws Exception
+	 */
+	public function __construct(&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+
+		$app        = JFactory::getApplication();
+		$session    = JFactory::getSession();
+		$classes    = $session->get('joomlaClasses', array(), 'redDebug');
+
+		static::$reset = $app->input->get('reset_class_files', !isset($classes['JModuleHelper']));
+
+		if (isset($classes['JModuleHelper']))
+		{
+			$location = dirname($classes['JModuleHelper']);
+			$location = explode(DIRECTORY_SEPARATOR, $location);
+			$location = end($location);
+
+			self::$ModuleHelperName = ($location == 'module' ? 'Default' : $location);
+		}
+
+		if (static::$reset != 1)
+		{
+			RedDebugJoomlaModule::changeJoomlaCode($classes['JModuleHelper']);
+		}
+	}
+
+	/**
 	 * onAfterInitialise
 	 *
 	 * @return void
 	 */
 	public function onAfterInitialise()
 	{
-		$jVersion = new JVersion;
-		$version = (int) $jVersion->RELEASE;
-
-		RedDebugJoomlaModule::changeJoomlaCode();
+		$jVersion   = new JVersion;
+		$version    = (int) $jVersion->RELEASE;
 
 		if ($version == 2)
 		{
@@ -73,6 +115,26 @@ class PlgSystemRedDebug extends JPlugin
 	}
 
 	/**
+	 * onAfterRender
+	 *
+	 * @return void
+	 */
+	public function onAfterRender()
+	{
+		$app            = JFactory::getApplication();
+		$session        = JFactory::getSession();
+		$classes        = $session->get('joomlaClasses', array(), 'redDebug');
+
+		// So we can se class we need to load
+		if (count($classes) == 0 || static::$reset)
+		{
+			$classes['JModuleHelper'] = RedDebugHelper::findJoomlaClassFile('JModuleHelper', null);
+			$session->set('joomlaClasses', $classes, 'redDebug');
+			$app->redirect(isset($_SERVER['REQUEST_URI']) ? strtr($_SERVER['REQUEST_URI'], array('reset_class_files' => 'x')) : JUri::root());
+		}
+	}
+
+	/**
 	 * onAfterRespond
 	 *
 	 * @return void
@@ -86,7 +148,6 @@ class PlgSystemRedDebug extends JPlugin
 
 		static::$afterRespond = true;
 
-		$app = JFactory::getApplication();
 		$methods = RedDebugJoomlaModule::getLog();
 
 		$plugin = array();
