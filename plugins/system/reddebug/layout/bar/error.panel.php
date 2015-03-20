@@ -1,6 +1,6 @@
 <h1>Errors</h1>
 <div class="reddebug-inner">
-	<table>
+	<table class="table">
 	<?php foreach ($data as $item => $count): ?>
 		<?php
 			list($file, $line, $message) = explode('|', $item, 3);
@@ -10,16 +10,14 @@
 				<?php echo $count ? "$count\xC3\x97" : '' ?>
 			</td>
 			<td>
-				<pre>
-					<?php
-						echo htmlspecialchars(
-							$message,
-							ENT_IGNORE,
-							'UTF-8'
-						);
-						echo ' in ' . $file . ' line ' . $line;
-					?>
-				</pre>
+				<?php
+					echo htmlspecialchars(
+						$message,
+						ENT_IGNORE,
+						'UTF-8'
+					);
+					echo ' in ' . $file . ' line ' . $line;
+				?>
 			</td>
 		</tr>
 	<?php endforeach ?>
