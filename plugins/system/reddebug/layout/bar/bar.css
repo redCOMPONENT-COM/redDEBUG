@@ -58,7 +58,6 @@ body#redDebug {
   z-index: 30000;
   opacity: .9;
   transition: opacity 0.2s;
-  border-radius: 3px;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.15);
   width: 100%;
 }
@@ -69,7 +68,6 @@ body#redDebug {
 #redDebug #redDebug-bar img {
   vertical-align: bottom;
   position: relative;
-  top: -2px;
 }
 #redDebug #redDebug-bar .reddebug-label {
   margin-left: .2em;
@@ -93,7 +91,7 @@ body#redDebug {
 #redDebug #redDebug-bar li > span {
   color: #000;
   display: block;
-  padding: 0 .4em;
+  padding: 0 0.5em;
 }
 #redDebug #redDebug-bar li > a:hover {
   color: black;
