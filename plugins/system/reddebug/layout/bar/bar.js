@@ -3,6 +3,7 @@ jQuery(document).ready(function(){
     jQuery('#redDebug-bar a').click(function(){
 
         jQuery('.reddebug-panel').RedDebugModal('hide');
+        jQuery('.modal-backdrop').remove();
         var element = jQuery(this);
         var position = element.offset();
         var xw = element.outerWidth();
@@ -19,7 +20,7 @@ jQuery(document).ready(function(){
             jQuery(open).find('.modal-body > h1').remove();
         }
         jQuery(open).css({"left":(position.left), "bottom": bottom});
-        jQuery(open).RedDebugModal('show');
+        jQuery(open).modal('show');
 
 
     });

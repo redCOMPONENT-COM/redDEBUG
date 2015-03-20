@@ -44,9 +44,12 @@
   /* bar */
   #redDebug-bar
   {
-    font: normal normal 13px/1.55 Tahoma, sans-serif;
+    font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
-    border: 1px solid #c9c9c9;
+    border-top: 1px solid #c9c9c9;
     background: #EDEAE0;
     background-size: 1em;
     position: fixed;
@@ -69,12 +72,14 @@
     img{
       vertical-align: bottom;
       position: relative;
+	  top: -2px;
     }
     .reddebug-label{
       margin-left: .2em;
     }
 
     ul{
+	  margin-top: 2px;
       list-style: none none;
       clear: left;
       li{
@@ -103,6 +108,12 @@
           background: #c3c1b8;
         }
       }
+	  .reddebug-errorbox{
+		display: block;
+		background: red;
+		color: white;
+		font-weight: bold;
+	  }
     }
   }
   #redDebug-logo {
@@ -112,13 +123,30 @@
     top: auto;
     bottom: 20px;
     max-width: 700px;
-    font: normal normal 13px/1.55 Tahoma, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+	.modal-header{
+	  background-color: #4b565c;
+	  color: #FFFFFF;
+	  font-weight: bold;
+	}
+	.modal-content{
+	  border-radius: 0px;
+	}
     .modal-body{
       max-height: 500px;
       overflow: auto;
       margin: 0px;
       width: 100%;
       .table{
+		tr:nth-child(even), tr.odd{
+		  td{
+			background-color: #f4f4f4;
+		  }
+		}
         &.default-panel{
 		  td{
 			padding: 4px;
@@ -144,7 +172,10 @@
     }
   }
   h1 {
-    font: normal normal 23px/1.4 Tahoma, sans-serif;
+	font-size: 23px;
+	font-weight: normal;
+	font-style: normal;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #575753;
     margin: -5px -5px 5px;
     padding: 0 25px 5px 5px;
@@ -160,6 +191,9 @@ body{
     bottom: 0;
     right: 0;
   }
+}
+.modal-backdrop{
+  background-color: transparent;
 }
 @media print {
     #redDebug * {

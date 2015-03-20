@@ -15,7 +15,7 @@
 ?>
 <?php foreach ($panels as $panel): if (!empty($panel['previous'])) continue; ?>
 	<?php if(!empty($panel['panel']) && $panel['panel'] != null): ?>
-		<div class="modal reddebug-panel <?php echo trim($panel['class']) ?>" id="redDebug-panel-<?php echo $panel['id'] ?>">
+		<div aria-labelledby="" aria-hidden="true" class="modal reddebug-panel <?php echo trim($panel['class']) ?>" id="redDebug-panel-<?php echo $panel['id'] ?>">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
