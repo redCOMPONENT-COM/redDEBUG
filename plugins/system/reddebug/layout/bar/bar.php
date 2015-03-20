@@ -67,7 +67,7 @@ $buffer = JFactory::getApplication()->getBody(false);
 // So we get jQuery
 if (!stripos($buffer, 'jquery') && RedDebugDebugger::getInstance()->getRedScreen()->jQuery == false)
 {
-	echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>';
+	echo '<script type="text/javascript" src="' . JUri::root() . '/media/jui/js/jquery.min.js"></script>';
 }
 
 /**

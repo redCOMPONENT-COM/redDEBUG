@@ -3,7 +3,6 @@
  * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
-
 defined('_JEXEC') or die;
 
 $buffer = JFactory::getApplication()->getBody(false);
@@ -36,18 +35,16 @@ if (empty($buffer))
 		<html>
 			<head>
 				<title></title>
-				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 			</head>
 			<body>
 			</body>
 		</html>
 HTML;
-	$this->jQuery = true;
+	echo $buffer;
 }
-
 if (!stripos($buffer, 'jquery'))
 {
-	echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>';
+	echo '<script type="text/javascript" src="' . JUri::root() . '/media/jui/js/jquery.min.js"></script>';
 	$this->jQuery = true;
 }
 ?>
