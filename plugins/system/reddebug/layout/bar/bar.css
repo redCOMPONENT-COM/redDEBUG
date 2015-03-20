@@ -97,6 +97,7 @@ body#redDebug {
   color: #000;
   display: block;
   padding: 0 0.5em;
+  line-height: 20px;
 }
 #redDebug #redDebug-bar li > a:hover {
   color: black;
@@ -178,6 +179,7 @@ body #redDebug {
 }
 .modal-backdrop {
   background-color: transparent;
+  cursor: pointer;
 }
 @media print {
   #redDebug * {
