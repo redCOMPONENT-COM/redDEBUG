@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="library" method="upgrade" version="2.5">
 	<name>redDEBUG - Libraries</name>
-	<libraryname>redDEBUG</libraryname>
+	<libraryname>reddebug</libraryname>
 	<creationDate>March 2015</creationDate>
 	<author>redCOMPONENT</author>
 	<authorEmail>email@redcomponent.com</authorEmail>
