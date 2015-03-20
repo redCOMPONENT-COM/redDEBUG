@@ -60,7 +60,6 @@
     opacity: .9;
     transition: opacity 0.2s;
 
-    border-radius: 3px;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, .15);
     width: 100%;
     &:hover{
@@ -70,9 +69,8 @@
     img{
       vertical-align: bottom;
       position: relative;
-      top: -2px;
     }
-    .reddebug-label {
+    .reddebug-label{
       margin-left: .2em;
     }
 
@@ -97,7 +95,7 @@
       > a, > span{
         color: #000;
         display: block;
-        padding: 0 .4em;
+        padding: 0 0.5em;
       }
       > a{
         &:hover{
@@ -122,7 +120,17 @@
       width: 100%;
       .table{
         &.default-panel{
-          width: 500px;
+		  td{
+			padding: 4px;
+		  }
+		  td:first-child{
+			font-weight: bold;
+			vertical-align: middle;
+		  }
+		  td:last-child{
+			width: 90%;
+			vertical-align: middle;
+		  }
         }
       }
     }
