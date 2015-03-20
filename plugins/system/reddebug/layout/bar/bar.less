@@ -120,7 +120,17 @@
       width: 100%;
       .table{
         &.default-panel{
-          width: 500px;
+		  td{
+			padding: 4px;
+		  }
+		  td:first-child{
+			font-weight: bold;
+			vertical-align: middle;
+		  }
+		  td:last-child{
+			width: 90%;
+			vertical-align: middle;
+		  }
         }
       }
     }
