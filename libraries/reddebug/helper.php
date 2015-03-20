@@ -73,21 +73,21 @@ class RedDebugHelper
 		 * Error Types get text from joomla language files
 		 */
 		$ErrorTypes = array(
-			E_ERROR				=> JText::_('E_ERROR'),
-			E_USER_ERROR		=> JText::_('E_USER_ERROR'),
-			E_RECOVERABLE_ERROR => JText::_('E_RECOVERABLE_ERROR'),
-			E_CORE_ERROR		=> JText::_('E_CORE_ERROR'),
-			E_COMPILE_ERROR		=> JText::_('E_COMPILE_ERROR'),
-			E_PARSE				=> JText::_('E_PARSE'),
-			E_WARNING			=> JText::_('E_WARNING'),
-			E_CORE_WARNING		=> JText::_('E_CORE_WARNING'),
-			E_COMPILE_WARNING	=> JText::_('E_COMPILE_WARNING'),
-			E_USER_WARNING		=> JText::_('E_USER_WARNING'),
-			E_NOTICE			=> JText::_('E_NOTICE'),
-			E_USER_NOTICE		=> JText::_('E_USER_NOTICE'),
-			E_STRICT			=> JText::_('E_STRICT'),
-			E_DEPRECATED		=> JText::_('E_DEPRECATED'),
-			E_USER_DEPRECATED	=> JText::_('E_USER_DEPRECATED'),
+			E_ERROR				=> JText::_('PLG_SYSTEM_REDDEBUG_E_ERROR'),
+			E_USER_ERROR		=> JText::_('PLG_SYSTEM_REDDEBUG_E_USER_ERROR'),
+			E_RECOVERABLE_ERROR => JText::_('PLG_SYSTEM_REDDEBUG_E_RECOVERABLE_ERROR'),
+			E_CORE_ERROR		=> JText::_('PLG_SYSTEM_REDDEBUG_E_CORE_ERROR'),
+			E_COMPILE_ERROR		=> JText::_('PLG_SYSTEM_REDDEBUG_E_COMPILE_ERROR'),
+			E_PARSE				=> JText::_('PLG_SYSTEM_REDDEBUG_E_PARSE'),
+			E_WARNING			=> JText::_('PLG_SYSTEM_REDDEBUG_E_WARNING'),
+			E_CORE_WARNING		=> JText::_('PLG_SYSTEM_REDDEBUG_E_CORE_WARNING'),
+			E_COMPILE_WARNING	=> JText::_('PLG_SYSTEM_REDDEBUG_E_COMPILE_WARNING'),
+			E_USER_WARNING		=> JText::_('PLG_SYSTEM_REDDEBUG_E_USER_WARNING'),
+			E_NOTICE			=> JText::_('PLG_SYSTEM_REDDEBUG_E_NOTICE'),
+			E_USER_NOTICE		=> JText::_('PLG_SYSTEM_REDDEBUG_E_USER_NOTICE'),
+			E_STRICT			=> JText::_('PLG_SYSTEM_REDDEBUG_E_STRICT'),
+			E_DEPRECATED		=> JText::_('PLG_SYSTEM_REDDEBUG_E_DEPRECATED'),
+			E_USER_DEPRECATED	=> JText::_('PLG_SYSTEM_REDDEBUG_E_USER_DEPRECATED'),
 		);
 
 		return isset($ErrorTypes[$code]) ? $ErrorTypes[$code] : JText::_('E_UDEFINE');
@@ -112,5 +112,42 @@ class RedDebugHelper
 		}
 
 		return null;
+	}
+
+	/**
+	 * checkDebugMode
+	 *
+	 * @param   string  $list  List of ips
+	 *
+	 * @return bool|int
+	 */
+	public static function checkDebugMode($list = '')
+	{
+		if ($list == '')
+		{
+			return true;
+		}
+
+		$list = is_string($list)
+			? preg_split('#[,\s]+#', $list)
+			: (array) $list;
+
+		// Localhost
+		$list[] = '127.0.0.1';
+		$list[] = '::1';
+		$list   = array_map('trim', $list);
+
+		$check  = implode('|', $list);
+		$ip     = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : php_uname('n');
+		$ipx    = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : '';
+
+		$found = preg_match('#^(' . $check . ')$#', $ip);
+
+		if ($found == 0 && $ipx)
+		{
+			$found = preg_match('#^(' . $check . ')$#', $ipx);
+		}
+
+		return $found;
 	}
 }

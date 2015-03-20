@@ -85,7 +85,7 @@ class RedDebugPanelList implements RedDebugPanelInterface
 	 */
 	public function getTab()
 	{
-		return "{$this->title}" . ($this->count == null ? '' : " ({$this->count})");
+		return "{$this->title}" . ($this->count == null ? '' : ": ({$this->count})");
 	}
 
 	/**

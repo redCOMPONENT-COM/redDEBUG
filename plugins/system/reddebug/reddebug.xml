@@ -1,16 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="system">
-	<name>redDEBUG</name>
+	<name>PLG_SYSTEM_REDDEBUG</name>
 	<version>1.0.0</version>
 	<creationDate>March 2015</creationDate>
 	<author>redCOMPONENT</author>
 	<copyright>Copyright (C) 2015 - 2015 redCOMPONENT.com. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<description>redDEBUG</description>
+	<description>PLG_SYSTEM_REDDEBUG_DESCRIPTION</description>
 	<files>
 		<filename plugin="reddebug">reddebug.php</filename>
 		<filename>index.html</filename>
 		<folder>form</folder>
+		<folder>language</folder>
 		<folder>layout</folder>
 	</files>
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_reddebug.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_reddebug.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="ip"
+                    type="textarea"
+                    default=""
+                    description="PLG_SYSTEM_REDDEBUG_FIELD_IP_DESCRIPTION"
+                    label="PLG_SYSTEM_REDDEBUG_FIELD_IP_LABEL"
+                />
+                <field
+                    name="offline"
+                    type="radio"
+                    default="0"
+                    description="PLG_SYSTEM_REDDEBUG_FIELD_OFFLINE_DESCRIPTION"
+                    label="PLG_SYSTEM_REDDEBUG_FIELD_OFFLINE_LABEL"
+                >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+                <field
+                    name="sef"
+                    type="radio"
+                    default="0"
+                    description="PLG_SYSTEM_REDDEBUG_FIELD_SEF_DESCRIPTION"
+                    label="PLG_SYSTEM_REDDEBUG_FIELD_SEF_LABEL"
+                >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
 </extension>

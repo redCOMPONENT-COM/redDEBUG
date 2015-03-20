@@ -36,6 +36,8 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	protected static $ModuleHelperName = 'default';
 
+	protected static $checkIp = false;
+
 	/**
 	 * __construct
 	 *
@@ -47,6 +49,14 @@ class PlgSystemRedDebug extends JPlugin
 	public function __construct(&$subject, $config = array())
 	{
 		parent::__construct($subject, $config);
+
+		// Check debug mode for this page
+		self::$checkIp = RedDebugHelper::checkDebugMode($this->params->get('ip', ''));
+
+		if (!self::$checkIp)
+		{
+			return false;
+		}
 
 		$app        = JFactory::getApplication();
 		$session    = JFactory::getSession();
@@ -76,6 +86,11 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	public function onAfterInitialise()
 	{
+		if (!self::$checkIp)
+		{
+			return false;
+		}
+
 		$jVersion   = new JVersion;
 		$version    = (int) $jVersion->RELEASE;
 
@@ -92,6 +107,27 @@ class PlgSystemRedDebug extends JPlugin
 					'onAfterRespond'
 				)
 			);
+		}
+
+		/**
+		 * So we in debug mode can work on offline page.
+		 * and can test no login pages..
+		 *
+		 * @todo maybe we only have this function in pro version
+		 */
+		if ($this->params->get('offline', false))
+		{
+			JFactory::getConfig()->set('offline', 0);
+		}
+
+		/**
+		 * So we in debug mode easy can use not sef url in debug mode
+		 *
+		 * @todo maybe we only have this function in pro version
+		 */
+		if ($this->params->get('sef', false))
+		{
+			JFactory::getConfig()->set('sef', 0);
 		}
 
 		$debugger = RedDebugDebugger::getInstance();
@@ -121,6 +157,11 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	public function onAfterRender()
 	{
+		if (!self::$checkIp)
+		{
+			return false;
+		}
+
 		$app            = JFactory::getApplication();
 		$session        = JFactory::getSession();
 		$classes        = $session->get('joomlaClasses', array(), 'redDebug');
@@ -141,6 +182,11 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	public function onAfterRespond()
 	{
+		if (!self::$checkIp)
+		{
+			return false;
+		}
+
 		if (static::$afterRespond)
 		{
 			return;
@@ -283,7 +329,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'PHP:',
+				'PHP',
 				null,
 				null,
 				null
@@ -294,7 +340,7 @@ class PlgSystemRedDebug extends JPlugin
 		$includes = get_included_files();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'files:',
+				'files',
 				$includes,
 				count($includes),
 				'default'
@@ -316,7 +362,7 @@ class PlgSystemRedDebug extends JPlugin
 		$constants = get_defined_constants();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'files:',
+				'constants',
 				$constants,
 				count($constants),
 				'default'
@@ -326,7 +372,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Server:',
+				'Server',
 				$_SERVER,
 				count($_SERVER),
 				'default'
@@ -336,7 +382,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Session:',
+				'Session',
 				$_SESSION,
 				count($_SESSION),
 				'ini'
@@ -346,7 +392,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Cookie:',
+				'Cookie',
 				$_COOKIE,
 				count($_COOKIE),
 				'default'
@@ -357,7 +403,7 @@ class PlgSystemRedDebug extends JPlugin
 		$configs = ini_get_all();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'INI:',
+				'INI',
 				$configs,
 				count($configs),
 				'ini'
