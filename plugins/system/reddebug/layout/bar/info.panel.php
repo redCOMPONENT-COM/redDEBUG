@@ -5,7 +5,7 @@
 $info = array_filter(
 	array_merge(
 		array(
-			'Execution time'                => str_replace(' ', ' ', number_format(RedDebugDebugger::getInstance()->getTime() * 1000, 1, '.', ' ')) . ' ms',
+			'Execution time'                => str_replace(' ', ' ', number_format($this->time * 1000, 1, '.', ' ')) . ' ms',
 			'Peak of allocated memory'      => str_replace(' ', ' ', number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ')) . ' MB',
 			'Included files'                => count(get_included_files()),
 			'Classes + interfaces + traits' => count(get_declared_classes()) . ' + '
