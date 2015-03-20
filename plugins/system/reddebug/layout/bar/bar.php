@@ -1,4 +1,4 @@
-<?php ob_start() ?>
+<?php ob_start(); ?>
 <style id="redDebug-style" class="redDebug">
 	<?php echo file_get_contents(__DIR__ . '/../bootstrap.css'); ?>
 	<?php echo file_get_contents(__DIR__ . '/bar.css'); ?>
@@ -13,7 +13,7 @@
  *  Panel
  */
 ?>
-<?php foreach ($panels as $panel): if (!empty($panel['previous'])) continue ?>
+<?php foreach ($panels as $panel): if (!empty($panel['previous'])) continue; ?>
 	<?php if(!empty($panel['panel']) && $panel['panel'] != null): ?>
 		<div class="modal reddebug-panel <?php echo trim($panel['class']) ?>" id="redDebug-panel-<?php echo $panel['id'] ?>">
 			<div class="modal-content">
@@ -60,8 +60,16 @@
 		<?php endforeach ?>
 	</ul>
 </div>
-<?php $output = ob_get_clean(); ?>
 <?php
+$output = ob_get_clean();
+$buffer = JFactory::getApplication()->getBody(false);
+
+// So we get jQuery
+if (!stripos($buffer, 'jquery') && RedDebugDebugger::getInstance()->getRedScreen()->jQuery == false)
+{
+	echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>';
+}
+
 /**
  * Add data to javascript
  */

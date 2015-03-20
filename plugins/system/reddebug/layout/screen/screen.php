@@ -6,6 +6,7 @@
 
 defined('_JEXEC') or die;
 
+$buffer = JFactory::getApplication()->getBody(false);
 ob_start();
 ?>
 <style type="text/css">
@@ -24,11 +25,36 @@ ob_start();
 		</p>
 	</div>
 </div>
-<?php $output = ob_get_clean(); ?>
+<?php
+$output = ob_get_clean();
+
+if (empty($buffer))
+{
+		$buffer = <<<HTML
+	<!DOCTYPE html>
+		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" dir="ltr">
+		<html>
+			<head>
+				<title></title>
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+			</head>
+			<body>
+			</body>
+		</html>
+HTML;
+	$this->jQuery = true;
+}
+
+if (!stripos($buffer, 'jquery'))
+{
+	echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>';
+	$this->jQuery = true;
+}
+?>
 <script type="text/javascript">
-	window.addEventListener('load', function() {
-		document.getElementsByTagName('body')[0].innerHTML = <?php echo json_encode($output);?>;
-		document.getElementsByTagName('body')[0].className = '';
-		document.getElementsByTagName('body')[0].id = 'redDebugBody';
-	}
+	jQuery('document').ready(function(){
+		jQuery('body').html(<?php echo json_encode($output);?>);
+		jQuery('body')[0].class= '';
+		jQuery('body').attr('id', 'redDebugBody');
+	});
 </script>
