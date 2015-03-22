@@ -17,6 +17,11 @@ JLoader::import('reddebug.library');
 class PlgSystemRedDebug extends JPlugin
 {
 	/**
+	 * @var bool
+	 */
+	protected $autoloadLanguage = true;
+
+	/**
 	 * @var array
 	 */
 	public static $logPlugin;

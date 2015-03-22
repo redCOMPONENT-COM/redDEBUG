@@ -150,4 +150,116 @@ class RedDebugHelper
 
 		return $found;
 	}
+
+	/**
+	 * highlightFile
+	 *
+	 * @param   string  $file   File
+	 * @param   int     $line   line number to show
+	 * @param   int     $lines  number of lines
+	 *
+	 * @return string|void
+	 */
+	public static function highlightFile($file = null, $line = null, $lines = null)
+	{
+		// Get code in file
+		$source = file_get_contents($file);
+
+		if (empty($source))
+		{
+			return;
+		}
+
+		$source = strtr(
+			$source,
+			array(
+				"\r\n"  => "\n",
+				"\r"    => "\n"
+			)
+		);
+		$source = highlight_string($source, true);
+
+		// Highlight_string return "<code><span style="color: #000000">" in start of code. to remove this we do this
+		$source = explode("\n", $source);
+		$before = $source[0];
+
+		$source = strtr(
+			$source[1],
+			array(
+				"<br />" => "\n"
+			)
+		);
+
+		// Line fixed
+		$source = strtr(
+			$source,
+			array(
+				"\r\n" => "\n"
+			)
+		);
+
+		// Add line break
+		$source = "\n" . $source;
+
+		// Explode on line breaks
+		$source = explode("\n", $source);
+		$code   = '';
+		$spans  = 1;
+
+		is_null($lines) && $lines = count($source);
+
+		// Get Start line number
+		$start  = $i = max(1, ($line - floor($lines * 2 / 3)));
+
+		while (--$i >= 1)
+		{
+			if (preg_match('#.*(</?span[^>]*>)#', $source[$i], $m))
+			{
+				if ($m[1] !== '</span>')
+				{
+					$spans++;
+					$code .= $m[1];
+				}
+
+				break;
+			}
+		}
+
+
+		$source = array_slice($source, $start, $lines, true);
+		$max_len = strlen(count($source));
+
+		foreach ($source as $l => $c)
+		{
+			$spans += substr_count($c, '<span') - substr_count($c, '</span');
+			$s = str_replace(array("\r", "\n"), array('', ''), $c);
+			preg_match_all('#<[^>]+>#', $c, $tags);
+
+			$class = $l == $start ? 'line line-start':'line';
+
+			if ($l == $line)
+			{
+				$code .= sprintf(
+					"<span class='%s highlight'>%s:</span><span class='highlight'>%s\n</span>%s",
+					$class,
+					str_pad($l, $max_len, "0", STR_PAD_LEFT),
+					strip_tags($c),
+					implode('', $tags[0])
+				);
+			}
+			else
+			{
+				$code .= sprintf(
+					"<span class='%s'>%s:</span>%s\n",
+					$class,
+					str_pad($l, $max_len, "0", STR_PAD_LEFT),
+					$c
+				);
+			}
+		}
+
+		$code .= str_repeat('</span>', $spans) . '</code>';
+
+		return ($before . '' . $code);
+	}
 }
