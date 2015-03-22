@@ -13,25 +13,27 @@
  *  Panel
  */
 ?>
-<?php foreach ($panels as $panel): if (!empty($panel['previous'])) continue; ?>
-	<?php if(!empty($panel['panel']) && $panel['panel'] != null): ?>
-		<div aria-labelledby="" aria-hidden="true" class="modal reddebug-panel <?php echo trim($panel['class']) ?>" id="redDebug-panel-<?php echo $panel['id'] ?>">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-					<h4 class="modal-title" id="modal-title"><?php echo trim($panel['tab']) ?>
-						<a class="anchorjs-link" href="#modal-title">
-							<span class="anchorjs-icon"></span>
-						</a>
-					</h4>
-				</div>
-				<div class="modal-body">
-					<?php if ($panel['panel']): echo $panel['panel']; endif; ?>
+<div id="redDebug-panel">
+	<?php foreach ($panels as $panel): if (!empty($panel['previous'])) continue; ?>
+		<?php if(!empty($panel['panel']) && $panel['panel'] != null): ?>
+			<div aria-labelledby="" aria-hidden="true" class="modal reddebug-panel <?php echo trim($panel['class']) ?>" id="redDebug-panel-<?php echo $panel['id'] ?>">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<h4 class="modal-title" id="modal-title"><?php echo trim($panel['tab']) ?>
+							<a class="anchorjs-link" href="#modal-title">
+								<span class="anchorjs-icon"></span>
+							</a>
+						</h4>
+					</div>
+					<div class="modal-body">
+						<?php if ($panel['panel']): echo $panel['panel']; endif; ?>
+					</div>
 				</div>
 			</div>
-		</div>
-	<?php endif; ?>
-<?php endforeach ?>
+		<?php endif; ?>
+	<?php endforeach ?>
+</div>
 <?php
 /**
  * Menu bar
@@ -79,6 +81,7 @@ if (!stripos($buffer, 'jquery') && RedDebugDebugger::getInstance()->getRedScreen
 		window.addEventListener('load', function() {
 			var debug = document.body.appendChild(document.createElement('div'));
 			debug.id = 'redDebug';
+			debug.className = 'redDebug';
 			debug.innerHTML = <?php echo json_encode(RedDebugHelper::fixEncoding($output)) ?>;
 
 			for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) {

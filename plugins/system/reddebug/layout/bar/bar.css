@@ -3,25 +3,12 @@
   direction: ltr;
   /* bar */
 }
-#redDebug .text-center {
-  text-align: center;
-}
 body#redDebug {
   margin: 5px 5px 0;
   display: block;
 }
-#redDebug * {
-  font: inherit;
-  color: inherit;
-  background: transparent;
-  margin: 0;
-  padding: 0;
-  border: none;
-  text-align: inherit;
-  list-style: inherit;
-  opacity: 1;
-  border-radius: 0;
-  box-shadow: none;
+#redDebug .text-center {
+  text-align: center;
 }
 #redDebug b,
 #redDebug strong {
@@ -40,9 +27,6 @@ body#redDebug {
 #redDebug a a:focus {
   background-color: #125EAE;
   color: white;
-}
-#redDebug table .reddebug-right {
-  text-align: right;
 }
 #redDebug #redDebug-bar {
   font-size: 12px;
@@ -77,7 +61,8 @@ body#redDebug {
   margin-left: .2em;
 }
 #redDebug #redDebug-bar ul {
-  margin-top: 2px;
+  margin: 0px;
+  padding: 0px;
   list-style: none none;
   clear: left;
 }
@@ -109,58 +94,63 @@ body#redDebug {
   color: white;
   font-weight: bold;
 }
-#redDebug #redDebug-logo {
-  cursor: move;
+#redDebug #redDebug-panel {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-#redDebug .modal {
+#redDebug #redDebug-panel .modal {
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
   top: auto;
   bottom: 20px;
   max-width: 700px;
   font-size: 12px;
   font-weight: normal;
   font-style: normal;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-#redDebug .modal .modal-header {
+#redDebug #redDebug-panel .modal .modal-header {
   background-color: #4b565c;
   color: #FFFFFF;
   font-weight: bold;
 }
-#redDebug .modal .modal-content {
+#redDebug #redDebug-panel .modal .modal-header .close {
+  float: right;
+}
+#redDebug #redDebug-panel .modal .modal-content {
   border-radius: 0px;
 }
-#redDebug .modal .modal-body {
+#redDebug #redDebug-panel .modal .modal-body {
   max-height: 500px;
   overflow: auto;
   margin: 0px;
   width: 100%;
 }
-#redDebug .modal .modal-body .table tr:nth-child(even) td,
-#redDebug .modal .modal-body .table tr.odd td {
+#redDebug #redDebug-panel .modal .modal-body .table tr:nth-child(even) td,
+#redDebug #redDebug-panel .modal .modal-body .table tr.odd td {
   background-color: #f4f4f4;
 }
-#redDebug .modal .modal-body .table.default-panel td {
+#redDebug #redDebug-panel .modal .modal-body .table.default-panel td {
   padding: 4px;
 }
-#redDebug .modal .modal-body .table.default-panel td:first-child {
+#redDebug #redDebug-panel .modal .modal-body .table.default-panel td:first-child {
   font-weight: bold;
   vertical-align: middle;
 }
-#redDebug .modal .modal-body .table.default-panel td:last-child {
+#redDebug #redDebug-panel .modal .modal-body .table.default-panel td:last-child {
   width: 90%;
   vertical-align: middle;
 }
-#redDebug .modal#redDebug-panel-event,
-#redDebug .modal#redDebug-panel-modules,
-#redDebug .modal#redDebug-panel-plugin {
+#redDebug #redDebug-panel .modal#redDebug-panel-event,
+#redDebug #redDebug-panel .modal#redDebug-panel-modules,
+#redDebug #redDebug-panel .modal#redDebug-panel-plugin {
   width: 900px;
   max-width: 900px;
 }
-#redDebug .modal#redDebug-panel-info {
+#redDebug #redDebug-panel .modal#redDebug-panel-info {
   width: 301px;
   max-width: 301px;
 }
-#redDebug h1 {
+#redDebug #redDebug-panel h1 {
   font-size: 23px;
   font-weight: normal;
   font-style: normal;
@@ -169,7 +159,7 @@ body#redDebug {
   margin: -5px -5px 5px;
   padding: 0 25px 5px 5px;
 }
-#redDebug textarea {
+#redDebug #redDebug-panel textarea {
   height: 200px;
 }
 body #redDebug {

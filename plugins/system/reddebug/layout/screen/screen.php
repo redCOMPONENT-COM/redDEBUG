@@ -20,8 +20,23 @@ ob_start();
 			<?php echo htmlspecialchars($exception->getMessage()) ?>
 			<a href="https://www.google.com/search?q=<?php
 				echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage()))
-				?>">search</a>
+			?>">search</a>
 		</p>
+	</div>
+	<div id="redContent">
+		<div class="row">
+			<div class="col-xs-2">
+				<a class="reddebug-action">
+					<h2><?php echo JText::_('PLG_SYSTEM_REDDEBUG_SOURCE_FILE'); ?></h2>
+				</a>
+			</div>
+			<div class="col-xs-10 info">
+				<h2><?php echo JText::sprintf('PLG_SYSTEM_REDDEBUG_FILE_PATH', $exception->getFile()); ?></h2>
+				<div class="redDebugCodeBox">
+					<?php echo RedDebugHelper::highlightFile($exception->getFile(), $exception->getLine(), 30); ?>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <?php
@@ -51,7 +66,11 @@ if (!stripos($buffer, 'jquery'))
 <script type="text/javascript">
 	jQuery('document').ready(function(){
 		jQuery('body').html(<?php echo json_encode($output);?>);
-		jQuery('body')[0].class= '';
+		jQuery('body')[0].className= 'redDebug';
 		jQuery('body').attr('id', 'redDebugBody');
+
+		jQuery('#redContent .reddebug-action').click(function(){
+			jQuery(this).parents('.row').find('>.info').toggle();
+		});
 	});
 </script>
