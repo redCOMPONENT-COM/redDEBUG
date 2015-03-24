@@ -117,20 +117,16 @@ class RedDebugHelper
 	/**
 	 * checkDebugMode
 	 *
-	 * @param   string  $list  List of ips
+	 * @param   array  $list  List of ips
 	 *
 	 * @return bool|int
 	 */
-	public static function checkDebugMode($list = '')
+	public static function checkDebugMode(array $list)
 	{
-		if ($list == '')
+		if (count($list) == 0)
 		{
 			return true;
 		}
-
-		$list = is_string($list)
-			? preg_split('#[,\s]+#', $list)
-			: (array) $list;
 
 		// Localhost
 		$list[] = '127.0.0.1';
