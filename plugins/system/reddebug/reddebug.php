@@ -56,7 +56,7 @@ class PlgSystemRedDebug extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Check debug mode for this page
-		self::$checkIp = RedDebugHelper::checkDebugMode($this->params->get('ip', ''));
+		self::$checkIp = RedDebugHelper::checkDebugMode((array) $this->params->get('ip', array()));
 
 		if (!self::$checkIp)
 		{
