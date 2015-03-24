@@ -94,6 +94,11 @@ body#redDebug {
   color: white;
   font-weight: bold;
 }
+#redDebug .table td,
+#redDebug .table th,
+#redDebug .table {
+  text-align: left;
+}
 #redDebug #redDebug-panel {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -103,10 +108,20 @@ body#redDebug {
   padding: 0px;
   top: auto;
   bottom: 20px;
-  max-width: 700px;
+  max-width: 100%;
+  width: 100%;
   font-size: 12px;
   font-weight: normal;
   font-style: normal;
+}
+#redDebug #redDebug-panel .modal *,
+#redDebug #redDebug-panel .modal {
+  border-radius: 0px;
+  -moz-border-radius: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+}
+#redDebug #redDebug-panel .modal .modal-title {
+  text-align: center;
 }
 #redDebug #redDebug-panel .modal .modal-header {
   background-color: #4b565c;
@@ -119,8 +134,17 @@ body#redDebug {
 #redDebug #redDebug-panel .modal .modal-content {
   border-radius: 0px;
 }
+#redDebug #redDebug-panel .modal .modal-header {
+  padding: 5px;
+}
+#redDebug #redDebug-panel .modal .modal-header .close {
+  position: relative;
+  margin-top: 2px;
+  height: 10px;
+  line-height: 10px;
+}
 #redDebug #redDebug-panel .modal .modal-body {
-  max-height: 500px;
+  max-height: 300px;
   overflow: auto;
   margin: 0px;
   width: 100%;
@@ -137,18 +161,15 @@ body#redDebug {
   vertical-align: middle;
 }
 #redDebug #redDebug-panel .modal .modal-body .table.default-panel td:last-child {
-  width: 90%;
+  width: 99%;
   vertical-align: middle;
 }
-#redDebug #redDebug-panel .modal#redDebug-panel-event,
-#redDebug #redDebug-panel .modal#redDebug-panel-modules,
-#redDebug #redDebug-panel .modal#redDebug-panel-plugin {
-  width: 900px;
-  max-width: 900px;
-}
 #redDebug #redDebug-panel .modal#redDebug-panel-info {
-  width: 301px;
-  max-width: 301px;
+  width: 401px;
+  max-width: 401px;
+}
+#redDebug #redDebug-panel .modal#redDebug-panel-info .modal-body {
+  max-height: 500px;
 }
 #redDebug #redDebug-panel h1 {
   font-size: 23px;

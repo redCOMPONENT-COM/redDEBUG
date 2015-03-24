@@ -356,7 +356,7 @@ class PlgSystemRedDebug extends JPlugin
 		$declared_classes = get_declared_classes();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'classes:',
+				'classes',
 				$declared_classes,
 				count($declared_classes),
 				'default'
