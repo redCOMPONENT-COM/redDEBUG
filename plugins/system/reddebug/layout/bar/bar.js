@@ -22,7 +22,7 @@ jQuery(document).ready(function(){
         }
 
         // Move element
-        panel.css({"left":(position.left), "bottom": bottom});
+        panel.css({"bottom": bottom});
 
         if(!isDisplay){
             panel.RedDebugModal('show');

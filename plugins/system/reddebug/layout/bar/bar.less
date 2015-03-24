@@ -103,19 +103,33 @@
       }
     }
   }
+  .table{
+	td, th, &{
+	  text-align: left;
+	}
+  }
   #redDebug-panel{
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     .modal {
+	  *, &{
+		border-radius: 0px;
+		-moz-border-radius: 0px;
+		-webkit-border-bottom-left-radius: 0px;
+	  }
       border: 0px;
       margin: 0px;
       padding: 0px;
       top: auto;
       bottom: 20px;
-      max-width: 700px;
+      max-width: 100%;
+	  width: 100%;
       font-size: 12px;
       font-weight: normal;
       font-style: normal;
 
+	  .modal-title{
+		text-align: center;
+	  }
       .modal-header{
         background-color: #4b565c;
         color: #FFFFFF;
@@ -127,8 +141,17 @@
       .modal-content{
         border-radius: 0px;
       }
+	  .modal-header{
+		padding: 5px;
+		.close{
+		  position: relative;
+		  margin-top: 2px;
+		  height: 10px;
+		  line-height: 10px;
+		}
+	  }
       .modal-body{
-        max-height: 500px;
+        max-height: 300px;
         overflow: auto;
         margin: 0px;
         width: 100%;
@@ -147,19 +170,20 @@
               vertical-align: middle;
             }
             td:last-child{
-              width: 90%;
+              width: 99%;
               vertical-align: middle;
             }
           }
         }
       }
       &#redDebug-panel-event, &#redDebug-panel-modules, &#redDebug-panel-plugin{
-        width: 900px;
-        max-width: 900px;
       }
       &#redDebug-panel-info{
-        width: 301px;
-        max-width: 301px;
+        width: 401px;
+        max-width: 401px;
+		.modal-body {
+		  max-height: 500px;
+		}
       }
     }
     h1 {
