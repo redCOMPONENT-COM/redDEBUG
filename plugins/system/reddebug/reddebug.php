@@ -41,7 +41,15 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	protected static $ModuleHelperName = 'default';
 
+	/**
+	 * @var bool
+	 */
 	protected static $checkIp = false;
+
+	/**
+	 * @var bool
+	 */
+	protected static $in_admin = true;
 
 	/**
 	 * __construct
@@ -58,7 +66,15 @@ class PlgSystemRedDebug extends JPlugin
 		// Check debug mode for this page
 		self::$checkIp = RedDebugHelper::checkDebugMode((array) $this->params->get('ip', array()));
 
-		if (!self::$checkIp)
+		/**
+		 * If admin mode is off
+		 */
+		if (!$this->params->get('in_admin', false))
+		{
+			self::$in_admin = JFactory::getApplication()->isAdmin() != 1;
+		}
+
+		if (!self::$checkIp || !self::$in_admin)
 		{
 			return false;
 		}
@@ -91,7 +107,7 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	public function onAfterInitialise()
 	{
-		if (!self::$checkIp)
+		if (!self::$checkIp || !self::$in_admin)
 		{
 			return false;
 		}
@@ -162,7 +178,7 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	public function onAfterRender()
 	{
-		if (!self::$checkIp)
+		if (!self::$checkIp || !self::$in_admin)
 		{
 			return false;
 		}
@@ -187,7 +203,7 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	public function onAfterRespond()
 	{
-		if (!self::$checkIp)
+		if (!self::$checkIp || !self::$in_admin)
 		{
 			return false;
 		}
@@ -200,6 +216,11 @@ class PlgSystemRedDebug extends JPlugin
 		static::$afterRespond = true;
 
 		$methods = RedDebugJoomlaModule::getLog();
+
+		$app            = JFactory::getApplication();
+		$session        = JFactory::getSession();
+
+		$classes        = $session->get('joomlaClasses', array(), 'redDebug');
 
 		$plugin = array();
 		$event = array();
@@ -249,7 +270,7 @@ class PlgSystemRedDebug extends JPlugin
 		$debug = RedDebugDebugger::getInstance();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Plugin',
+				JText::_('PLG_SYSTEM_REDDEBUG_PLUGINS_LABEL'),
 				$plugin,
 				count($plg),
 				'plugin'
@@ -259,7 +280,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Modules',
+				JText::_('PLG_SYSTEM_REDDEBUG_MODULES_LABEL'),
 				$methods,
 				count($methods),
 				'module'
@@ -269,7 +290,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Events',
+				JText::_('PLG_SYSTEM_REDDEBUG_EVENT_LABEL'),
 				$event,
 				count($evt),
 				'event'
@@ -280,7 +301,7 @@ class PlgSystemRedDebug extends JPlugin
 		$request = array_merge(array('template' => JFactory::getApplication()->getTemplate()), $_REQUEST);
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Request',
+				JText::_('PLG_SYSTEM_REDDEBUG_REQUEST_LABEL'),
 				$request,
 				count($request),
 				'default'
@@ -291,7 +312,7 @@ class PlgSystemRedDebug extends JPlugin
 		$parms = json_decode(JFactory::getApplication()->getTemplate(true)->params);
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Template parameters',
+				JText::_('PLG_SYSTEM_REDDEBUG_TEMPLATE_LABEL'),
 				$parms,
 				null,
 				'default'
@@ -304,7 +325,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Config',
+				JText::_('PLG_SYSTEM_REDDEBUG_CONFIG_LABEL'),
 				$config,
 				null,
 				'default'
@@ -314,7 +335,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'User',
+				JText::_('PLG_SYSTEM_REDDEBUG_USER_LABEL'),
 				JFactory::getUser(),
 				null,
 				'default'
@@ -324,7 +345,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Info',
+				JText::_('PLG_SYSTEM_REDDEBUG_JOOMLA_VERSION_LABEL'),
 				(array) new JVersion,
 				null,
 				'default'
@@ -345,7 +366,7 @@ class PlgSystemRedDebug extends JPlugin
 		$includes = get_included_files();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'files',
+				JText::_('PLG_SYSTEM_REDDEBUG_FILES_LABEL'),
 				$includes,
 				count($includes),
 				'default'
@@ -353,10 +374,30 @@ class PlgSystemRedDebug extends JPlugin
 			'includes'
 		);
 
+		/**
+		 * Get Includes class
+		 */
 		$declared_classes = get_declared_classes();
+		$declared_tmp = array();
+
+		foreach ($declared_classes AS $key => $class)
+		{
+			if (isset($classes[$class]))
+			{
+				$declared_tmp[$class] = $classes[$class];
+			}
+			else
+			{
+				$key = RedDebugHelper::findJoomlaClassFile($class, JText::_('PLG_SYSTEM_REDDEBUG_DEFAULT_PHP_CLASS_PATH'));
+				$declared_tmp[$class] = $key;
+			}
+		}
+
+		$declared_classes = $declared_tmp;
+
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'classes',
+				JText::_('PLG_SYSTEM_REDDEBUG_CLASSES_LABEL'),
 				$declared_classes,
 				count($declared_classes),
 				'default'
@@ -367,7 +408,7 @@ class PlgSystemRedDebug extends JPlugin
 		$constants = get_defined_constants();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'constants',
+				JText::_('PLG_SYSTEM_REDDEBUG_CONSTANTS_LABEL'),
 				$constants,
 				count($constants),
 				'default'
@@ -377,7 +418,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Server',
+				JText::_('PLG_SYSTEM_REDDEBUG_SERVER_LABEL'),
 				$_SERVER,
 				count($_SERVER),
 				'default'
@@ -387,7 +428,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Session',
+				JText::_('PLG_SYSTEM_REDDEBUG_SESSION_LABEL'),
 				$_SESSION,
 				count($_SESSION),
 				'ini'
@@ -397,7 +438,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Cookie',
+				JText::_('PLG_SYSTEM_REDDEBUG_COOKIE_LABEL'),
 				$_COOKIE,
 				count($_COOKIE),
 				'default'
@@ -408,7 +449,7 @@ class PlgSystemRedDebug extends JPlugin
 		$configs = ini_get_all();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'INI',
+				JText::_('PLG_SYSTEM_REDDEBUG_INI_LABEL'),
 				$configs,
 				count($configs),
 				'ini'

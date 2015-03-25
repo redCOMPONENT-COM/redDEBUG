@@ -21,11 +21,11 @@ $info = array_filter(
 ?>
 <h1>System info</h1>
 <div id="redDebug-info">
-	<table class="table">
+	<table class="table table-bordered">
 		<?php foreach ($info as $key => $val): ?>
 			<tr>
 				<td><?php echo htmlspecialchars($key, null, 'UTF-8') ?></td>
-				<td><?php echo htmlspecialchars($val, null, 'UTF-8') ?></td>
+				<td nowrap><?php echo htmlspecialchars($val, null, 'UTF-8') ?></td>
 			</tr>
 		<?php endforeach ?>
 	</table>

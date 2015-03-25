@@ -149,6 +149,9 @@ body#redDebug {
   margin: 0px;
   width: 100%;
 }
+#redDebug #redDebug-panel .modal .modal-body .table {
+  margin: 0px;
+}
 #redDebug #redDebug-panel .modal .modal-body .table tr:nth-child(even) td,
 #redDebug #redDebug-panel .modal .modal-body .table tr.odd td {
   background-color: #f4f4f4;
