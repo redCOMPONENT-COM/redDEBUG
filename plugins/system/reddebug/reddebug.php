@@ -82,6 +82,7 @@ class PlgSystemRedDebug extends JPlugin
 		$app        = JFactory::getApplication();
 		$session    = JFactory::getSession();
 		$classes    = $session->get('joomlaClasses', array(), 'redDebug');
+		$dispatcher = RedDebugJoomlaDispatcher::getInstance();
 
 		static::$reset = $app->input->get('reset_class_files', !isset($classes['JModuleHelper']));
 
@@ -93,6 +94,8 @@ class PlgSystemRedDebug extends JPlugin
 
 			self::$ModuleHelperName = ($location == 'module' ? 'Default' : $location);
 		}
+
+
 
 		if (static::$reset != 1)
 		{
@@ -154,16 +157,6 @@ class PlgSystemRedDebug extends JPlugin
 		$debugger = RedDebugDebugger::getInstance();
 		$debugger->enable();
 		$debugger->directory = __DIR__ . DIRECTORY_SEPARATOR . 'layout';
-
-		$dispatcher = RedDebugJoomlaDispatcher::getInstance();
-		list($type, $names) = $this->_subject->getInfo(__FUNCTION__);
-
-		self::$logPlugin[] = array(
-			'type' => $type,
-			'method' => __FUNCTION__,
-			'names' => $names,
-			'args' => func_get_args()
-		);
 
 		/**
 		 * register_shutdown_function
@@ -227,6 +220,11 @@ class PlgSystemRedDebug extends JPlugin
 		$plg = array();
 		$evt = array();
 
+		print '<pre>';
+		print_r(RedDebugJoomlaDispatcher::$logger);
+		print '</pre>';
+
+		return ;
 		foreach (self::$logPlugin AS $row)
 		{
 			$type = $row['type'];
