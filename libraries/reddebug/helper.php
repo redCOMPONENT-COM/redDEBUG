@@ -107,11 +107,12 @@ class RedDebugHelper
 		if (class_exists($class, true))
 		{
 			$class = new ReflectionClass($class);
+			$filename = $class->getFileName();
 
-			return $class->getFileName();
+			return empty($filename) ? $default : $filename;
 		}
 
-		return null;
+		return $default;
 	}
 
 	/**
