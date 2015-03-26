@@ -6,10 +6,10 @@
 			<td width="10%">Event Type</td>
 			<td width="10%">Event</td>
 			<td width="40%">Plugins</td>
-			<td width="40%">params</td>
 		</tr>
 		</thead>
 		<tbody>
+
 		<?php foreach($data AS $type => $events): ?>
 			<?php foreach($events AS $event => $info): ?>
 				<tr>
@@ -22,21 +22,35 @@
 					<td>
 						<table class="table">
 							<thead>
-							<tr>
-								<td style="width: 150px;">Plugin</td>
-								<td style="width: 20px;">Count</td>
-							</tr>
-							</thead>
-							<?php foreach($info['class'] AS $class => $count): ?>
 								<tr>
-									<td><?php echo $class;?></td>
-									<td><?php echo $count;?></td>
+									<td>plugin</td>
+									<td>Args</td>
+									<td>Values</td>
+									<td>Time</td>
+									<td>Memory</td>
+								</tr>
+							</thead>
+							<?php foreach($info AS $key => $row): ?>
+								<?php $marks = $row->profile->getMarks(); ?>
+								<tr>
+									<td>
+										<?php echo $row->plugin; ?>
+									</td>
+									<td>
+										<textarea style="height: 80px; width: 100%; resize: none;"><?php print_r($row->args); ?></textarea>
+									</td>
+									<td>
+										<?php echo $row->value; ?>
+									</td>
+									<td>
+										<?php echo number_format(($marks[1]->totalTime - $marks[0]->totalTime) * 1000, 1, '.', ''); ?>
+									</td>
+									<td>
+										<?php echo number_format(($marks[1]->totalMemory - $marks[0]->totalMemory) * 1000000, 1, '.', ''); ?>
+									</td>
 								</tr>
 							<?php endforeach; ?>
 						</table>
-					</td>
-					<td>
-						<textarea style="width: 400px; resize: none;"><?php print_r($info['args']); ?></textarea>
 					</td>
 				</tr>
 			<?php endforeach; ?>
