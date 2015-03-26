@@ -92,19 +92,33 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	}
 
 	/**
-	 * Debugger
+	 * debugger
 	 *
-	 * @param   null  $plugin  Object where plugin class and more...
+	 * @param   null  $plugin  Plugin
+	 * @param   null  $event   Events
+	 * @param   null  $args    Args
 	 *
-	 * @return void
+	 * @return object
 	 */
-	static public function debugger($plugin = null, $args = null, $value = null, $type = 0, $before = true)
+	static public function debugger($plugin = null, $event = null, $args = null)
 	{
-		if($type == 1)
+		$jprofile = new JProfiler;
+		$class = get_class($plugin);
+
+		if (isset(self::$logger[$class][$event]))
 		{
-			self::$logger[get_class($plugin)][] = $args;
+			self::$logger[$class][$event] = array();
 		}
 
+		$result  = self::$logger[$class][$event][] = (object) array(
+			'plugin'	=> $class,
+			'args'		=> $args,
+			'value'		=> null,
+			'profile'	=> $jprofile,
+			'type'		=> $plugin->get('_type', null)
+		);
+
+		return $result;
 	}
 
 	/**
@@ -146,21 +160,24 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 				continue;
 			}
 
+			$debug = self::debugger($this->_observers[$key], $event, $args);
+			$debug->profile->mark('before');
+
 			// Fire the event for an object based observer.
 			if (is_object($this->_observers[$key]))
 			{
 				$args['event'] = $event;
-				self::debugger($this->_observers[$key], $args, null, 1, true);
 				$value = $this->_observers[$key]->update($args);
-				self::debugger($this->_observers[$key], $args, $value, 1, false);
 			}
 			// Fire the event for a function based observer.
 			elseif (is_array($this->_observers[$key]))
 			{
-				self::debugger($this->_observers[$key]['handler'], $args, null, 2, true);
 				$value = call_user_func_array($this->_observers[$key]['handler'], $args);
-				self::debugger($this->_observers[$key]['handler'], $args, null, 2, false);
 			}
+
+			$debug->value = $value;
+			$debug->args_after = $args;
+			$debug->profile->mark('after');
 
 			if (isset($value))
 			{

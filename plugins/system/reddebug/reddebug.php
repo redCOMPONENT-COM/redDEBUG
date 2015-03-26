@@ -118,21 +118,6 @@ class PlgSystemRedDebug extends JPlugin
 		$jVersion   = new JVersion;
 		$version    = (int) $jVersion->RELEASE;
 
-		if ($version == 2)
-		{
-			/**
-			 * In old joomla we not have this event.
-			 * but maybe we need to move change this onAfterRespond
-			 * so we get last events from plugin
-			 */
-			register_shutdown_function(
-				array(
-					$this,
-					'onAfterRespond'
-				)
-			);
-		}
-
 		/**
 		 * So we in debug mode can work on offline page.
 		 * and can test no login pages..
@@ -153,6 +138,17 @@ class PlgSystemRedDebug extends JPlugin
 		{
 			JFactory::getConfig()->set('sef', 0);
 		}
+
+		/**
+		 * why. so we before we add debug bar and panel
+		 * run this.
+		 */
+		register_shutdown_function(
+			array(
+				$this,
+				'onAfterJoomla'
+			)
+		);
 
 		$debugger = RedDebugDebugger::getInstance();
 		$debugger->enable();
@@ -190,11 +186,11 @@ class PlgSystemRedDebug extends JPlugin
 	}
 
 	/**
-	 * onAfterRespond
+	 * onAfterJoomla
 	 *
 	 * @return void
 	 */
-	public function onAfterRespond()
+	public function onAfterJoomla()
 	{
 		if (!self::$checkIp || !self::$in_admin)
 		{
@@ -215,53 +211,41 @@ class PlgSystemRedDebug extends JPlugin
 
 		$classes        = $session->get('joomlaClasses', array(), 'redDebug');
 
-		$plugin = array();
-		$event = array();
+		$plugins = RedDebugJoomlaDispatcher::$logger;
+		$event_count = 0;
 		$plg = array();
 		$evt = array();
 
-		print '<pre>';
-		print_r(RedDebugJoomlaDispatcher::$logger);
-		print '</pre>';
-
-		return ;
-		foreach (self::$logPlugin AS $row)
+		foreach ($plugins AS $plugin => $events)
 		{
-			$type = $row['type'];
-			$method = $row['method'];
-
-			foreach ($row['names'] AS $keyname => $name)
+			foreach ($events AS $event => $info)
 			{
-				if (!isset($plugin[$type][$keyname]))
+				$plg[($info[0]->type)][$plugin][$event] = array();
+				$plg[($info[0]->type)][$plugin][$event]['count']	= count($info);
+				$plg[($info[0]->type)][$plugin][$event]['time']		= 0;
+				$plg[($info[0]->type)][$plugin][$event]['memory']	= 0;
+
+				foreach ($info AS $key => $row)
 				{
-					$plugin[$type][$keyname] = array(
-						'name' => $name,
-						'method' => array()
-					);
+					$mark = $row->profile->getMarks();
+
+					if (count($mark) == 2)
+					{
+						$time = $mark[1]->totalTime - $mark[0]->totalTime;
+						$memory = $mark[1]->totalMemory - $mark[0]->totalMemory;
+
+						$plg[($info[0]->type)][$plugin][$event]['time'] = $time;
+						$plg[($info[0]->type)][$plugin][$event]['memory'] = $memory;
+					}
 				}
 
-				if (!isset($plugin[$type][$keyname]['method'][$method]))
+				if (!isset($eve[($info[0]->type)][$event]))
 				{
-					$plugin[$type][$keyname]['method'][$method] = array(
-						'args' => array(),
-						'count' => 0
-					);
+					$event_count++;
+					$eve[($info[0]->type)][$event] = array();
 				}
 
-				/**
-				 * Plugin list
-				 */
-				$plugin[$type][$keyname]['method'][$method]['count']++;
-				$plugin[$type][$keyname]['method'][$method]['args'][] = is_array($row['args']) ? $row['args'] : array();
-
-				$plg[$keyname] = 1;
-				$evt[$method] = 1;
-
-				/**
-				 * Help to event list
-				 */
-				$event[$type][$method]['args'] = is_array($row['args']) ? $row['args'] : array();
-				$event[$type][$method]['class'][$keyname] = $plugin[$type][$keyname]['method'][$method]['count'];
+				$eve[($info[0]->type)][$event] = array_merge($eve[($info[0]->type)][$event], $info);
 			}
 		}
 
@@ -269,8 +253,8 @@ class PlgSystemRedDebug extends JPlugin
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_PLUGINS_LABEL'),
-				$plugin,
-				count($plg),
+				$plg,
+				count($plugins),
 				'plugin'
 			),
 			'plugin'
@@ -289,8 +273,8 @@ class PlgSystemRedDebug extends JPlugin
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_EVENT_LABEL'),
-				$event,
-				count($evt),
+				$eve,
+				$event_count,
 				'event'
 			),
 			'event'
