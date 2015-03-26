@@ -96,17 +96,19 @@ class RedDebugHelper
 	/**
 	 * findJoomlaClassFile
 	 *
-	 * @param   string  $class    ClassName
-	 * @param   mixed   $default  DefaultValue
+	 * @param   string  $class            ClassName
+	 * @param   mixed   $default          DefaultValue
+	 * @param   mixed   &$extension_name  Extension Name
 	 *
 	 * @return null|string
 	 */
-	public static function findJoomlaClassFile($class, $default = null)
+	public static function findJoomlaClassFile($class, $default = null, &$extension_name = false)
 	{
 		// Autoload class
 		if (class_exists($class, true))
 		{
 			$class = new ReflectionClass($class);
+			$extension_name = $class->getExtensionName();
 			$filename = $class->getFileName();
 
 			return empty($filename) ? $default : $filename;

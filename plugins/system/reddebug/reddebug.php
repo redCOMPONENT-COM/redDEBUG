@@ -370,8 +370,15 @@ class PlgSystemRedDebug extends JPlugin
 			}
 			else
 			{
-				$key = RedDebugHelper::findJoomlaClassFile($class, JText::_('PLG_SYSTEM_REDDEBUG_DEFAULT_PHP_CLASS_PATH'));
+				$key = RedDebugHelper::findJoomlaClassFile($class, null, $extension_name);
+
+				if ($key == null)
+				{
+					$key = JText::sprintf('PLG_SYSTEM_REDDEBUG_DEFAULT_PHP_CLASS_PATH', $extension_name);
+				}
+
 				$declared_tmp[$class] = $key;
+
 			}
 		}
 
