@@ -13,7 +13,7 @@ $info = array_filter(
 			'Your IP' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
 			'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null,
 			'PHP' => PHP_VERSION,
-			'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
+			'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null
 		),
 		(array) $this->data
 	)
@@ -28,5 +28,13 @@ $info = array_filter(
 				<td nowrap><?php echo htmlspecialchars($val, null, 'UTF-8') ?></td>
 			</tr>
 		<?php endforeach ?>
+		<tr>
+			<td>
+				copyright
+			</td>
+			<td>
+				Copyright (C) 2015 - 2015 <a href="redcomponent.com">redcomponent.com</a>. All rights reserved.
+			</td>
+		</tr>
 	</table>
 </div>
