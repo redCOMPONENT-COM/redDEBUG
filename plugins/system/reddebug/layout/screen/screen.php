@@ -5,6 +5,8 @@
  */
 defined('_JEXEC') or die;
 
+$trace = $exception->getTrace();
+
 $buffer = JFactory::getApplication()->getBody(false);
 ob_start();
 ?>
@@ -37,6 +39,47 @@ ob_start();
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-xs-2">
+				<a class="reddebug-action">
+					<h2><?php echo JText::_('PLG_SYSTEM_REDDEBUG_STACK_TRACE'); ?></h2>
+				</a>
+			</div>
+			<div class="col-xs-10 info">
+				<table class="table">
+					<tr>
+						<th>
+							<?php echo JText::_('PLG_SYSTEM_REDDEBUG_STACK_TRACE_NO'); ?>
+						</th>
+						<th>
+							<?php echo JText::_('PLG_SYSTEM_REDDEBUG_STACK_TRACE_FILE'); ?>
+						</th>
+						<th>
+							<?php echo JText::_('PLG_SYSTEM_REDDEBUG_STACK_TRACE_LINE'); ?>
+						</th>
+						<th>
+							<?php echo JText::_('PLG_SYSTEM_REDDEBUG_STACK_TRACE_FUNCTION'); ?>
+						</th>
+					</tr>
+				<?php foreach ($trace as $i => $t) : ?>
+					<tr>
+						<td>
+							<?php echo $i ?>
+						</td>
+						<td>
+							<?php echo $t['file'] ?>
+						</td>
+						<td>
+							<?php echo $t['line'] ?>
+						</td>
+						<td>
+							<?php echo $t['function'] ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>
 <?php
@@ -57,6 +100,7 @@ if (empty($buffer))
 HTML;
 	echo $buffer;
 }
+
 if (!stripos($buffer, 'jquery'))
 {
 	echo '<script type="text/javascript" src="' . JUri::root() . '/media/jui/js/jquery.min.js"></script>';
