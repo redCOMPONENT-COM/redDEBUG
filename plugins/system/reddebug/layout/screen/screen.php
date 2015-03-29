@@ -33,10 +33,18 @@ ob_start();
 				</a>
 			</div>
 			<div class="col-xs-10 info">
-				<h2><?php echo JText::sprintf('PLG_SYSTEM_REDDEBUG_FILE_PATH', $exception->getFile()); ?></h2>
-				<div class="redDebugCodeBox">
-					<?php echo RedDebugHelper::highlightFile($exception->getFile(), $exception->getLine(), 30); ?>
-				</div>
+				<table class="table table-bordered">
+					<tr>
+						<th><h2><?php echo JText::sprintf('PLG_SYSTEM_REDDEBUG_FILE_PATH', $exception->getFile(), $exception->getLine()); ?></h2></th>
+					</tr>
+					<tr>
+						<td>
+							<div class="redDebugCodeBox">
+								<?php echo RedDebugHelper::highlightFile($exception->getFile(), $exception->getLine(), 30); ?>
+							</div>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div class="row">
@@ -45,8 +53,8 @@ ob_start();
 					<h2><?php echo JText::_('PLG_SYSTEM_REDDEBUG_STACK_TRACE'); ?></h2>
 				</a>
 			</div>
-			<div class="col-xs-10 info">
-				<table class="table">
+			<div class="col-xs-10 info" style="display: none;">
+				<table class="table table-bordered">
 					<tr>
 						<th>
 							<?php echo JText::_('PLG_SYSTEM_REDDEBUG_STACK_TRACE_NO'); ?>
@@ -74,6 +82,13 @@ ob_start();
 						</td>
 						<td>
 							<?php echo $t['function'] ?>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<div class="redDebugCodeBox">
+								<?php echo RedDebugHelper::highlightFile($t['file'], $t['line'], 10); ?>
+							</div>
 						</td>
 					</tr>
 				<?php endforeach; ?>
