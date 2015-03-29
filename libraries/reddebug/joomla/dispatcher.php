@@ -3,6 +3,7 @@
  * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
+defined('_JEXEC') or die;
 
 /**
  * Class RedRedubDispatcher
@@ -72,7 +73,15 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	static public function debugger($plugin = null, $event = null, $args = null)
 	{
 		$jProfile = new JProfiler;
-		$class = get_class($plugin);
+
+		if (is_object($plugin))
+		{
+			$class = get_class($plugin);
+		}
+		elseif (is_array($plugin))
+		{
+			$class = get_class($plugin['handler']);
+		}
 
 		if (isset(self::$logger[$class][$event]))
 		{

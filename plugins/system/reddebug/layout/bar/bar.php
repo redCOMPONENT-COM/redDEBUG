@@ -1,4 +1,12 @@
-<?php ob_start(); ?>
+<?php
+/**
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
+ */
+defined('_JEXEC') or die;
+
+ob_start();
+?>
 <style id="redDebug-style" class="redDebug">
 	<?php echo file_get_contents(__DIR__ . '/../bootstrap.css'); ?>
 	<?php echo file_get_contents(__DIR__ . '/bar.css'); ?>

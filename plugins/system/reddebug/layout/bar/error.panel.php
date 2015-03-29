@@ -1,4 +1,13 @@
-<h1>Errors</h1>
+<?php
+/**
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
+ */
+defined('_JEXEC') or die;
+?>
+<h1>
+	Errors
+</h1>
 <div class="reddebug-inner">
 	<table class="table">
 	<?php foreach ($data as $item => $count): ?>
