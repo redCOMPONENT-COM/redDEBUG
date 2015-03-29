@@ -69,21 +69,26 @@ ob_start();
 							<?php echo JText::_('PLG_SYSTEM_REDDEBUG_STACK_TRACE_FUNCTION'); ?>
 						</th>
 					</tr>
-				<?php foreach ($trace as $i => $t) : ?>
+				<?php
+					foreach ($trace as $i => $t):
+				?>
 					<tr>
 						<td>
-							<?php echo $i ?>
+							<?php echo $i; ?>
 						</td>
 						<td>
-							<?php echo $t['file'] ?>
+							<?php echo isset($t['file']) ? $t['file'] : JText::_('PLG_SYSTEM_REDDEBUG_STACK_UNDEFINED'); ?>
 						</td>
 						<td>
-							<?php echo $t['line'] ?>
+							<?php echo isset($t['line']) ? $t['line'] : JText::_('PLG_SYSTEM_REDDEBUG_STACK_UNDEFINED'); ?>
 						</td>
 						<td>
-							<?php echo $t['function'] ?>
+							<?php echo isset($t['function']) ? $t['function'] : JText::_('PLG_SYSTEM_REDDEBUG_STACK_UNDEFINED'); ?>
 						</td>
 					</tr>
+					<?php
+						if ($t['file'] && is_file($t['file'])):
+					?>
 					<tr>
 						<td colspan="4">
 							<div class="redDebugCodeBox">
@@ -91,7 +96,12 @@ ob_start();
 							</div>
 						</td>
 					</tr>
-				<?php endforeach; ?>
+					<?php
+						endif;
+					?>
+				<?php
+					endforeach;
+				?>
 				</table>
 			</div>
 		</div>

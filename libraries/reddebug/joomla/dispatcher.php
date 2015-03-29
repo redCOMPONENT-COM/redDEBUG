@@ -103,20 +103,29 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	 */
 	static public function debugger($plugin = null, $event = null, $args = null)
 	{
-		$jprofile = new JProfiler;
-		$class = get_class($plugin);
+		$jProfile = new JProfiler;
+
+		if (is_object($plugin))
+		{
+			$class = get_class($plugin);
+		}
+		elseif (is_array($plugin))
+		{
+			$class = get_class($plugin['handler']);
+		}
 
 		if (isset(self::$logger[$class][$event]))
 		{
 			self::$logger[$class][$event] = array();
 		}
 
-		$result  = self::$logger[$class][$event][] = (object) array(
+		$isJObject  = $plugin instanceof JPlugin;
+		$result     = self::$logger[$class][$event][] = (object) array(
 			'plugin'	=> $class,
 			'args'		=> $args,
 			'value'		=> null,
-			'profile'	=> $jprofile,
-			'type'		=> $plugin->get('_type', null)
+			'profile'	=> $jProfile,
+			'type'		=> $isJObject ? $plugin->get('_type', null) : null
 		);
 
 		return $result;
