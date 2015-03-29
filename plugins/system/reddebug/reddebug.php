@@ -315,10 +315,14 @@ class PlgSystemRedDebug extends JPlugin
 			'config'
 		);
 
+		$jUser  = JFactory::getUser();
+		$user   = get_object_vars($jUser);
+		unset($user['password'], $user['password_clear']);
+
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_USER_LABEL'),
-				JFactory::getUser(),
+				$user,
 				null,
 				'default'
 			),
