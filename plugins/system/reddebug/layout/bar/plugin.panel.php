@@ -1,4 +1,14 @@
-<h1>Plugin</h1>
+<?php
+/**
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
+ */
+defined('_JEXEC') or die;
+?>
+
+<h1>
+	Plugin
+</h1>
 <table class="table">
 	<?php foreach($data AS $type => $plugins): ?>
 		<tr>
