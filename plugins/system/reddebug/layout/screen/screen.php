@@ -125,21 +125,37 @@ if (empty($buffer))
 HTML;
 	echo $buffer;
 }
-
-if (!stripos($buffer, 'jquery'))
-{
-	echo '<script type="text/javascript" src="' . JUri::root() . '/media/jui/js/jquery.min.js"></script>';
-	$this->jQuery = true;
-}
 ?>
 <script type="text/javascript">
-	jQuery('document').ready(function(){
-		jQuery('body').html(<?php echo json_encode($output);?>);
-		jQuery('body')[0].className= 'redDebug';
-		jQuery('body').attr('id', 'redDebugBody');
+	var jQueryLoaded = jQueryLoaded ? jQueryLoaded : true;
+	var RedDEBUG_SCREEN = function($){
+		jQuery('document').ready(function(){
+			jQuery('body').html(<?php echo json_encode($output);?>);
+			jQuery('body')[0].className= 'redDebug';
+			jQuery('body').attr('id', 'redDebugBody');
 
-		jQuery('#redContent .reddebug-action').click(function(){
-			jQuery(this).parents('.row').find('>.info').toggle();
+			jQuery('#redContent .reddebug-action').click(function(){
+				jQuery(this).parents('.row').find('>.info').toggle();
+			});
 		});
-	});
+	}
+
+	//in debug mode we can check if jQuery is loaded
+	if(console){ console.log('window.jQuery loaded: ' + (window.jQuery ? 1 : 0)); }
+
+	if(!window.jQuery)
+	{
+		jQueryLoaded = false;
+		document.write('<script type="text/javascript" src="<?php echo JUri::root();?>/media/jui/js/jquery.min.js"><\/script>');
+	}
+
+	var intervalRedDebugScreen = window.setInterval(function(){
+		if(console){ console.log('window.jQuery: ' + (window.jQuery ? 1 : 0)); }
+		if (window.jQuery)
+		{
+			RedDEBUG_SCREEN(window.jQuery);
+			clearInterval(intervalRedDebugScreen);
+			jQueryLoaded = true;
+		}
+	},10);
 </script>

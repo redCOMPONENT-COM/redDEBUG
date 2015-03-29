@@ -72,33 +72,46 @@ ob_start();
 </div>
 <?php
 $output = ob_get_clean();
-$buffer = JFactory::getApplication()->getBody(false);
-
-// So we get jQuery
-if (!stripos($buffer, 'jquery') && RedDebugDebugger::getInstance()->getRedScreen()->jQuery == false)
-{
-	echo '<script type="text/javascript" src="' . JUri::root() . '/media/jui/js/jquery.min.js"></script>';
-}
-
 /**
  * Add data to javascript
  */
 ?>
 <script type="text/javascript">
-	(function() {
-		window.addEventListener('load', function() {
-			var debug = document.body.appendChild(document.createElement('div'));
-			debug.id = 'redDebug';
-			debug.className = 'redDebug';
-			debug.innerHTML = <?php echo json_encode(RedDebugHelper::fixEncoding($output)) ?>;
 
-			for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) {
-				(window.execScript || function(data) {
-					window['eval'].call(window, data);
-				})(scripts[i].innerHTML);
-			}
+	var jQueryLoaded = jQueryLoaded ? jQueryLoaded : true;
 
-			debug.style.display = 'block';
-		});
-	})();
+	var RedDEBUG_BAR = function($){
+		var debug = document.body.appendChild(document.createElement('div'));
+		debug.id = 'redDebug';
+		debug.className = 'redDebug';
+		debug.innerHTML = <?php echo json_encode(RedDebugHelper::fixEncoding($output)) ?>;
+
+		for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) {
+			(window.execScript || function(data) {
+				window['eval'].call(window, data);
+			})(scripts[i].innerHTML);
+		}
+
+		debug.style.display = 'block';
+	}
+
+	//in debug mode we can check if jQuery is loaded
+	if(console){ console.log('window.jQuery loaded: ' + (window.jQuery ? 1 : 0)); }
+
+	if(!window.jQuery)
+	{
+		jQueryLoaded = false;
+		document.write('<script type="text/javascript" src="<?php echo JUri::root();?>/media/jui/js/jquery.min.js"><\/script>');
+	}
+
+	var intervalRedDebugBar = window.setInterval(function(){
+		if(console){ console.log('window.jQuery: ' + (window.jQuery ? 1 : 0)); }
+		if (window.jQuery)
+		{
+			RedDEBUG_BAR(window.jQuery);
+			clearInterval(intervalRedDebugBar);
+			jQueryLoaded = true;
+		}
+	},10);
+
 </script>
