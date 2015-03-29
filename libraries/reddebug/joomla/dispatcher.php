@@ -61,37 +61,6 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	}
 
 	/**
-	 * getInfo
-	 *
-	 * @param   string  $event  Joomla Event Info (same version joomla using)
-	 *
-	 * @return array
-	 */
-	public function getInfo($event)
-	{
-		$event = strtolower($event);
-
-		$names = array();
-		$class = array();
-		$type = 'none';
-
-		if (isset($this->_methods[$event]))
-		{
-			foreach ($this->_methods[$event] AS $key)
-			{
-				if (is_object($this->_observers[$key]))
-				{
-					$names[] = $this->_observers[$key]->get('_name');
-					$class[] = get_class($this->_observers[$key]);
-					$type = $this->_observers[$key]->get('_type');
-				}
-			}
-		}
-
-		return array($type, array_combine($class, $names));
-	}
-
-	/**
 	 * debugger
 	 *
 	 * @param   null  $plugin  Plugin
@@ -102,7 +71,7 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	 */
 	static public function debugger($plugin = null, $event = null, $args = null)
 	{
-		$jprofile = new JProfiler;
+		$jProfile = new JProfiler;
 		$class = get_class($plugin);
 
 		if (isset(self::$logger[$class][$event]))
@@ -110,12 +79,13 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 			self::$logger[$class][$event] = array();
 		}
 
-		$result  = self::$logger[$class][$event][] = (object) array(
+		$isJObject  = $plugin instanceof JPlugin;
+		$result     = self::$logger[$class][$event][] = (object) array(
 			'plugin'	=> $class,
 			'args'		=> $args,
 			'value'		=> null,
-			'profile'	=> $jprofile,
-			'type'		=> $plugin->get('_type', null)
+			'profile'	=> $jProfile,
+			'type'		=> $isJObject ? $plugin->get('_type', null) : null
 		);
 
 		return $result;
