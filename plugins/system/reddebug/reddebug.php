@@ -355,7 +355,7 @@ class PlgSystemRedDebug extends JPlugin
 				JText::_('PLG_SYSTEM_REDDEBUG_FILES_LABEL'),
 				$includes,
 				count($includes),
-				'default'
+				'includes_files'
 			),
 			'includes'
 		);
