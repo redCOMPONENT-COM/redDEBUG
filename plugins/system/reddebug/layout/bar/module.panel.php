@@ -42,7 +42,22 @@ defined('_JEXEC') or die;
 					<textarea style="width: 200px; resize: none;"><?php echo htmlentities($row->content); ?></textarea>
 				</td>
 				<td>
-					<textarea style="width: 200px; resize: none;"><?php print_r(json_decode($row->params)); ?></textarea>
+					<?php
+					if(count($row->params) > 0)
+					{
+						echo '<table class="table table-bordered table-params">';
+
+						$data = RedDebugHelper::MultiArrayToSingleArray(json_decode($row->params), '$params');
+
+						foreach ($data AS $key => $val)
+						{
+							echo '<tr><td>' . $key .'</td><td>' . htmlentities($val) . '</td></tr>';
+						}
+
+						echo '</table>';
+					}
+
+					?>
 				</td>
 			</tr>
 		<?php endforeach; ?>

@@ -44,10 +44,34 @@ defined('_JEXEC') or die;
 										<?php echo $row->plugin; ?>
 									</td>
 									<td>
-										<textarea style="height: 80px; width: 100%; resize: none;"><?php print_r($row->args); ?></textarea>
+										<?php
+										if (count($row->args) > 0):
+											$data = RedDebugHelper::MultiArrayToSingleArray($row->args, '$args');
+										?>
+											<table class="table table-bordered table-args">
+											<?php foreach ($data AS $key => $val): if(empty($val)): continue; endif; ?>
+												<tr>
+													<td><?php echo $key; ?></td>
+													<td title="<?php echo htmlentities($val);?>"><?php echo htmlentities(substr($val, 0, 50)); ?></td>
+												</tr>
+											<?php endforeach; ?>
+											</table>
+										<?php endif; ?>
 									</td>
 									<td>
-										<?php echo $row->value; ?>
+										<?php
+										if (count($row->value) > 0):
+											$data = RedDebugHelper::MultiArrayToSingleArray($row->value, 'Array');
+											?>
+											<table class="table table-bordered table-args">
+												<?php foreach ($data AS $key => $val): if(empty($val)): continue; endif; ?>
+													<tr>
+														<td><?php echo $key; ?></td>
+														<td title="<?php echo htmlentities($val);?>"><?php echo htmlentities(substr($val, 0, 50)); ?></td>
+													</tr>
+												<?php endforeach; ?>
+											</table>
+										<?php endif; ?>
 									</td>
 									<td>
 										<?php echo number_format(($marks[1]->totalTime - $marks[0]->totalTime) * 1000, 1, '.', ''); ?>
