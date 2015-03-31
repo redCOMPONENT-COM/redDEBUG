@@ -4,7 +4,7 @@
 	<author>redCOMPONENT</author>
  	<creationDate>March 2015</creationDate>
  	<packagename>redDEBUG</packagename>
- 	<version>1.1.0</version>
+ 	<version>1.0.0</version>
  	<description>RedDebug Beta</description>
 	<copyright>Copyright (C) 2015 - 2015 redCOMPONENT.com. All rights reserved.</copyright>
  	<files folder="packages">
