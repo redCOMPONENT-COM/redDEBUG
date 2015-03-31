@@ -169,6 +169,34 @@ body#redDebug {
   width: 90%;
   vertical-align: middle;
 }
+#redDebug #redDebug-panel .modal#redDebug-panel-event .table td,
+#redDebug #redDebug-panel .modal#redDebug-panel-modules .table td,
+#redDebug #redDebug-panel .modal#redDebug-panel-plugin .table td {
+  vertical-align: middle;
+}
+#redDebug #redDebug-panel .modal#redDebug-panel-event .table-params,
+#redDebug #redDebug-panel .modal#redDebug-panel-modules .table-params,
+#redDebug #redDebug-panel .modal#redDebug-panel-plugin .table-params,
+#redDebug #redDebug-panel .modal#redDebug-panel-event .table-args,
+#redDebug #redDebug-panel .modal#redDebug-panel-modules .table-args,
+#redDebug #redDebug-panel .modal#redDebug-panel-plugin .table-args {
+  background-color: #FFFFFF;
+  font-size: 10px;
+}
+#redDebug #redDebug-panel .modal#redDebug-panel-event .table-params td,
+#redDebug #redDebug-panel .modal#redDebug-panel-modules .table-params td,
+#redDebug #redDebug-panel .modal#redDebug-panel-plugin .table-params td,
+#redDebug #redDebug-panel .modal#redDebug-panel-event .table-args td,
+#redDebug #redDebug-panel .modal#redDebug-panel-modules .table-args td,
+#redDebug #redDebug-panel .modal#redDebug-panel-plugin .table-args td {
+  padding: 2px;
+}
+#redDebug #redDebug-panel .modal#redDebug-panel-event .table-args td,
+#redDebug #redDebug-panel .modal#redDebug-panel-modules .table-args td,
+#redDebug #redDebug-panel .modal#redDebug-panel-plugin .table-args td {
+  overflow: hidden;
+  height: 10px;
+}
 #redDebug #redDebug-panel .modal#redDebug-panel-info {
   width: 401px;
   max-width: 401px;
