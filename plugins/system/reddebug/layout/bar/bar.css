@@ -160,11 +160,13 @@ body#redDebug {
   padding: 4px;
 }
 #redDebug #redDebug-panel .modal .modal-body .table.default-panel td:first-child {
+  width: auto;
+  padding-left: 10px;
   font-weight: bold;
   vertical-align: middle;
 }
 #redDebug #redDebug-panel .modal .modal-body .table.default-panel td:last-child {
-  width: 99%;
+  width: 90%;
   vertical-align: middle;
 }
 #redDebug #redDebug-panel .modal#redDebug-panel-info {

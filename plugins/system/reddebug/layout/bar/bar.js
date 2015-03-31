@@ -31,9 +31,5 @@ jQuery(document).ready(function(){
                 jQuery('.modal-backdrop').remove();
             });
         }
-
-
-
     });
-
 });

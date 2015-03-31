@@ -262,4 +262,68 @@ class RedDebugHelper
 
 		return ($before . '' . $code);
 	}
+
+	/**
+	 * removeRecursion
+	 *
+	 * @param       $object
+	 * @param array $stack
+	 *
+	 * @return string
+	 */
+	public static function removeRecursion(&$object, &$stack = array()) {
+		if ((is_object($object) || is_array($object)) && $object)
+		{
+			if (!in_array($object, $stack, true))
+			{
+				$stack[] = $object;
+
+				foreach ($object as &$subobject)
+				{
+					self::removeRecursion($subobject, $stack);
+				}
+			}
+			else
+			{
+				$object = gettype($object) == 'object' ? '(Recursion)' . " " . gettype($object) : '*Recursion*';
+			}
+		}
+
+		return $object;
+	}
+
+	/**
+	 * MultiArrayToSingleArray
+	 *
+	 * @param   array|object  $array       Array / Object
+	 * @param   string        $namespace   namespace
+	 * @param   array         &$new_array  New Output array
+	 *
+	 * @return array
+	 */
+	static public function MultiArrayToSingleArray($array, $namespace = '$this', &$new_array=array())
+	{
+		$c = "%s->%s";
+
+		if (is_array($array))
+		{
+			$c = "%s[%s]";
+		}
+
+		foreach ($array AS $key => $val)
+		{
+			$new_key = sprintf($c, $namespace, $key);
+
+			if (is_array($val) || is_object($val))
+			{
+				self::MultiArrayToSingleArray($val, $new_key, $new_array);
+			}
+			else
+			{
+				$new_array[$new_key] = $val;
+			}
+		}
+
+		return $new_array;
+	}
 }

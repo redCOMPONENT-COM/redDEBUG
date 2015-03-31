@@ -58,7 +58,7 @@ class RedDebugJoomlaModule
 		}
 		catch (Exception $e)
 		{
-			$update_time = filemtime(JPATH_LIBRARIES . '/cms/module/helper.php');
+			$update_time = filemtime($filename);
 			$code_file = JPATH_CACHE . '/module_helper.php';
 			$code_update = file_exists($code_file) ? filemtime($code_file) : 0;
 
