@@ -66,6 +66,8 @@ class PlgSystemRedDebug extends JPlugin
 		// Check debug mode for this page
 		self::$checkIp = RedDebugHelper::checkDebugMode((array) $this->params->get('ip', array()));
 
+		RedDebugJoomlaView::getInstance();
+
 		/**
 		 * If admin mode is off
 		 */
@@ -449,6 +451,12 @@ class PlgSystemRedDebug extends JPlugin
 			),
 			'php_ini'
 		);
+
+		$data = RedDebugJoomlaView::getInstance()->getView();
+		unset($data->document);
+		print '<pre>';
+		print_r($data);
+		print '</pre>';
 
 		return;
 	}
