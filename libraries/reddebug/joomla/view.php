@@ -71,7 +71,7 @@ class RedDebugJoomlaView extends JObject
 	public function display($tpl = null)
 	{
 		$this->xDisplay($tpl);
-		self::$view = json_decode(json_encode(get_object_vars($this)));
+		self::$view = get_object_vars($this);
 	}
 
 	/**

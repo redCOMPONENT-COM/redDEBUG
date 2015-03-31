@@ -283,6 +283,7 @@ class PlgSystemRedDebug extends JPlugin
 		);
 
 		$request = array_merge(array('template' => JFactory::getApplication()->getTemplate()), $_REQUEST);
+		$request = RedDebugHelper::MultiArrayToSingleArray($request, '$_REQUEST');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_REQUEST_LABEL'),
@@ -319,6 +320,8 @@ class PlgSystemRedDebug extends JPlugin
 
 		$jUser  = JFactory::getUser();
 		$user   = get_object_vars($jUser);
+		$user	= RedDebugHelper::MultiArrayToSingleArray((object) $user, 'JUser');
+
 		unset($user['password'], $user['password_clear']);
 
 		$debug->getBar()->addPanel(
@@ -411,22 +414,24 @@ class PlgSystemRedDebug extends JPlugin
 			'constants'
 		);
 
+		$server = RedDebugHelper::MultiArrayToSingleArray($_SERVER, '$_SERVER');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_SERVER_LABEL'),
-				$_SERVER,
-				count($_SERVER),
+				$server,
+				count($server),
 				'default'
 			),
 			'server'
 		);
 
+		$session_vars = RedDebugHelper::MultiArrayToSingleArray($_SESSION, '$_SESSION');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_SESSION_LABEL'),
-				$_SESSION,
-				count($_SESSION),
-				'ini'
+				$session_vars,
+				count($session_vars),
+				'default'
 			),
 			'session'
 		);
@@ -434,7 +439,7 @@ class PlgSystemRedDebug extends JPlugin
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_COOKIE_LABEL'),
-				$_COOKIE,
+				RedDebugHelper::MultiArrayToSingleArray($_COOKIE, '$_COOKIE'),
 				count($_COOKIE),
 				'default'
 			),
@@ -442,21 +447,37 @@ class PlgSystemRedDebug extends JPlugin
 		);
 
 		$configs = ini_get_all();
+		$configs = RedDebugHelper::MultiArrayToSingleArray($configs, 'INI');
+
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_INI_LABEL'),
 				$configs,
 				count($configs),
-				'ini'
+				'default'
 			),
 			'php_ini'
 		);
 
-		$data = RedDebugJoomlaView::getInstance()->getView();
+		/**
+		 * If you using default joomla system and display as default "parent::display" it will working
+		 */
+		$data = (object) RedDebugJoomlaView::getInstance()->getView();
 		unset($data->document);
-		print '<pre>';
-		print_r($data);
-		print '</pre>';
+		$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($data));
+
+		if (count($data) > 0)
+		{
+			$debug->getBar()->addPanel(
+				new RedDebugPanelList(
+					JText::_('PLG_SYSTEM_REDDEBUG_COMPONENT_LABEL'),
+					$data,
+					count($data),
+					'default'
+				),
+				'component'
+			);
+		}
 
 		return;
 	}
