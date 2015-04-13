@@ -66,7 +66,10 @@ class PlgSystemRedDebug extends JPlugin
 		// Check debug mode for this page
 		self::$checkIp = RedDebugHelper::checkDebugMode((array) $this->params->get('ip', array()));
 
-		RedDebugJoomlaView::getInstance();
+		if (version_compare(JVERSION, '3.4', '<='))
+		{
+			RedDebugJoomlaView::getInstance();
+		}
 
 		/**
 		 * If admin mode is off
@@ -462,9 +465,18 @@ class PlgSystemRedDebug extends JPlugin
 		/**
 		 * If you using default joomla system and display as default "parent::display" it will working
 		 */
-		$data = (object) RedDebugJoomlaView::getInstance()->getView();
-		unset($data->document);
-		$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($data));
+		if (version_compare(JVERSION, '3.4', '<='))
+		{
+			$data = (object) RedDebugJoomlaView::getInstance()->getView();
+			unset($data->document);
+			$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($data));
+		}
+		else
+		{
+			$class = new ReflectionClass('JControllerLegacy');
+			$propsStatic = $class->getStaticProperties();
+			$data = RedDebugHelper::MultiArrayToSingleArray($propsStatic);
+		}
 
 		if (count($data) > 0)
 		{
@@ -478,6 +490,7 @@ class PlgSystemRedDebug extends JPlugin
 				'component'
 			);
 		}
+
 
 		return;
 	}
