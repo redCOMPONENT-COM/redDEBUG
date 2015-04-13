@@ -74,3 +74,6 @@
   background-color: #c3c1b8;
   margin-right: 20px;
 }
+.redDebug #redscreen a.reddebug-action {
+  cursor: pointer;
+}
