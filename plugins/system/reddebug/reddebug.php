@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2014 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 defined('_JEXEC') or die;
+define('REDDEBUG', 0);
 
 JLoader::import('reddebug.library');
 
@@ -16,6 +17,11 @@ JLoader::import('reddebug.library');
 class PlgSystemRedDebug extends JPlugin
 {
 	/**
+	 * @var bool
+	 */
+	protected $autoloadLanguage = true;
+
+	/**
 	 * @var array
 	 */
 	public static $logPlugin;
@@ -26,45 +32,132 @@ class PlgSystemRedDebug extends JPlugin
 	public static $afterRespond = false;
 
 	/**
+	 * @var bool
+	 */
+	protected static $reset = false;
+
+	/**
+	 * @var string
+	 */
+	protected static $ModuleHelperName = 'default';
+
+	/**
+	 * @var bool
+	 */
+	protected static $checkIp = false;
+
+	/**
+	 * @var bool
+	 */
+	protected static $in_admin = true;
+
+	/**
+	 * __construct
+	 *
+	 * @param   object  &$subject  Subject
+	 * @param   array   $config    Config
+	 *
+	 * @throws Exception
+	 */
+	public function __construct(&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+
+		// Check debug mode for this page
+		self::$checkIp = RedDebugHelper::checkDebugMode((array) $this->params->get('ip', array()));
+
+		if (version_compare(JVERSION, '3.4', '<='))
+		{
+			RedDebugJoomlaView::getInstance();
+		}
+
+		/**
+		 * If admin mode is off
+		 */
+		if (!$this->params->get('in_admin', false))
+		{
+			self::$in_admin = JFactory::getApplication()->isAdmin() != 1;
+		}
+
+		if (!self::$checkIp || !self::$in_admin)
+		{
+			return false;
+		}
+
+		$app        = JFactory::getApplication();
+		$session    = JFactory::getSession();
+		$classes    = $session->get('joomlaClasses', array(), 'redDebug');
+		$dispatcher = RedDebugJoomlaDispatcher::getInstance();
+
+		static::$reset = $app->input->get('reset_class_files', !isset($classes['JModuleHelper']));
+
+		if (isset($classes['JModuleHelper']))
+		{
+			$location = dirname($classes['JModuleHelper']);
+			$location = explode(DIRECTORY_SEPARATOR, $location);
+			$location = end($location);
+
+			self::$ModuleHelperName = ($location == 'module' ? 'Default' : $location);
+		}
+
+
+
+		if (static::$reset != 1)
+		{
+			RedDebugJoomlaModule::changeJoomlaCode($classes['JModuleHelper']);
+		}
+	}
+
+	/**
 	 * onAfterInitialise
 	 *
 	 * @return void
 	 */
 	public function onAfterInitialise()
 	{
-		$jVersion = new JVersion;
-		$version = (int) $jVersion->RELEASE;
-
-		RedDebugJoomlaModule::changeJoomlaCode();
-
-		if ($version == 2)
+		if (!self::$checkIp || !self::$in_admin)
 		{
-			/**
-			 * in old joomla we not have this event.
-			 * but maybe we need to move change this onAfterRespond
-			 * so we get last events from plugin
-			 */
-			register_shutdown_function(
-				array(
-					$this,
-					'onAfterRespond'
-				)
-			);
+			return false;
 		}
+
+		$jVersion   = new JVersion;
+		$version    = (int) $jVersion->RELEASE;
+
+		/**
+		 * So we in debug mode can work on offline page.
+		 * and can test no login pages..
+		 *
+		 * @todo maybe we only have this function in pro version
+		 */
+		if ($this->params->get('offline', false))
+		{
+			JFactory::getConfig()->set('offline', 0);
+		}
+
+		/**
+		 * So we in debug mode easy can use not sef url in debug mode
+		 *
+		 * @todo maybe we only have this function in pro version
+		 */
+		if ($this->params->get('sef', false))
+		{
+			JFactory::getConfig()->set('sef', 0);
+		}
+
+		/**
+		 * why. so we before we add debug bar and panel
+		 * run this.
+		 */
+		register_shutdown_function(
+			array(
+				$this,
+				'onAfterJoomla'
+			)
+		);
 
 		$debugger = RedDebugDebugger::getInstance();
 		$debugger->enable();
 		$debugger->directory = __DIR__ . DIRECTORY_SEPARATOR . 'layout';
-
-		$dispatcher = RedDebugJoomlaDispatcher::getInstance();
-		list($type, $names) = $this->_subject->getInfo(__FUNCTION__);
-
-		self::$logPlugin[] = array(
-			'type' => $type,
-			'method' => __FUNCTION__,
-			'names' => $names,
-			'args' => func_get_args()
-		);
 
 		/**
 		 * register_shutdown_function
@@ -73,12 +166,42 @@ class PlgSystemRedDebug extends JPlugin
 	}
 
 	/**
-	 * onAfterRespond
+	 * onAfterRender
 	 *
 	 * @return void
 	 */
-	public function onAfterRespond()
+	public function onAfterRender()
 	{
+		if (!self::$checkIp || !self::$in_admin)
+		{
+			return false;
+		}
+
+		$app            = JFactory::getApplication();
+		$session        = JFactory::getSession();
+		$classes        = $session->get('joomlaClasses', array(), 'redDebug');
+
+		// So we can se class we need to load
+		if (count($classes) == 0 || static::$reset)
+		{
+			$classes['JModuleHelper'] = RedDebugHelper::findJoomlaClassFile('JModuleHelper', null);
+			$session->set('joomlaClasses', $classes, 'redDebug');
+			$app->redirect(isset($_SERVER['REQUEST_URI']) ? strtr($_SERVER['REQUEST_URI'], array('reset_class_files' => 'x')) : JUri::root());
+		}
+	}
+
+	/**
+	 * onAfterJoomla
+	 *
+	 * @return void
+	 */
+	public function onAfterJoomla()
+	{
+		if (!self::$checkIp || !self::$in_admin)
+		{
+			return false;
+		}
+
 		if (static::$afterRespond)
 		{
 			return;
@@ -86,61 +209,57 @@ class PlgSystemRedDebug extends JPlugin
 
 		static::$afterRespond = true;
 
-		$app = JFactory::getApplication();
 		$methods = RedDebugJoomlaModule::getLog();
 
-		$plugin = array();
-		$event = array();
+		$app            = JFactory::getApplication();
+		$session        = JFactory::getSession();
+
+		$classes        = $session->get('joomlaClasses', array(), 'redDebug');
+
+		$plugins = RedDebugJoomlaDispatcher::$logger;
+		$event_count = 0;
 		$plg = array();
 		$evt = array();
 
-		foreach (self::$logPlugin AS $row)
+		foreach ($plugins AS $plugin => $events)
 		{
-			$type = $row['type'];
-			$method = $row['method'];
-
-			foreach ($row['names'] AS $keyname => $name)
+			foreach ($events AS $event => $info)
 			{
-				if (!isset($plugin[$type][$keyname]))
+				$plg[($info[0]->type)][$plugin][$event] = array();
+				$plg[($info[0]->type)][$plugin][$event]['count']	= count($info);
+				$plg[($info[0]->type)][$plugin][$event]['time']		= 0;
+				$plg[($info[0]->type)][$plugin][$event]['memory']	= 0;
+
+				foreach ($info AS $key => $row)
 				{
-					$plugin[$type][$keyname] = array(
-						'name' => $name,
-						'method' => array()
-					);
+					$mark = $row->profile->getMarks();
+
+					if (count($mark) == 2)
+					{
+						$time = $mark[1]->totalTime - $mark[0]->totalTime;
+						$memory = $mark[1]->totalMemory - $mark[0]->totalMemory;
+
+						$plg[($info[0]->type)][$plugin][$event]['time'] = $time;
+						$plg[($info[0]->type)][$plugin][$event]['memory'] = $memory;
+					}
 				}
 
-				if (!isset($plugin[$type][$keyname]['method'][$method]))
+				if (!isset($eve[($info[0]->type)][$event]))
 				{
-					$plugin[$type][$keyname]['method'][$method] = array(
-						'args' => array(),
-						'count' => 0
-					);
+					$event_count++;
+					$eve[($info[0]->type)][$event] = array();
 				}
 
-				/**
-				 * Plugin list
-				 */
-				$plugin[$type][$keyname]['method'][$method]['count']++;
-				$plugin[$type][$keyname]['method'][$method]['args'][] = is_array($row['args']) ? $row['args'] : array();
-
-				$plg[$keyname] = 1;
-				$evt[$method] = 1;
-
-				/**
-				 * Help to event list
-				 */
-				$event[$type][$method]['args'] = is_array($row['args']) ? $row['args'] : array();
-				$event[$type][$method]['class'][$keyname] = $plugin[$type][$keyname]['method'][$method]['count'];
-
+				$eve[($info[0]->type)][$event] = array_merge($eve[($info[0]->type)][$event], $info);
 			}
 		}
 
 		$debug = RedDebugDebugger::getInstance();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Plugin',
-				$plugin,
-				count($plg),
+				JText::_('PLG_SYSTEM_REDDEBUG_PLUGINS_LABEL'),
+				$plg,
+				count($plugins),
 				'plugin'
 			),
 			'plugin'
@@ -148,7 +267,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Modules',
+				JText::_('PLG_SYSTEM_REDDEBUG_MODULES_LABEL'),
 				$methods,
 				count($methods),
 				'module'
@@ -158,18 +277,19 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Events',
-				$event,
-				count($evt),
+				JText::_('PLG_SYSTEM_REDDEBUG_EVENT_LABEL'),
+				$eve,
+				$event_count,
 				'event'
 			),
 			'event'
 		);
 
 		$request = array_merge(array('template' => JFactory::getApplication()->getTemplate()), $_REQUEST);
+		$request = RedDebugHelper::MultiArrayToSingleArray($request, '$_REQUEST');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Request',
+				JText::_('PLG_SYSTEM_REDDEBUG_REQUEST_LABEL'),
 				$request,
 				count($request),
 				'default'
@@ -180,7 +300,7 @@ class PlgSystemRedDebug extends JPlugin
 		$parms = json_decode(JFactory::getApplication()->getTemplate(true)->params);
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Template parameters',
+				JText::_('PLG_SYSTEM_REDDEBUG_TEMPLATE_LABEL'),
 				$parms,
 				null,
 				'default'
@@ -193,7 +313,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Config',
+				JText::_('PLG_SYSTEM_REDDEBUG_CONFIG_LABEL'),
 				$config,
 				null,
 				'default'
@@ -201,10 +321,16 @@ class PlgSystemRedDebug extends JPlugin
 			'config'
 		);
 
+		$jUser  = JFactory::getUser();
+		$user   = get_object_vars($jUser);
+		$user	= RedDebugHelper::MultiArrayToSingleArray((object) $user, 'JUser');
+
+		unset($user['password'], $user['password_clear']);
+
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'User',
-				JFactory::getUser(),
+				JText::_('PLG_SYSTEM_REDDEBUG_USER_LABEL'),
+				$user,
 				null,
 				'default'
 			),
@@ -213,7 +339,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Info',
+				JText::_('PLG_SYSTEM_REDDEBUG_JOOMLA_VERSION_LABEL'),
 				(array) new JVersion,
 				null,
 				'default'
@@ -223,7 +349,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'PHP:',
+				'PHP',
 				null,
 				null,
 				null
@@ -234,18 +360,45 @@ class PlgSystemRedDebug extends JPlugin
 		$includes = get_included_files();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'files:',
+				JText::_('PLG_SYSTEM_REDDEBUG_FILES_LABEL'),
 				$includes,
 				count($includes),
-				'default'
+				'includes_files'
 			),
 			'includes'
 		);
 
+		/**
+		 * Get Includes class
+		 */
 		$declared_classes = get_declared_classes();
+		$declared_tmp = array();
+
+		foreach ($declared_classes AS $key => $class)
+		{
+			if (isset($classes[$class]))
+			{
+				$declared_tmp[$class] = $classes[$class];
+			}
+			else
+			{
+				$key = RedDebugHelper::findJoomlaClassFile($class, null, $extension_name);
+
+				if ($key == null)
+				{
+					$key = JText::sprintf('PLG_SYSTEM_REDDEBUG_DEFAULT_PHP_CLASS_PATH', $extension_name);
+				}
+
+				$declared_tmp[$class] = $key;
+
+			}
+		}
+
+		$declared_classes = $declared_tmp;
+
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'classes:',
+				JText::_('PLG_SYSTEM_REDDEBUG_CLASSES_LABEL'),
 				$declared_classes,
 				count($declared_classes),
 				'default'
@@ -256,7 +409,7 @@ class PlgSystemRedDebug extends JPlugin
 		$constants = get_defined_constants();
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'files:',
+				JText::_('PLG_SYSTEM_REDDEBUG_CONSTANTS_LABEL'),
 				$constants,
 				count($constants),
 				'default'
@@ -264,30 +417,32 @@ class PlgSystemRedDebug extends JPlugin
 			'constants'
 		);
 
+		$server = RedDebugHelper::MultiArrayToSingleArray($_SERVER, '$_SERVER');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Server:',
-				$_SERVER,
-				count($_SERVER),
+				JText::_('PLG_SYSTEM_REDDEBUG_SERVER_LABEL'),
+				$server,
+				count($server),
 				'default'
 			),
 			'server'
 		);
 
+		$session_vars = RedDebugHelper::MultiArrayToSingleArray($_SESSION, '$_SESSION');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Session:',
-				$_SESSION,
-				count($_SESSION),
-				'ini'
+				JText::_('PLG_SYSTEM_REDDEBUG_SESSION_LABEL'),
+				$session_vars,
+				count($session_vars),
+				'default'
 			),
 			'session'
 		);
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'Cookie:',
-				$_COOKIE,
+				JText::_('PLG_SYSTEM_REDDEBUG_COOKIE_LABEL'),
+				RedDebugHelper::MultiArrayToSingleArray($_COOKIE, '$_COOKIE'),
 				count($_COOKIE),
 				'default'
 			),
@@ -295,15 +450,47 @@ class PlgSystemRedDebug extends JPlugin
 		);
 
 		$configs = ini_get_all();
+		$configs = RedDebugHelper::MultiArrayToSingleArray($configs, 'INI');
+
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'INI:',
+				JText::_('PLG_SYSTEM_REDDEBUG_INI_LABEL'),
 				$configs,
 				count($configs),
-				'ini'
+				'default'
 			),
 			'php_ini'
 		);
+
+		/**
+		 * If you using default joomla system and display as default "parent::display" it will working
+		 */
+		if (version_compare(JVERSION, '3.4', '<='))
+		{
+			$data = (object) RedDebugJoomlaView::getInstance()->getView();
+			unset($data->document);
+			$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($data));
+		}
+		else
+		{
+			$class = new ReflectionClass('JControllerLegacy');
+			$propsStatic = $class->getStaticProperties();
+			$data = RedDebugHelper::MultiArrayToSingleArray($propsStatic);
+		}
+
+		if (count($data) > 0)
+		{
+			$debug->getBar()->addPanel(
+				new RedDebugPanelList(
+					JText::_('PLG_SYSTEM_REDDEBUG_COMPONENT_LABEL'),
+					$data,
+					count($data),
+					'default'
+				),
+				'component'
+			);
+		}
+
 
 		return;
 	}

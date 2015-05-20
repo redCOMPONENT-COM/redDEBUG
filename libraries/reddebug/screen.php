@@ -1,8 +1,9 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2014 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
+defined('_JEXEC') or die;
 
 /**
  * Class RedDebugScreen
@@ -16,6 +17,8 @@ class RedDebugScreen
 	private $panels = array();
 
 	private $directory = null;
+
+	public $jQuery = false;
 
 	/**
 	 * addDirectory
@@ -58,7 +61,7 @@ class RedDebugScreen
 		$panels = $this->panels;
 		$info = array_filter($this->info);
 		$source = JUri::base();
-		$title = $exception instanceof ErrorException ? RedDebugHelpers::errorTypeToString($exception->getSeverity()) : get_class($exception);
+		$title = $exception instanceof ErrorException ? RedDebugHelper::errorTypeToString($exception->getSeverity()) : get_class($exception);
 
 		require $this->directory . '/screen/screen.php';
 	}

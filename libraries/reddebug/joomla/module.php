@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2014 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
+defined('_JEXEC') or die;
 
 /**
  * Class RedDebugJoomlaModule
+ * Here we made mvc change for debug will working on this level
  *
- * here we made mvc change for debug will working on this level
  * @since  1
  */
 class RedDebugJoomlaModule
@@ -19,11 +20,13 @@ class RedDebugJoomlaModule
 	 *
 	 * To change joomla core for fixed this
 	 *
+	 * @param   string  $filename  FileName
+	 *
 	 * @return void
 	 */
-	public static function changeJoomlaCode()
+	public static function changeJoomlaCode($filename)
 	{
-		$code = file_get_contents(JPATH_LIBRARIES . '/cms/module/helper.php');
+		$code = file_get_contents($filename);
 
 		$code = strtr(
 			$code,
@@ -55,7 +58,7 @@ class RedDebugJoomlaModule
 		}
 		catch (Exception $e)
 		{
-			$update_time = filemtime(JPATH_LIBRARIES . '/cms/module/helper.php');
+			$update_time = filemtime($filename);
 			$code_file = JPATH_CACHE . '/module_helper.php';
 			$code_update = file_exists($code_file) ? filemtime($code_file) : 0;
 
@@ -66,7 +69,6 @@ class RedDebugJoomlaModule
 
 			include_once $code_file;
 		}
-
 	}
 
 	/**
@@ -81,8 +83,8 @@ class RedDebugJoomlaModule
 		// Check that $module is a valid module object
 		if (!is_object($module) || !isset($module->module) || !isset($module->params))
 		{
+			// Not using time to save this
 			return false;
-			//not using time to save this
 		}
 
 		if (!isset(self::$logger[$module->id]))
@@ -119,6 +121,14 @@ class RedDebugJoomlaModule
 		return self::$logger;
 	}
 
+	/**
+	 * renderModule
+	 *
+	 * @param   string  $module   Module
+	 * @param   array   $attribs  Module attributes
+	 *
+	 * @return array
+	 */
 	public static function renderModule($module, $attribs = array())
 	{
 		self::debugger($module, 'before');

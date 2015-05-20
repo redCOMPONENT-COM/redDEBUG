@@ -1,4 +1,13 @@
-<h1>Modules</h1>
+<?php
+/**
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
+ */
+defined('_JEXEC') or die;
+?>
+<h1>
+	Modules
+</h1>
 <div>
 	<table class="table">
 		<thead>
@@ -33,7 +42,22 @@
 					<textarea style="width: 200px; resize: none;"><?php echo htmlentities($row->content); ?></textarea>
 				</td>
 				<td>
-					<textarea style="width: 200px; resize: none;"><?php print_r(json_decode($row->params)); ?></textarea>
+					<?php
+					if(count($row->params) > 0)
+					{
+						echo '<table class="table table-bordered table-params">';
+
+						$data = RedDebugHelper::MultiArrayToSingleArray(json_decode($row->params), '$params');
+
+						foreach ($data AS $key => $val)
+						{
+							echo '<tr><td>' . $key .'</td><td>' . htmlentities($val) . '</td></tr>';
+						}
+
+						echo '</table>';
+					}
+
+					?>
 				</td>
 			</tr>
 		<?php endforeach; ?>

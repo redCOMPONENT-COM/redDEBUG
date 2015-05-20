@@ -1,8 +1,9 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2014 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
+defined('_JEXEC') or die;
 
 /**
  * Class RedDebugBar
@@ -11,6 +12,11 @@
  */
 class RedDebugBar
 {
+	/**
+	 * @var bool
+	 */
+	protected $hasRun = false;
+
 	/**
 	 * @var array
 	 */
@@ -31,6 +37,13 @@ class RedDebugBar
 		$obLevel = ob_get_level();
 		$panels = array();
 
+		if ($this->hasRun)
+		{
+			return;
+		}
+
+		$this->hasRun = true;
+
 		foreach ($this->panel as $id => $panel)
 		{
 			/**
@@ -38,6 +51,7 @@ class RedDebugBar
 			 */
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id);
 			$class = get_class($panel);
+
 			try
 			{
 				$panel->directory	= $this->directory;
@@ -83,7 +97,11 @@ class RedDebugBar
 		 * on some version of joomla or config joomla session is closed here in shutdown function.
 		 * so for fixed it we using php session
 		 */
-		@session_start();
+		if (session_id() === '')
+		{
+			@session_start();
+		}
+
 		$session_debug = & $_SESSION['__REDDEBUG__']['debuggerbar'];
 
 		/**
@@ -107,7 +125,7 @@ class RedDebugBar
 		foreach ($list as $id => $old_panels)
 		{
 			$panels[] = array(
-				'tab' => '<span title="Previous request before redirect">previous</span>',
+				'tab' => '<span title="before redirect">previous</span>',
 				'panel' => null,
 				'class' => null,
 				'previous' => null,
