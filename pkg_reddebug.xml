@@ -5,7 +5,7 @@
  	<creationDate>March 2015</creationDate>
  	<packagename>redDEBUG</packagename>
  	<version>1.0.0</version>
- 	<description>RedDebug Beta</description>
+ 	<description>redDEBUG Diagnostic tool</description>
 	<copyright>Copyright (C) 2015 - 2015 redCOMPONENT.com. All rights reserved.</copyright>
  	<files folder="packages">
 		<file type="library" id="reddebug">lib_reddebug.zip</file>

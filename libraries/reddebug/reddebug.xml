@@ -9,7 +9,7 @@
 	<copyright>Copyright (C) 2015 - 2015 redCOMPONENT.com. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later, see LICENSE.</license>
 	<version>1.0.0</version>
-	<description>redDEBUG library</description>
+	<description>redDEBUG Diagnostic Tool Library</description>
 	<files>
 		<filename>index.html</filename>
 		<filename>reddebug.xml</filename>
