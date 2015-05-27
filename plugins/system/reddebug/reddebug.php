@@ -100,8 +100,6 @@ class PlgSystemRedDebug extends JPlugin
 			self::$ModuleHelperName = ($location == 'module' ? 'Default' : $location);
 		}
 
-
-
 		if (static::$reset != 1)
 		{
 			RedDebugJoomlaModule::changeJoomlaCode($classes['JModuleHelper']);
@@ -255,6 +253,19 @@ class PlgSystemRedDebug extends JPlugin
 		}
 
 		$debug = RedDebugDebugger::getInstance();
+
+		// Joomla information
+
+		$debug->getBar()->addPanel(
+			new RedDebugPanelList(
+				'<strong>Joomla:</strong>',
+				null,
+				null,
+				null
+			),
+			'joomla'
+		);
+
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_PLUGINS_LABEL'),
@@ -267,16 +278,6 @@ class PlgSystemRedDebug extends JPlugin
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				JText::_('PLG_SYSTEM_REDDEBUG_MODULES_LABEL'),
-				$methods,
-				count($methods),
-				'module'
-			),
-			'modules'
-		);
-
-		$debug->getBar()->addPanel(
-			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_EVENT_LABEL'),
 				$eve,
 				$event_count,
@@ -285,16 +286,14 @@ class PlgSystemRedDebug extends JPlugin
 			'event'
 		);
 
-		$request = array_merge(array('template' => JFactory::getApplication()->getTemplate()), $_REQUEST);
-		$request = RedDebugHelper::MultiArrayToSingleArray($request, '$_REQUEST');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				JText::_('PLG_SYSTEM_REDDEBUG_REQUEST_LABEL'),
-				$request,
-				count($request),
-				'default'
+				JText::_('PLG_SYSTEM_REDDEBUG_MODULES_LABEL'),
+				$methods,
+				count($methods),
+				'module'
 			),
-			'request'
+			'modules'
 		);
 
 		$parms = json_decode(JFactory::getApplication()->getTemplate(true)->params);
@@ -337,6 +336,35 @@ class PlgSystemRedDebug extends JPlugin
 			'user'
 		);
 
+		/**
+		 * If you using default joomla system and display as default "parent::display" it will working
+		 */
+		if (version_compare(JVERSION, '3.4', '<='))
+		{
+			$data = (object) RedDebugJoomlaView::getInstance()->getView();
+			unset($data->document);
+			$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($data));
+		}
+		else
+		{
+			$class = new ReflectionClass('JControllerLegacy');
+			$propsStatic = $class->getStaticProperties();
+			$data = RedDebugHelper::MultiArrayToSingleArray($propsStatic);
+		}
+
+		if (count($data) > 0)
+		{
+			$debug->getBar()->addPanel(
+				new RedDebugPanelList(
+					JText::_('PLG_SYSTEM_REDDEBUG_COMPONENT_LABEL'),
+					$data,
+					count($data),
+					'default'
+				),
+				'component'
+			);
+		}
+
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_JOOMLA_VERSION_LABEL'),
@@ -347,14 +375,28 @@ class PlgSystemRedDebug extends JPlugin
 			'joomlainfo'
 		);
 
+		// PHP Information
+
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
-				'PHP',
+				'<strong>PHP:</strong>',
 				null,
 				null,
 				null
 			),
 			'php'
+		);
+
+		$request = array_merge(array('template' => JFactory::getApplication()->getTemplate()), $_REQUEST);
+		$request = RedDebugHelper::MultiArrayToSingleArray($request, '$_REQUEST');
+		$debug->getBar()->addPanel(
+			new RedDebugPanelList(
+				JText::_('PLG_SYSTEM_REDDEBUG_REQUEST_LABEL'),
+				$request,
+				count($request),
+				'default'
+			),
+			'request'
 		);
 
 		$includes = get_included_files();
@@ -390,7 +432,6 @@ class PlgSystemRedDebug extends JPlugin
 				}
 
 				$declared_tmp[$class] = $key;
-
 			}
 		}
 
@@ -461,36 +502,6 @@ class PlgSystemRedDebug extends JPlugin
 			),
 			'php_ini'
 		);
-
-		/**
-		 * If you using default joomla system and display as default "parent::display" it will working
-		 */
-		if (version_compare(JVERSION, '3.4', '<='))
-		{
-			$data = (object) RedDebugJoomlaView::getInstance()->getView();
-			unset($data->document);
-			$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($data));
-		}
-		else
-		{
-			$class = new ReflectionClass('JControllerLegacy');
-			$propsStatic = $class->getStaticProperties();
-			$data = RedDebugHelper::MultiArrayToSingleArray($propsStatic);
-		}
-
-		if (count($data) > 0)
-		{
-			$debug->getBar()->addPanel(
-				new RedDebugPanelList(
-					JText::_('PLG_SYSTEM_REDDEBUG_COMPONENT_LABEL'),
-					$data,
-					count($data),
-					'default'
-				),
-				'component'
-			);
-		}
-
 
 		return;
 	}
