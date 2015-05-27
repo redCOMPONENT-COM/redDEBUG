@@ -10,7 +10,6 @@
 	<files>
 		<filename plugin="reddebug">reddebug.php</filename>
 		<filename>index.html</filename>
-		<folder>form</folder>
 		<folder>language</folder>
 		<folder>layout</folder>
 	</files>
@@ -20,16 +19,13 @@
     </languages>
     <config>
         <fields name="params">
-            <fieldset name="basic" addfieldpath="plugins/system/reddebug/form/fields">
+            <fieldset name="basic">
                 <field
                     name="ip"
-                    type="Ip"
-                    multiple="true"
+                    type="textarea"
                     default=""
                     description="PLG_SYSTEM_REDDEBUG_FIELD_IP_DESCRIPTION"
                     label="PLG_SYSTEM_REDDEBUG_FIELD_IP_LABEL"
-                    add_label="PLG_SYSTEM_REDDEBUG_ADD_IP"
-                    remove_label="PLG_SYSTEM_REMOVE_IP"
                 />
                 <field
                     name="offline"

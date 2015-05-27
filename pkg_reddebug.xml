@@ -3,7 +3,7 @@
 	<name>redDEBUG Package</name>
 	<author>redCOMPONENT</author>
  	<creationDate>March 2015</creationDate>
- 	<packagename>redDEBUG</packagename>
+ 	<packagename>reddebug</packagename>
  	<version>1.0.0</version>
  	<description>redDEBUG Diagnostic tool</description>
 	<copyright>Copyright (C) 2015 - 2015 redCOMPONENT.com. All rights reserved.</copyright>
