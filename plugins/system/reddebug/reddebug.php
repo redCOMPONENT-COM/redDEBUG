@@ -349,7 +349,7 @@ class PlgSystemRedDebug extends JPlugin
 		{
 			$class = new ReflectionClass('JControllerLegacy');
 			$propsStatic = $class->getStaticProperties();
-			$data = RedDebugHelper::MultiArrayToSingleArray($propsStatic);
+			$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($propsStatic));
 		}
 
 		if (count($data) > 0)

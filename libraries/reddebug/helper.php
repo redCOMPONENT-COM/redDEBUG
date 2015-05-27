@@ -225,7 +225,6 @@ class RedDebugHelper
 			}
 		}
 
-
 		$source = array_slice($source, $start, $lines, true);
 		$max_len = strlen(count($source));
 
@@ -266,12 +265,13 @@ class RedDebugHelper
 	/**
 	 * removeRecursion
 	 *
-	 * @param       $object
-	 * @param array $stack
+	 * @param   object  &$object  Object
+	 * @param   array   &$stack   Stack
 	 *
 	 * @return string
 	 */
-	public static function removeRecursion(&$object, &$stack = array()) {
+	public static function removeRecursion(&$object, &$stack = array())
+	{
 		if ((is_object($object) || is_array($object)) && $object)
 		{
 			if (!in_array($object, $stack, true))
