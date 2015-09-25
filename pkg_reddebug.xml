@@ -7,8 +7,9 @@
  	<version>1.0.0</version>
  	<description>redDEBUG Diagnostic tool</description>
 	<copyright>Copyright (C) 2015 - 2015 redCOMPONENT.com. All rights reserved.</copyright>
- 	<files folder="packages">
-		<file type="library" id="reddebug">lib_reddebug.zip</file>
-		<file type="plugin" id="reddebug" group="system">plg_system_reddebug.zip</file>
+
+	<files folder="extensions">
+		<file type="library" id="reddebug">libraries/reddebug</file>
+		<file type="plugin" id="reddebug" group="system">plugins/system/reddebug</file>
  	</files>
 </extension>

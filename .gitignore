@@ -30,6 +30,14 @@ Desktop.ini
 build.properties
 phing-latest.phar
 
+# Gulp
+gulp-config.json
+node_modules
+bower_components
+
+# Releases folder
+releases/
+
 # Github pages and Jekyll files
 /_site/
 /Gemfile
