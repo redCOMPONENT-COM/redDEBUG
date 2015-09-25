@@ -9,6 +9,7 @@
 <!--    - execute this PHING build file                                  -->
 <!-- ==================================================================  -->
 <project name="plg_reddebug" default="pack">
+	<property name="src" value="./"/>
 	<!-- ============================================  -->
 	<!-- Create packages folder                        -->
 	<!-- ============================================  -->
@@ -64,22 +65,15 @@
 
 	<target name="build" depends="prepare">
 
-		<echo message="Copying plugin..."/>
-		<copy todir="${tmpdir}/plg_system_${extension}" overwrite="true">
-			<fileset dir="plugins/system/${extension}">
+		<echo message="Copying extensions..."/>
+		<copy todir="${tmpdir}/extensions" overwrite="true">
+			<fileset dir="${src}/extensions">
 				<include name="**"/>
 			</fileset>
 		</copy>
 
-		<echo message="Copying libraries..."/>
-		<copy todir="${tmpdir}/lib_${extension}" overwrite="true">
-			<fileset dir="libraries/${extension}">
-				<include name="**"/>
-			</fileset>
+		<copy file="${src}/pkg_${extension}.xml" tofile="${tmpdir}/pkg_${extension}.xml" overwrite="true">
 		</copy>
-
-		<copy file="pkg_${extension}.xml" tofile="${tmpdir}/pkg_${extension}.xml" overwrite="true">
-		</copy>		
 	</target>
 
 	<!-- ============================================  -->
@@ -87,34 +81,6 @@
 	<!-- ============================================  -->
 	<target name="compress">
 		<echo msg="Creating ZIP archive..."/>
-
-		<!-- Extension ZIP packaging -->
-		<if>
-			<available file="${package.dir}/${zip.name}-v${version}.zip" property="test_zip_exists" value="Yes"/>
-			<then>
-				<echo msg="Removing old ZIP"/>
-				<delete file="${package.dir}/${zip.name}-v${version}.zip" />
-			</then>
-		</if>
-
-		<mkdir dir="${tmpdir}/packages" />
-
-		<zip destfile="${tmpdir}/packages/plg_system_${extension}.zip">
-			<fileset dir="${tmpdir}/plg_system_${extension}">
-				<include name="**"/>
-				<exclude name=".*"/>
-			</fileset>
-		</zip>
-
-		<zip destfile="${tmpdir}/packages/lib_${extension}.zip">
-			<fileset dir="${tmpdir}/lib_${extension}">
-				<include name="**"/>
-				<exclude name=".*"/>
-			</fileset>
-		</zip>
-
-		<delete dir="${tmpdir}/plg_system_${extension}"/>
-		<delete dir="${tmpdir}/lib_${extension}"/>
 
 		<zip destfile="${tmpdir}/${zip.name}-v${version}.zip">
 			<fileset dir="${tmpdir}">

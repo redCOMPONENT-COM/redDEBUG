@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="RedDebug" default="site" basedir=".">
-    <target name="site" depends="init, libraries, plugins" description="Do a full build"/>
+    <target name="site" depends="init, libraries, plugins, package" description="Do a full build"/>
 	<!-- Global config -->
 	<property file="build.properties" override="true"/>
 	<property name="src" value="./"/>
@@ -27,20 +27,27 @@
 	<target name="libraries" description="libraries">
 		<!-- Libraries -->
 		<copy todir="${www.dir}/libraries" overwrite="true">
-			<fileset dir="${src}/libraries">
+			<fileset dir="${src}/extensions/libraries">
 				<include name="**"/>
 			</fileset>
 		</copy>
 		<!-- redDebug - Library Manifest -->
-		<copy file="${src}/libraries/reddebug/reddebug.xml"
+		<copy file="${src}/extensions/libraries/reddebug/reddebug.xml"
 			  tofile="${www.dir}/administrator/manifests/libraries/reddebug.xml" overwrite="true"/>
 	</target>
 	<target name="plugins" description="plugins">
 		<!-- Plugins -->
 		<copy todir="${www.dir}/plugins" overwrite="true">
-			<fileset dir="${src}/plugins">
+			<fileset dir="${src}/extensions/plugins">
 				<include name="**" />
 			</fileset>
 		</copy>
+	</target>
+	<!-- Package -->
+	<target name="package" description="package">
+		<copy
+			file="${src}/pkg_reddebug.xml"
+			tofile="${www.dir}/administrator/manifests/packages/pkg_reddebug.xml" overwrite="true"
+		/>
 	</target>
 </project>
