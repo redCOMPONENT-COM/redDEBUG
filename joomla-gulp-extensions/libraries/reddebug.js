@@ -48,25 +48,9 @@ gulp.task('copy:' + baseTask + ':library',
 	['clean:' + baseTask + ':library'], function() {
 	return gulp.src([
 		extPath + '/**',
-		'!' + extPath + '/reddebug.xml',
-		'!' + extPath + '/**/docs',
-		'!' + extPath + '/**/docs/**',
-		'!' + extPath + '/vendor/**/sample',
-		'!' + extPath + '/vendor/**/sample/**',
-		'!' + extPath + '/vendor/**/tests',
-		'!' + extPath + '/vendor/**/tests/**',
-		'!' + extPath + '/vendor/**/composer.json',
-		'!' + extPath + '/vendor/**/*.md',
-		'!' + extPath + '/vendor/**/*.sh',
-		'!' + extPath + '/vendor/**/build.xml',
-		'!' + extPath + '/vendor/**/phpunit*.xml',
-		'!' + extPath + '/vendor/**/.*.yml',
-		'!' + extPath + '/vendor/**/.editorconfig',
-		'!' + mediaPath,
-		'!' + mediaPath + '/**'
-
+		'!' + extPath + '/reddebug.xml'
 	])
-	.pipe(gulp.dest(wwwMediaPath));
+	.pipe(gulp.dest(config.wwwDir + '/libraries/reddebug'));
 });
 
 // Copy: manifest
@@ -86,8 +70,9 @@ gulp.task('watch:' + baseTask,
 
 // Watch: library
 gulp.task('watch:' +  baseTask + ':library', function() {
+	console.log(extPath + '/**/*');
 	gulp.watch([
-			extPath + '/**',
+			extPath + '/**/*',
 			'!' + extPath + '/mipayway.xml',
 			'!' + mediaPath,
 			'!' + mediaPath + '/**'
