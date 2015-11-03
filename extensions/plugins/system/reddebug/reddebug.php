@@ -100,6 +100,8 @@ class PlgSystemRedDebug extends JPlugin
 			return false;
 		}
 
+		JFactory::getConfig()->set('gzip', 0);
+
 		$app        = JFactory::getApplication();
 		$session    = JFactory::getSession();
 		$classes    = $session->get('joomlaClasses', array(), 'redDebug');
