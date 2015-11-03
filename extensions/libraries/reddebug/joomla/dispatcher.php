@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
  */
 class RedDebugJoomlaDispatcher extends JEventDispatcher
 {
-	static public $logger;
+	static public $logger = array();
 	/**
 	 * getInstance
 	 *
@@ -41,7 +41,6 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 		}
 
 		JFactory::$application->loadDispatcher(self::$instance);
-
 
 		return self::$instance;
 	}
@@ -80,17 +79,15 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 		}
 		elseif (is_array($plugin))
 		{
-			if (is_object($plugin['handler']))
-			{
-				$class = get_class($plugin['handler']);
-			}
-			else
-			{
-				$class = $plugin['handler'];
-			}
+			$class = get_class($plugin['handler']);
 		}
 
-		if (isset(self::$logger[$class][$event]))
+		if (!isset(self::$logger[$class]))
+		{
+			self::$logger[$class] = array();
+		}
+
+		if (!isset(self::$logger[$class][$event]))
 		{
 			self::$logger[$class][$event] = array();
 		}
