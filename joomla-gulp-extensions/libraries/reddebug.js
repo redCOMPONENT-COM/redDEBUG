@@ -19,8 +19,7 @@ var wwwMediaPath = config.wwwDir + '/media/reddebug';
 gulp.task('clean:' + baseTask,
 	[
 		'clean:' + baseTask + ':library',
-		'clean:' + baseTask + ':manifest',
-		'clean:' + baseTask + ':media'
+		'clean:' + baseTask + ':manifest'
 	],
 	function() {
 });
@@ -35,17 +34,11 @@ gulp.task('clean:' + baseTask + ':manifest', function(cb) {
 	return del(config.wwwDir + '/administrator/manifests/libraries/reddebug.xml', {force : true}, cb);
 });
 
-// Clean: media
-gulp.task('clean:' + baseTask + ':media', function(cb) {
-	return del(wwwMediaPath, {force : true});
-});
-
 // Copy
 gulp.task('copy:' + baseTask,
 	[
 		'copy:' + baseTask + ':library',
-		'copy:' + baseTask + ':manifest',
-		'copy:' + baseTask + ':media'
+		'copy:' + baseTask + ':manifest'
 	],
 	function() {
 });
@@ -81,13 +74,6 @@ gulp.task('copy:' + baseTask + ':manifest', ['clean:' + baseTask + ':manifest'],
 	return gulp.src(extPath + '/reddebug.xml')
 		.pipe(gulp.dest(config.wwwDir + '/administrator/manifests/libraries'));
 });
-
-// Copy: media
-gulp.task('copy:' + baseTask + ':media', ['clean:' + baseTask + ':media'], function() {
-	return gulp.src(mediaPath + '/**')
-		.pipe(gulp.dest(wwwMediaPath));
-});
-
 
 // Watch
 gulp.task('watch:' + baseTask,

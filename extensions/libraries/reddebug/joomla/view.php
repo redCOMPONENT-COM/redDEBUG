@@ -1,5 +1,15 @@
 <?php
-//JViewLegacy
+/**
+ * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
+ */
+defined('_JEXEC') or die;
+
+/**
+ * Class RedDebugJoomlaView
+ *
+ * @since  1.0
+ */
 class RedDebugJoomlaView extends JObject
 {
 	static protected $instance = null;
@@ -21,13 +31,20 @@ class RedDebugJoomlaView extends JObject
 		return self::$instance;
 	}
 
+	/**
+	 * Constructor
+	 */
 	public function __construct()
 	{
 		$code = file_get_contents(JPATH_LIBRARIES . '/legacy/view/legacy.php');
-		$code = strtr($code, array(
-			'extends JObject' => 'extends RedDebugJoomlaView',
-			'public function display' => 'protected function xDisplay',
-		));
+
+		$code = strtr(
+			$code,
+			array(
+				'extends JObject' => 'extends RedDebugJoomlaView',
+				'public function display' => 'protected function xDisplay',
+			)
+		);
 
 		$code = strtr(
 			$code,

@@ -6,6 +6,7 @@
  	<packagename>reddebug</packagename>
  	<version>1.0.0</version>
  	<description>redDEBUG Diagnostic tool</description>
+ 	<license>GNU General Public License version 2 or later, see LICENSE.</license>
 	<copyright>Copyright (C) 2015 - 2015 redCOMPONENT.com. All rights reserved.</copyright>
 
 	<files folder="extensions">
