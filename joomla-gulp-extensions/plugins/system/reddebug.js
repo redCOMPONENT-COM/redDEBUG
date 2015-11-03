@@ -12,7 +12,7 @@ var zip         = require('gulp-zip');
 var uglify      = require('gulp-uglify');
 
 var baseTask  = 'plugins.system.reddebug';
-var extPath   = './redCORE/plugins/system/reddebug';
+var extPath   = './extensions/plugins/system/reddebug';
 var wwwPluginPath = config.wwwDir + '/plugins/system/reddebug';
 
 // Clean
@@ -22,7 +22,7 @@ gulp.task('clean:' + baseTask, function(cb) {
 
 // Copy
 gulp.task('copy:' + baseTask, ['clean:' + baseTask], function() {
-	return gulp.src( extPath + '/**')
+	return gulp.src(extPath + '/**')
 		.pipe(gulp.dest(wwwPluginPath));
 });
 
