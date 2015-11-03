@@ -120,9 +120,11 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	protected function isActive()
 	{
+		$app = JFactory::getApplication();
+
 		$inAdmin = $this->params->get('in_admin');
 
-		if (!JFactory::getApplication()->isSite() && $inAdmin == 0)
+		if (!$app->isSite() && $inAdmin == 0)
 		{
 			return false;
 		}
@@ -133,6 +135,14 @@ class PlgSystemRedDebug extends JPlugin
 		}
 
 		if (JFactory::getDocument()->getType() !== 'html' || $this->isAjaxRequest())
+		{
+			return false;
+		}
+
+		// JCE loads with wrong headers so let's exclude it
+		$option = $app->input->get('option');
+
+		if ($option == 'com_jce')
 		{
 			return false;
 		}
