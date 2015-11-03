@@ -12,7 +12,7 @@ JLoader::import('reddebug.library');
 /**
  * Class PlgSystemRedDebug
  *
- * @since  1
+ * @since  1.0
  */
 class PlgSystemRedDebug extends JPlugin
 {
@@ -45,11 +45,6 @@ class PlgSystemRedDebug extends JPlugin
 	 * @var bool
 	 */
 	protected static $checkIp = false;
-
-	/**
-	 * @var bool
-	 */
-	protected static $in_admin = true;
 
 	/**
 	 * __construct
@@ -87,18 +82,12 @@ class PlgSystemRedDebug extends JPlugin
 			RedDebugJoomlaView::getInstance();
 		}
 
-		/**
-		 * If admin mode is off
-		 */
-		if (!$this->params->get('in_admin', false))
-		{
-			self::$in_admin = JFactory::getApplication()->isAdmin() != 1;
-		}
-
-		if (!self::$checkIp || !self::$in_admin)
+		if (!$this->isActive())
 		{
 			return false;
 		}
+
+		JFactory::getConfig()->set('gzip', 0);
 
 		$app        = JFactory::getApplication();
 		$session    = JFactory::getSession();
@@ -123,13 +112,54 @@ class PlgSystemRedDebug extends JPlugin
 	}
 
 	/**
+	 * Does the plugin need to be loaded?
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0.1
+	 */
+	protected function isActive()
+	{
+		$inAdmin = $this->params->get('in_admin');
+
+		if (!JFactory::getApplication()->isSite() && $inAdmin == 0)
+		{
+			return false;
+		}
+
+		if (!self::$checkIp)
+		{
+			return false;
+		}
+
+		if (JFactory::getDocument()->getType() !== 'html' || $this->isAjaxRequest())
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Detect if current request is using AJAX
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0.1
+	 */
+	protected function isAjaxRequest()
+	{
+		return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+	}
+
+	/**
 	 * onAfterInitialise
 	 *
 	 * @return void
 	 */
 	public function onAfterInitialise()
 	{
-		if (!self::$checkIp || !self::$in_admin)
+		if (!$this->isActive())
 		{
 			return false;
 		}
@@ -186,7 +216,7 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	public function onAfterRender()
 	{
-		if (!self::$checkIp || !self::$in_admin)
+		if (!$this->isActive())
 		{
 			return false;
 		}
@@ -211,7 +241,7 @@ class PlgSystemRedDebug extends JPlugin
 	 */
 	public function onAfterJoomla()
 	{
-		if (!self::$checkIp || !self::$in_admin)
+		if (!$this->isActive())
 		{
 			return false;
 		}
