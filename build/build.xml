@@ -3,7 +3,7 @@
     <target name="site" depends="init, libraries, plugins, package" description="Do a full build"/>
 	<!-- Global config -->
 	<property file="build.properties" override="true"/>
-	<property name="src" value="./"/>
+	<property name="src" value=".."/>
 
 	<!-- Do initialization stuff -->
 	<target name="init">

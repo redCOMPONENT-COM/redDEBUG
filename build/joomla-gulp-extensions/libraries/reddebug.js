@@ -11,7 +11,7 @@ var uglify      = require('gulp-uglify');
 var zip         = require('gulp-zip');
 
 var baseTask     = 'libraries.reddebug';
-var extPath      = './extensions/libraries/reddebug';
+var extPath      = '../extensions/libraries/reddebug';
 var mediaPath    = extPath + '/media/reddebug';
 var wwwMediaPath = config.wwwDir + '/media/reddebug';
 

@@ -9,7 +9,7 @@
 <!--    - execute this PHING build file                                  -->
 <!-- ==================================================================  -->
 <project name="plg_reddebug" default="pack">
-	<property name="src" value="./"/>
+	<property name="src" value=".."/>
 	<!-- ============================================  -->
 	<!-- Create packages folder                        -->
 	<!-- ============================================  -->
@@ -28,7 +28,7 @@
 			</then>
 		</if>
 
-	    <xmlproperty file="pkg_${extension}.xml" prefix="extensionDetails" keepRoot="false" />
+	    <xmlproperty file="${src}/pkg_${extension}.xml" prefix="extensionDetails" keepRoot="false" />
 
 		<property
 				name="version"
@@ -144,7 +144,7 @@
 
 		<property
 				name="zip.name"
-				value="reddebug-dev"
+				value="reddebug"
 				override="false"/>
 
 		<property

@@ -12,7 +12,7 @@ var zip         = require('gulp-zip');
 var uglify      = require('gulp-uglify');
 
 var baseTask  = 'plugins.system.reddebug';
-var extPath   = './extensions/plugins/system/reddebug';
+var extPath   = '../extensions/plugins/system/reddebug';
 var wwwPluginPath = config.wwwDir + '/plugins/system/reddebug';
 
 // Clean
