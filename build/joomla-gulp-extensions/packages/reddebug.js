@@ -7,7 +7,7 @@ var browserSync = require('browser-sync');
 var del         = require('del');
 
 var baseTask           = 'packages.reddebug';
-var extPath            = './';
+var extPath            = '../';
 var wwwManifestsFolder = config.wwwDir + '/administrator/manifests/packages';
 var manifestFile       = 'pkg_reddebug.xml';
 
