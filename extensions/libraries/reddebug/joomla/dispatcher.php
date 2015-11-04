@@ -73,13 +73,26 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	{
 		$jProfile = new JProfiler;
 
+		$class = 'none';
+
 		if (is_object($plugin))
 		{
 			$class = get_class($plugin);
 		}
 		elseif (is_array($plugin))
 		{
-			$class = get_class($plugin['handler']);
+			if (is_object($plugin['handler']))
+			{
+				$class = get_class($plugin['handler']);
+			}
+			elseif (is_string($plugin['handler']))
+			{
+				$class = $plugin['handler'] . ' (function)';
+			}
+			elseif (is_array($plugin['handler']))
+			{
+				$class = get_class(reset($plugin['handler']));
+			}
 		}
 
 		if (!isset(self::$logger[$class]))
