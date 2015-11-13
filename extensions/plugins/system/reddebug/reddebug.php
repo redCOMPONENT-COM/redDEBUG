@@ -47,6 +47,16 @@ class PlgSystemRedDebug extends JPlugin
 	protected static $checkIp = false;
 
 	/**
+	 * @var array
+	 */
+	protected static $logs = array();
+
+	/**
+	 * @var integer
+	 */
+	protected static $logsCount = 0;
+
+	/**
 	 * __construct
 	 *
 	 * @param   object  &$subject  Subject
@@ -108,6 +118,12 @@ class PlgSystemRedDebug extends JPlugin
 		if (static::$reset != 1)
 		{
 			RedDebugJoomlaModule::changeJoomlaCode($classes['JModuleHelper']);
+		}
+
+		if ($this->params->get('show_jlog', 1))
+		{
+			// Register logger
+			JLog::addLogger(array('logger' => 'callback', 'callback' => array($this, 'addLog')), JLog::ALL);
 		}
 	}
 
@@ -265,10 +281,10 @@ class PlgSystemRedDebug extends JPlugin
 
 		$methods = RedDebugJoomlaModule::getLog();
 
-		$app            = JFactory::getApplication();
-		$session        = JFactory::getSession();
+		$app     = JFactory::getApplication();
+		$session = JFactory::getSession();
 
-		$classes        = $session->get('joomlaClasses', array(), 'redDebug');
+		$classes = $session->get('joomlaClasses', array(), 'redDebug');
 
 		$plugins = RedDebugJoomlaDispatcher::$logger;
 		$event_count = 0;
@@ -322,114 +338,151 @@ class PlgSystemRedDebug extends JPlugin
 			'joomla'
 		);
 
-		$debug->getBar()->addPanel(
-			new RedDebugPanelList(
-				JText::_('PLG_SYSTEM_REDDEBUG_PLUGINS_LABEL'),
-				$plg,
-				count($plugins),
-				'plugin'
-			),
-			'plugin'
-		);
-
-		$debug->getBar()->addPanel(
-			new RedDebugPanelList(
-				JText::_('PLG_SYSTEM_REDDEBUG_EVENT_LABEL'),
-				$eve,
-				$event_count,
-				'event'
-			),
-			'event'
-		);
-
-		$debug->getBar()->addPanel(
-			new RedDebugPanelList(
-				JText::_('PLG_SYSTEM_REDDEBUG_MODULES_LABEL'),
-				$methods,
-				count($methods),
-				'module'
-			),
-			'modules'
-		);
-
-		$parms = json_decode(JFactory::getApplication()->getTemplate(true)->params);
-		$debug->getBar()->addPanel(
-			new RedDebugPanelList(
-				JText::_('PLG_SYSTEM_REDDEBUG_TEMPLATE_LABEL'),
-				$parms,
-				null,
-				'default'
-			),
-			'template'
-		);
-
-		$config = (array) new JConfig;
-		unset($config['password'], $config['ftp_pass'], $config['smtppass'], $config['secret']);
-
-		$debug->getBar()->addPanel(
-			new RedDebugPanelList(
-				JText::_('PLG_SYSTEM_REDDEBUG_CONFIG_LABEL'),
-				$config,
-				null,
-				'default'
-			),
-			'config'
-		);
-
-		$jUser  = JFactory::getUser();
-		$user   = get_object_vars($jUser);
-		$user	= RedDebugHelper::MultiArrayToSingleArray((object) $user, 'JUser');
-
-		unset($user['password'], $user['password_clear']);
-
-		$debug->getBar()->addPanel(
-			new RedDebugPanelList(
-				JText::_('PLG_SYSTEM_REDDEBUG_USER_LABEL'),
-				$user,
-				null,
-				'default'
-			),
-			'user'
-		);
-
-		/**
-		 * If you using default joomla system and display as default "parent::display" it will working
-		 */
-		if (version_compare(JVERSION, '3.4', '<='))
-		{
-			$data = (object) RedDebugJoomlaView::getInstance()->getView();
-			unset($data->document);
-			$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($data));
-		}
-		else
-		{
-			$class = new ReflectionClass('JControllerLegacy');
-			$propsStatic = $class->getStaticProperties();
-			$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($propsStatic));
-		}
-
-		if (count($data) > 0)
+		if ($this->params->get('show_event', 1))
 		{
 			$debug->getBar()->addPanel(
 				new RedDebugPanelList(
-					JText::_('PLG_SYSTEM_REDDEBUG_COMPONENT_LABEL'),
-					$data,
-					count($data),
-					'default'
+					JText::_('PLG_SYSTEM_REDDEBUG_EVENT_LABEL'),
+					$eve,
+					$event_count,
+					'event'
 				),
-				'component'
+				'event'
 			);
 		}
 
-		$debug->getBar()->addPanel(
-			new RedDebugPanelList(
-				JText::_('PLG_SYSTEM_REDDEBUG_JOOMLA_VERSION_LABEL'),
-				(array) new JVersion,
-				null,
-				'default'
-			),
-			'joomlainfo'
-		);
+		if ($this->params->get('show_plugin', 1))
+		{
+			$debug->getBar()->addPanel(
+				new RedDebugPanelList(
+					JText::_('PLG_SYSTEM_REDDEBUG_PLUGINS_LABEL'),
+					$plg,
+					count($plugins),
+					'plugin'
+				),
+				'plugin'
+			);
+		}
+
+		if ($this->params->get('show_module', 1))
+		{
+			$debug->getBar()->addPanel(
+				new RedDebugPanelList(
+					JText::_('PLG_SYSTEM_REDDEBUG_MODULES_LABEL'),
+					$methods,
+					count($methods),
+					'module'
+				),
+				'modules'
+			);
+		}
+
+		if ($this->params->get('show_component', 1))
+		{
+			/**
+			 * If you using default joomla system and display as default "parent::display" it will working
+			 */
+			if (version_compare(JVERSION, '3.4', '<='))
+			{
+				$data = (object) RedDebugJoomlaView::getInstance()->getView();
+				unset($data->document);
+				$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($data));
+			}
+			else
+			{
+				$class = new ReflectionClass('JControllerLegacy');
+				$propsStatic = $class->getStaticProperties();
+				$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($propsStatic));
+			}
+
+			if (count($data) > 0)
+			{
+				$debug->getBar()->addPanel(
+					new RedDebugPanelList(
+						JText::_('PLG_SYSTEM_REDDEBUG_COMPONENT_LABEL'),
+						$data,
+						count($data),
+						'default'
+					),
+					'component'
+				);
+			}
+		}
+
+		if ($this->params->get('show_jlog', 1))
+		{
+			$debug->getBar()->addPanel(
+				new RedDebugPanelList(
+					'JLog',
+					self::$logs,
+					self::$logsCount,
+					'log'
+				),
+				'log'
+			);
+		}
+
+		if ($this->params->get('show_template_params', 1))
+		{
+			$parms = json_decode(JFactory::getApplication()->getTemplate(true)->params);
+			$debug->getBar()->addPanel(
+				new RedDebugPanelList(
+					JText::_('PLG_SYSTEM_REDDEBUG_TEMPLATE_LABEL'),
+					$parms,
+					null,
+					'default'
+				),
+				'template'
+			);
+		}
+
+		if ($this->params->get('show_joomla_config', 1))
+		{
+			$config = (array) new JConfig;
+			unset($config['password'], $config['ftp_pass'], $config['smtppass'], $config['secret']);
+
+			$debug->getBar()->addPanel(
+				new RedDebugPanelList(
+					JText::_('PLG_SYSTEM_REDDEBUG_CONFIG_LABEL'),
+					$config,
+					null,
+					'default'
+				),
+				'config'
+			);
+		}
+
+		if ($this->params->get('show_joomla_infor', 1))
+		{
+			$debug->getBar()->addPanel(
+				new RedDebugPanelList(
+					JText::_('PLG_SYSTEM_REDDEBUG_JOOMLA_VERSION_LABEL'),
+					(array) new JVersion,
+					null,
+					'default'
+				),
+				'joomlainfo'
+			);
+		}
+
+		if ($this->params->get('show_user_infor', 1))
+		{
+			$jUser  = JFactory::getUser();
+			$user   = get_object_vars($jUser);
+			$user	= RedDebugHelper::MultiArrayToSingleArray((object) $user, 'JUser');
+
+			unset($user['password'], $user['password_clear']);
+
+			$debug->getBar()->addPanel(
+				new RedDebugPanelList(
+					JText::_('PLG_SYSTEM_REDDEBUG_USER_LABEL'),
+					$user,
+					null,
+					'default'
+				),
+				'user'
+			);
+		}
 
 		// PHP Information
 
@@ -560,5 +613,28 @@ class PlgSystemRedDebug extends JPlugin
 		);
 
 		return;
+	}
+
+	/**
+	 * Store log messages so they can be displayed later.
+	 * This function is passed log entries by JLogLoggerCallback.
+	 *
+	 * @param   JLogEntry  $entry  A log entry.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.1
+	 */
+	public function addLog(JLogEntry $entry)
+	{
+		$category = $entry->category;
+
+		if (!isset(self::$logs[$entry->category]))
+		{
+			self::$logs[$entry->category] = array();
+		}
+
+		self::$logs[$entry->category][] = $entry;
+		self::$logsCount++;
 	}
 }
