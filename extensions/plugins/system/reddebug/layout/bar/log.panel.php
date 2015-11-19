@@ -7,19 +7,23 @@ defined('_JEXEC') or die;
 ?>
 <div>
 	<table class="table">
-		<?php foreach($data as $category => $logs): ?>
-			<?php if (empty($logs)): ?>
+		<?php foreach($data as $category => $entries): ?>
+			<?php if (empty($entries)): ?>
 				<?php continue; ?>
 			<?php endif; ?>
 			<tr>
-				<td colspan="3"><h1 class="text-center"><?php echo $category ?> (<?php echo count($logs) ?>)</h1></td>
+				<td colspan="4"><h1 class="text-center"><?php echo $category ?> (<?php echo count($entries) ?>)</h1></td>
 			</tr>
-			<?php foreach ($logs as $log): ?>
+			<?php foreach ($entries as $entry): ?>
+				<?php
+				$log = $entry['entry'];
+				$debugs = array_reverse($entry['debug']);
+				?>
 			<tr>
-				<td width="15%">
+				<td width="10%">
 					<?php echo $log->date ?>
 				</td>
-				<td width="15%">
+				<td width="10%">
 					<?php
 					switch ($log->priority):
 						case JLog::EMERGENCY:
@@ -73,8 +77,32 @@ defined('_JEXEC') or die;
 					endswitch;
 					?>
 				</td>
-				<td width="70%">
+				<td width="30%">
 					<?php echo $log->message ?>
+				</td>
+				<td width="50%">
+					<table class="table">
+						<thead>
+							<th>#</th>
+							<th>Line</th>
+							<th>Function</th>
+						</thead>
+						<tbody>
+						<?php foreach ($debugs as $i => $debug): ?>
+							<?php if (!isset($debug['line'])): ?>
+								<?php continue; ?>
+							<?php elseif ($debug['class'] == 'JLog'): ?>
+								<?php break; ?>
+							<?php else: ?>
+							<tr>
+								<td width="10px"><?php echo $i + 1; ?></td>
+								<td width="30%"><?php echo '<strong>' . $debug['class'] . '</strong>' . $debug['type'] . $debug['function'] ?>()</td>
+								<td width="auto"><?php echo $debug['file'] ?>:<?php echo $debug['line'] ?></td>
+							</tr>
+							<?php endif; ?>
+						<?php endforeach; ?>
+						</tbody>
+					</table>
 				</td>
 			</tr>
 			<?php endforeach; ?>

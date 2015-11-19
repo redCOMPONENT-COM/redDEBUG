@@ -634,7 +634,10 @@ class PlgSystemRedDebug extends JPlugin
 			self::$logs[$entry->category] = array();
 		}
 
-		self::$logs[$entry->category][] = $entry;
+		self::$logs[$entry->category][] = array(
+			'entry' => $entry,
+			'debug' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)
+		);
 		self::$logsCount++;
 	}
 }
