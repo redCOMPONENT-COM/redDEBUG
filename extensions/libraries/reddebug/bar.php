@@ -68,7 +68,7 @@ class RedDebugBar
 			catch (Exception $e)
 			{
 				$out = '<h1>Error: ' . $id . '</h1><div class="inner">' .
-					nl2br(htmlSpecialChars($e, ENT_IGNORE, 'UTF-8')) .
+					nl2br(htmlspecialchars($e, ENT_IGNORE, 'UTF-8')) .
 					'</div>';
 				/**
 				 * Add error to panel
@@ -154,7 +154,7 @@ class RedDebugBar
 	 *
 	 * @param   string  $name  Name
 	 *
-	 * @return RedDebugPanel
+	 * @return  RedDebugPanelDefault
 	 */
 	public function getPanel($name)
 	{

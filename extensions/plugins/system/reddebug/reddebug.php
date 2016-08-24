@@ -62,7 +62,9 @@ class PlgSystemRedDebug extends JPlugin
 	 * @param   object  &$subject  Subject
 	 * @param   array   $config    Config
 	 *
-	 * @throws Exception
+	 * @return  boolean
+	 *
+	 * @throws  Exception
 	 */
 	public function __construct(&$subject, $config = array())
 	{
@@ -99,10 +101,9 @@ class PlgSystemRedDebug extends JPlugin
 
 		JFactory::getConfig()->set('gzip', 0);
 
-		$app        = JFactory::getApplication();
-		$session    = JFactory::getSession();
-		$classes    = $session->get('joomlaClasses', array(), 'redDebug');
-		$dispatcher = RedDebugJoomlaDispatcher::getInstance();
+		$app     = JFactory::getApplication();
+		$session = JFactory::getSession();
+		$classes = $session->get('joomlaClasses', array(), 'redDebug');
 
 		static::$reset = $app->input->get('reset_class_files', !isset($classes['JModuleHelper']));
 
@@ -125,6 +126,8 @@ class PlgSystemRedDebug extends JPlugin
 			// Register logger
 			JLog::addLogger(array('logger' => 'callback', 'callback' => array($this, 'addLog')), JLog::ALL);
 		}
+
+		return true;
 	}
 
 	/**
@@ -187,11 +190,10 @@ class PlgSystemRedDebug extends JPlugin
 	{
 		if (!$this->isActive())
 		{
-			return false;
+			return;
 		}
 
-		$jVersion   = new JVersion;
-		$version    = (int) $jVersion->RELEASE;
+		$jVersion = new JVersion;
 
 		/**
 		 * So we in debug mode can work on offline page.
@@ -244,7 +246,7 @@ class PlgSystemRedDebug extends JPlugin
 	{
 		if (!$this->isActive())
 		{
-			return false;
+			return;
 		}
 
 		$app            = JFactory::getApplication();
@@ -269,7 +271,7 @@ class PlgSystemRedDebug extends JPlugin
 	{
 		if (!$this->isActive())
 		{
-			return false;
+			return;
 		}
 
 		if (static::$afterRespond)
