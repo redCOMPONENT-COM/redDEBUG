@@ -56,7 +56,7 @@ class RedDebugScreen
 	 *
 	 * @return void
 	 */
-	public function render(Exception $exception)
+	public function render(\Error $exception)
 	{
 		$panels = $this->panels;
 		$info = array_filter($this->info);
