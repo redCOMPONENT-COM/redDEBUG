@@ -134,7 +134,7 @@ class RedDebugDebugger
 	 *
 	 * @return void
 	 */
-	public function exceptionHandler(\Exception $exception, $exit = true)
+	public function exceptionHandler(\Error $exception, $exit = true)
 	{
 		if ($this->done)
 		{
