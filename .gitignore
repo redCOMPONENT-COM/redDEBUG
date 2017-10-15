@@ -26,9 +26,14 @@ Desktop.ini
 *~.nib
 *~
 
-# Phing
+# Build
+bower_components
 build.properties
+gulp-config.json
+node_modules
+npm-debug.log
 phing-latest.phar
+releases
 
 # Github pages and Jekyll files
 /_site/
@@ -42,9 +47,6 @@ tests/unit/phpunit.xml
 composer.lock
 composer.phar
 vendor/*
-
-# LESS Transpiler
-npm-debug.log
 
 # Test related files
 /tests/system/servers/configdef.php

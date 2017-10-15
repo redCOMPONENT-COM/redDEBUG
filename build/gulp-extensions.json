@@ -1,0 +1,7 @@
+{
+    "libraries" : ["reddebug"],
+    "packages"  : ["reddebug"],
+    "plugins"   : {
+    	"system" :  ["reddebug"]
+    }
+}

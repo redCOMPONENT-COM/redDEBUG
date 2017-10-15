@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system" method="upgrade">
+	<name>PLG_SYSTEM_REDDEBUG</name>
+	<version>1.0.0</version>
+	<creationDate>March 2015</creationDate>
+	<author>redCOMPONENT</author>
+	<copyright>Copyright (C) 2015 - 2015 redCOMPONENT.com. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>PLG_SYSTEM_REDDEBUG_DESCRIPTION</description>
+	<files>
+		<filename plugin="reddebug">reddebug.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
+		<folder>layout</folder>
+	</files>
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_reddebug.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_reddebug.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="ip"
+                    type="textarea"
+                    default=""
+                    description="PLG_SYSTEM_REDDEBUG_FIELD_IP_DESCRIPTION"
+                    label="PLG_SYSTEM_REDDEBUG_FIELD_IP_LABEL"
+                />
+                <field
+                    name="offline"
+                    type="radio"
+                    default="0"
+                    class="btn-group btn-group-yesno"
+                    description="PLG_SYSTEM_REDDEBUG_FIELD_OFFLINE_DESCRIPTION"
+                    label="PLG_SYSTEM_REDDEBUG_FIELD_OFFLINE_LABEL"
+                >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+                <field
+                    class="btn-group btn-group-yesno"
+                    name="sef"
+                    type="radio"
+                    default="0"
+                    description="PLG_SYSTEM_REDDEBUG_FIELD_SEF_DESCRIPTION"
+                    label="PLG_SYSTEM_REDDEBUG_FIELD_SEF_LABEL"
+                >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+				<field
+                    name="in_admin"
+                    type="radio"
+                    default="0"
+                    class="btn-group btn-group-yesno"
+                    description="PLG_SYSTEM_REDDEBUG_FIELD_IN_ADMIN_DESCRIPTION"
+                    label="PLG_SYSTEM_REDDEBUG_FIELD_IN_ADMIN_LABEL"
+                >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+            </fieldset>
+            <fieldset name="PLG_SYSTEM_REDDEBUG_DEBUG_TAB">
+                <field
+                        type="spacer"
+                        class="text-info"
+                        label="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_JOOMLA_LABEL"
+                        />
+                <field
+                        name="show_event"
+                        type="radio"
+                        default="1"
+                        class="btn-group btn-group-yesno"
+                        label="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_EVENT_LABEL"
+                        description="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_EVENT_DESCRIPTION"
+                        >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+                <field
+                        name="show_plugin"
+                        type="radio"
+                        default="1"
+                        class="btn-group btn-group-yesno"
+                        label="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_PLUGIN_LABEL"
+                        description="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_PLUGIN_DESCRIPTION"
+                        >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+                <field
+                        name="show_module"
+                        type="radio"
+                        default="1"
+                        class="btn-group btn-group-yesno"
+                        label="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_MODULE_LABEL"
+                        description="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_MODULE_DESCRIPTION"
+                        >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+                <field
+                        name="show_component"
+                        type="radio"
+                        default="1"
+                        class="btn-group btn-group-yesno"
+                        label="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_COMPONENT_LABEL"
+                        description="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_COMPONENT_DESCRIPTION"
+                        >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+                <field
+                        name="show_jlog"
+                        type="radio"
+                        default="1"
+                        class="btn-group btn-group-yesno"
+                        label="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_JLOG_LABEL"
+                        description="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_JLOG_DESCRIPTION"
+                        >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+                <field
+                        name="show_template_params"
+                        type="radio"
+                        default="1"
+                        class="btn-group btn-group-yesno"
+                        label="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_TEMPLATE_PARAMS_LABEL"
+                        description="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_TEMPLATE_PARAMS_DESCRIPTION"
+                        >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+                <field
+                        name="show_joomla_config"
+                        type="radio"
+                        default="1"
+                        class="btn-group btn-group-yesno"
+                        label="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_JOOMLA_CONFIG_LABEL"
+                        description="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_JOOMLA_CONFIG_DESCRIPTION"
+                        >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+                <field
+                        name="show_joomla_infor"
+                        type="radio"
+                        default="1"
+                        class="btn-group btn-group-yesno"
+                        label="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_JOOMLA_INFO_LABEL"
+                        description="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_JOOMLA_INFO_DESCRIPTION"
+                        >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+                <field
+                        name="show_user_infor"
+                        type="radio"
+                        default="1"
+                        class="btn-group btn-group-yesno"
+                        label="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_USER_INFOR_LABEL"
+                        description="PLG_SYSTEM_REDDEBUG_FIELD_SHOW_USER_INFOR_DESCRIPTION"
+                        >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>

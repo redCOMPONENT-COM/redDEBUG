@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ==================================================================  -->
+<!-- redDEBUG packager                                                   -->
+<!-- This PHING build file generates the redDEBUG extension package      -->
+<!-- To use in your environment do the following steps:                  -->
+<!--    Change the following variables in build.properties file          -->
+<!--            (copy variables from build.properties.dist )             -->
+<!--    - change the package folder path in variable package.dir         -->
+<!--    - execute this PHING build file                                  -->
+<!-- ==================================================================  -->
+<project name="plg_reddebug" default="pack">
+	<property name="src" value=".."/>
+	<!-- ============================================  -->
+	<!-- Create packages folder                        -->
+	<!-- ============================================  -->
+	<target name="prepare">
+		<property
+				name="clean-tempdir"
+				value="true"
+				override="false"/>
+
+		<if>
+			<not>
+				<isset property="package.dir" />
+			</not>
+			<then>
+				<fail msg="package.dir not specified, specify package.dir in build.properties file" />
+			</then>
+		</if>
+
+	    <xmlproperty file="${src}/pkg_${extension}.xml" prefix="extensionDetails" keepRoot="false" />
+
+		<property
+				name="version"
+				value="${extensionDetails.version}"
+				override="true"/>
+
+		<!-- Temp dir to create packages -->
+		<property
+				name="tmpdir"
+				value=".tmp"
+				override="true"/>
+
+		<if>
+			<equals arg1="clean-tempdir" arg2="1" />
+			<then>
+				<!-- Check if the temp folder exists. If not, create it -->
+				<if>
+					<available file="${tmpdir}" type="dir"/>
+					<then>
+						<echo msg="Removing old ${tmpdir}"/>
+						<delete dir="${tmpdir}"/>
+					</then>
+				</if>
+				<echo msg="Making directory to store the temporary packages at ${tmpdir}"/>
+				<mkdir dir="${tmpdir}"/>
+			</then>
+		</if>
+	</target>
+
+	<!-- ============================================  -->
+	<!-- Target: build                                 -->
+	<!-- ============================================  -->
+	<!-- Copy the source files to the target folder -->
+
+	<target name="build" depends="prepare">
+
+		<echo message="Copying extensions..."/>
+		<copy todir="${tmpdir}/extensions" overwrite="true">
+			<fileset dir="${src}/extensions">
+				<include name="**"/>
+			</fileset>
+		</copy>
+
+		<copy file="${src}/pkg_${extension}.xml" tofile="${tmpdir}/pkg_${extension}.xml" overwrite="true">
+		</copy>
+	</target>
+
+	<!-- ============================================  -->
+	<!-- (DEFAULT)  Target: dist                       -->
+	<!-- ============================================  -->
+	<target name="compress">
+		<echo msg="Creating ZIP archive..."/>
+
+		<zip destfile="${tmpdir}/${zip.name}-v${version}.zip">
+			<fileset dir="${tmpdir}">
+				<include name="**"/>
+				<exclude name=".*"/>
+			</fileset>
+		</zip>
+
+		<copy file="${tmpdir}/${zip.name}-v${version}.zip" tofile="${package.dir}/${zip.name}-v${version}.zip" />
+
+		<echo msg="Files copied and compressed in build directory OK!"/>
+	</target>
+
+	<target name="clean-tmp">
+		<delete dir="${tmpdir}"/>
+	</target>
+
+	<target name="prepare-compress-clean" depends="prepare, compress-clean">
+		<!-- needed for external cleaning and compressing -->
+	</target>
+
+	<target name="compress-clean" depends="compress, clean-tmp">
+		<!-- needed for external cleaning and compressing -->
+	</target>
+
+	<target name="dist" depends="build, compress-clean">
+		<echo msg="Build successful!"/>
+	</target>
+
+	<target name="pack">
+		<!-- Do initialization stuff -->
+		<if>
+			<not>
+				<available file="build.properties" type="file" />
+			</not>
+			<then>
+				<fail msg="File not found: build.properties" />
+			</then>
+		</if>
+
+		<property file="build.properties" override="true"/>
+
+		<property
+				name="extension"
+				value="${comp.name}"
+				override="true"/>
+
+		<phingcall target="dist" />
+	</target>
+
+	<target name="autopack">
+		<property
+				name="package.dir"
+				value=".dist"
+				override="false"/>
+
+		<property
+				name="extension"
+				value="reddebug"
+				override="false"/>
+
+		<property
+				name="zip.name"
+				value="reddebug"
+				override="false"/>
+
+		<property
+				name="package.delete"
+				value="true"
+				override="false"/>
+
+		<property
+				name="package.routine"
+				value="dist"
+				override="false"/>
+
+		<if>
+			<and>
+				<available file="${package.dir}" type="dir"/>
+				<equals arg1="${package.delete}" arg2="1" />
+			</and>
+			<then>
+				<echo msg="Removing old autopack folder"/>
+				<delete dir="${package.dir}"/>
+			</then>
+		</if>
+
+		<phingcall target="${package.routine}" />
+	</target>
+</project>
