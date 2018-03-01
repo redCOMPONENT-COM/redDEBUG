@@ -39,7 +39,7 @@ class RedDebugHelper
 			}
 		}
 
-		return;
+		return null;
 	}
 
 	/**

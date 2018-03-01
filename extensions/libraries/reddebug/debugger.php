@@ -38,11 +38,20 @@ class RedDebugDebugger
 	private $screen;
 
 	/**
-	 * @var bar
+	 * @var RedDebugBar
 	 */
 	private $bar;
 
+	/**
+	 * @var  string
+	 */
+	public $directory;
+
+	/**
+	 * @var array
+	 */
 	public static $onFatalError = array();
+
 	/**
 	 * getInstance
 	 *
@@ -129,12 +138,12 @@ class RedDebugDebugger
 	/**
 	 * exceptionHandler
 	 *
-	 * @param   Exception  $exception  Exception
-	 * @param   bool       $exit       Exit
+	 * @param   mixed  $exception  Exception
+	 * @param   bool   $exit       Exit
 	 *
 	 * @return void
 	 */
-	public function exceptionHandler(\Error $exception, $exit = true)
+	public function exceptionHandler($exception, $exit = true)
 	{
 		if ($this->done)
 		{
@@ -145,8 +154,8 @@ class RedDebugDebugger
 
 		if (!headers_sent())
 		{
-			$protocol		= isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
-			$code			= isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== false ? 503 : 500;
+			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+			$code     = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== false ? 503 : 500;
 
 			header("$protocol $code", true, $code);
 		}
@@ -218,17 +227,17 @@ class RedDebugDebugger
 
 			if (RedDebugHelper::findTrace(debug_backtrace($debug), '*::__toString'))
 			{
-				$previous	= isset($context['e']) && $context['e'] instanceof Exception ? $context['e'] : null;
-				$e			= new ErrorException($message, 0, $severity, $file, $line, $previous);
-				$e->context = $context;
+				$previous   = isset($context['e']) && $context['e'] instanceof Exception ? $context['e'] : null;
+				$exception  = new ErrorException($message, 0, $severity, $file, $line, $previous);
+				$exception->context = $context;
 
-				$this->exceptionHandler($e);
+				$this->exceptionHandler($exception);
 			}
 
-			$e = new ErrorException($message, 0, $severity, $file, $line);
-			$e->context = $context;
+			$exception = new ErrorException($message, 0, $severity, $file, $line);
+			$exception->context = $context;
 
-			throw $e;
+			throw $exception;
 		}
 		elseif (($severity & error_reporting()) !== $severity)
 		{
@@ -236,8 +245,8 @@ class RedDebugDebugger
 		}
 
 		// Add debug to debug panel.
-		$message	= 'PHP ' . RedDebugHelper::errorTypeToString($severity) . ": $message";
-		$count		= $this->getBar()->getPanel('error')->get("$file|$line|$message", 0);
+		$message = 'PHP ' . RedDebugHelper::errorTypeToString($severity) . ": $message";
+		$count   = $this->getBar()->getPanel('error')->get("$file|$line|$message", 0);
 		$count++;
 
 		// Update count

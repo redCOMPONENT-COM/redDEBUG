@@ -12,12 +12,25 @@ defined('_JEXEC') or die;
  */
 class RedDebugScreen
 {
+	/**
+	 * @var array
+	 */
 	public $info = array();
 
+	/**
+	 * @var array
+	 */
 	private $panels = array();
 
+	/**
+	 * @var null
+	 */
 	private $directory = null;
 
+	/**
+	 * @var bool
+	 * @since version
+	 */
 	public $jQuery = false;
 
 	/**
@@ -52,11 +65,11 @@ class RedDebugScreen
 	/**
 	 * render
 	 *
-	 * @param   Exception  $exception  Exception
+	 * @param   mixed  $exception  Error | Exception
 	 *
-	 * @return void
+	 * @return  void
 	 */
-	public function render(\Error $exception)
+	public function render($exception)
 	{
 		$panels = $this->panels;
 		$info = array_filter($this->info);
