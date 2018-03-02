@@ -38,7 +38,7 @@ $info = array_filter(
 				Copyright
 			</td>
 			<td>
-				Copyright (C) 2015 - 2015 <a target="_blank" href="http://redcomponent.com">redcomponent.com</a>. All rights reserved.
+				Copyright (C) 2015 - 2018 <a target="_blank" href="http://redcomponent.com">redcomponent.com</a>. All rights reserved.
 			</td>
 		</tr>
 	</table>

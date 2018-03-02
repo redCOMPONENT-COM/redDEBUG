@@ -2,12 +2,13 @@
 <extension type="package" version="1.6" method="upgrade">
 	<name>redDEBUG Package</name>
 	<author>redCOMPONENT</author>
- 	<creationDate>November 2015</creationDate>
+ 	<creationDate>March 2018</creationDate>
  	<packagename>reddebug</packagename>
- 	<version>1.0.2</version>
+ 	<version>1.1.0</version>
+	<releaseName>beta1</releaseName>
  	<description>redDEBUG Diagnostic tool</description>
  	<license>GNU General Public License version 2 or later, see LICENSE.</license>
-	<copyright>Copyright (C) 2015 - 2015 redCOMPONENT.com. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.</copyright>
 
 	<files folder="extensions">
 		<file type="library" id="reddebug">libraries/reddebug</file>

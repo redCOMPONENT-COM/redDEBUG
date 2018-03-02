@@ -19,7 +19,12 @@ gulp.task('release', function (cb) {
 		parser.parseString(data, function (err, result) {
 			var version = result.extension.version[0];
 
-			var fileName = argv.skipVersion ? extension.name + '.zip' : extension.name + '-v' + version + '.zip';
+            if (result.extension.releaseName[0])
+            {
+                version = version + '-' + result.extension.releaseName[0].toLowerCase();
+            }
+
+            var fileName = argv.skipVersion ? extension.name + '.zip' : extension.name + '-v' + version + '.zip';
 
 			return gulp.src([
 					'../extensions/**/*',
