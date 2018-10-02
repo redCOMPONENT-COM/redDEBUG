@@ -8,7 +8,7 @@ defined('_JEXEC') or die;
 /**
  * Interface RedDebugPanelInterface
  *
- * @since  1
+ * @since  1.0.0
  */
 interface RedDebugPanelInterface
 {

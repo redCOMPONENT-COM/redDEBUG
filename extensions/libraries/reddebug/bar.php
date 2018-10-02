@@ -8,7 +8,7 @@ defined('_JEXEC') or die;
 /**
  * Class RedDebugBar
  *
- * @since  1
+ * @since  1.0.0
  */
 class RedDebugBar
 {

@@ -8,7 +8,7 @@ defined('_JEXEC') or die;
 /**
  * Class RedDebugJoomlaView
  *
- * @since  1.0
+ * @since  1.0.0
  */
 class RedDebugJoomlaView extends JObject
 {

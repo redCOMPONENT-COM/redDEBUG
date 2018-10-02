@@ -9,7 +9,7 @@ defined('_JEXEC') or die;
  * Class RedDebugJoomlaModule
  * Here we made mvc change for debug will working on this level
  *
- * @since  1
+ * @since  1.0.0
  */
 class RedDebugJoomlaModule
 {
