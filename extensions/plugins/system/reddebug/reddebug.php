@@ -12,66 +12,73 @@ JLoader::import('reddebug.library');
 /**
  * Class PlgSystemRedDebug
  *
- * @since  1.0
+ * @since  1.0.0
  */
 class PlgSystemRedDebug extends JPlugin
 {
 	/**
-	 * @var boolean
+	 * @var    boolean
+	 * @since  1.0.0
 	 */
 	protected $autoloadLanguage = true;
 
 	/**
-	 * @var array
+	 * @var    array
+	 * @since  1.0.0
 	 */
 	public static $logPlugin;
 
 	/**
-	 * @var boolean
+	 * @var    boolean
+	 * @since  1.0.0
 	 */
 	public static $afterRespond = false;
 
 	/**
-	 * @var boolean
+	 * @var    boolean
+	 * @since  1.0.0
 	 */
 	protected static $reset = false;
 
 	/**
-	 * @var string
+	 * @var    string
+	 * @since  1.0.0
 	 */
 	protected static $ModuleHelperName = 'default';
 
 	/**
-	 * @var boolean
+	 * @var    boolean
+	 * @since  1.0.0
 	 */
 	protected static $checkIp = false;
 
 	/**
-	 * @var array
+	 * @var    array
+	 * @since  1.0.0
 	 */
-	protected static $logs = array();
+	protected static $logs = [];
 
 	/**
-	 * @var integer
+	 * @var    integer
+	 * @since  1.0.0
 	 */
 	protected static $logsCount = 0;
 
 	/**
 	 * __construct
 	 *
-	 * @param   object  &$subject  Subject
+	 * @param   object  $subject   Subject
 	 * @param   array   $config    Config
 	 *
-	 * @return  boolean
-	 *
-	 * @throws  Exception
+	 * @since   1.0.0
+	 * @throws  \Exception
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		parent::__construct($subject, $config);
 
 		// Check debug mode for this page
-		$arrayValidIPs = array();
+		$arrayValidIPs = [];
 		$validIPs      = trim($this->params->get('ip'));
 
 		if ($validIPs != '')
@@ -103,7 +110,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$app     = JFactory::getApplication();
 		$session = JFactory::getSession();
-		$classes = $session->get('joomlaClasses', array(), 'redDebug');
+		$classes = $session->get('joomlaClasses', [], 'redDebug');
 		RedDebugJoomlaDispatcher::getInstance();
 
 		static::$reset = $app->input->get('reset_class_files', !isset($classes['JModuleHelper']));
@@ -135,8 +142,8 @@ class PlgSystemRedDebug extends JPlugin
 	 * Does the plugin need to be loaded?
 	 *
 	 * @return  boolean
-	 *
 	 * @since   1.0.1
+	 * @throws  \Exception
 	 */
 	protected function isActive()
 	{
@@ -174,8 +181,8 @@ class PlgSystemRedDebug extends JPlugin
 	 * Detect if current request is using AJAX
 	 *
 	 * @return  boolean
-	 *
 	 * @since   1.0.1
+	 * @throws  \Exception
 	 */
 	protected function isAjaxRequest()
 	{
@@ -185,7 +192,9 @@ class PlgSystemRedDebug extends JPlugin
 	/**
 	 * onAfterInitialise
 	 *
-	 * @return void
+	 * @return  void
+	 * @since   1.0.0
+	 * @throws  \Exception
 	 */
 	public function onAfterInitialise()
 	{
@@ -193,8 +202,6 @@ class PlgSystemRedDebug extends JPlugin
 		{
 			return;
 		}
-
-		$jVersion = new JVersion;
 
 		/**
 		 * So we in debug mode can work on offline page.
@@ -241,7 +248,9 @@ class PlgSystemRedDebug extends JPlugin
 	/**
 	 * onAfterRender
 	 *
-	 * @return void
+	 * @return  void
+	 * @since   1.0.0
+	 * @throws  \Exception
 	 */
 	public function onAfterRender()
 	{
@@ -252,7 +261,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		$app     = JFactory::getApplication();
 		$session = JFactory::getSession();
-		$classes = $session->get('joomlaClasses', array(), 'redDebug');
+		$classes = $session->get('joomlaClasses', [], 'redDebug');
 
 		// So we can se class we need to load
 		if (count($classes) == 0 || static::$reset)
@@ -266,7 +275,9 @@ class PlgSystemRedDebug extends JPlugin
 	/**
 	 * onAfterJoomla
 	 *
-	 * @return void
+	 * @return  void
+	 * @since   1.0.0
+	 * @throws  \Exception
 	 */
 	public function onAfterJoomla()
 	{
@@ -284,21 +295,20 @@ class PlgSystemRedDebug extends JPlugin
 
 		$methods = RedDebugJoomlaModule::getLog();
 
-		$app     = JFactory::getApplication();
 		$session = JFactory::getSession();
 
-		$classes = $session->get('joomlaClasses', array(), 'redDebug');
+		$classes = $session->get('joomlaClasses', [], 'redDebug');
 
-		$plugins     = RedDebugJoomlaDispatcher::$logger;
-		$event_count = 0;
-		$plg         = array();
-		$evt         = array();
+		$plugins    = RedDebugJoomlaDispatcher::$logger;
+		$eventCount = 0;
+		$plg        = [];
+		$eve        = [];
 
 		foreach ($plugins AS $plugin => $events)
 		{
 			foreach ($events AS $event => $info)
 			{
-				$plg[($info[0]->type)][$plugin][$event]           = array();
+				$plg[($info[0]->type)][$plugin][$event]           = [];
 				$plg[($info[0]->type)][$plugin][$event]['count']  = count($info);
 				$plg[($info[0]->type)][$plugin][$event]['time']   = 0;
 				$plg[($info[0]->type)][$plugin][$event]['memory'] = 0;
@@ -319,8 +329,8 @@ class PlgSystemRedDebug extends JPlugin
 
 				if (!isset($eve[($info[0]->type)][$event]))
 				{
-					$event_count++;
-					$eve[($info[0]->type)][$event] = array();
+					$eventCount++;
+					$eve[($info[0]->type)][$event] = [];
 				}
 
 				$eve[($info[0]->type)][$event] = array_merge($eve[($info[0]->type)][$event], $info);
@@ -347,7 +357,7 @@ class PlgSystemRedDebug extends JPlugin
 				new RedDebugPanelList(
 					JText::_('PLG_SYSTEM_REDDEBUG_EVENT_LABEL'),
 					$eve,
-					$event_count,
+					$eventCount,
 					'event'
 				),
 				'event'
@@ -427,11 +437,11 @@ class PlgSystemRedDebug extends JPlugin
 
 		if ($this->params->get('show_template_params', 1))
 		{
-			$parms = json_decode(JFactory::getApplication()->getTemplate(true)->params);
+			$params = json_decode(JFactory::getApplication()->getTemplate(true)->params);
 			$debug->getBar()->addPanel(
 				new RedDebugPanelList(
 					JText::_('PLG_SYSTEM_REDDEBUG_TEMPLATE_LABEL'),
-					$parms,
+					$params,
 					null,
 					'default'
 				),
@@ -441,7 +451,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		if ($this->params->get('show_joomla_config', 1))
 		{
-			$config = (array) new JConfig;
+			$config = JFactory::getConfig();
 			unset($config['password'], $config['ftp_pass'], $config['smtppass'], $config['secret']);
 
 			$debug->getBar()->addPanel(
@@ -488,7 +498,6 @@ class PlgSystemRedDebug extends JPlugin
 		}
 
 		// PHP Information
-
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				'<strong>PHP:</strong>',
@@ -522,38 +531,36 @@ class PlgSystemRedDebug extends JPlugin
 			'includes'
 		);
 
-		/**
-		 * Get Includes class
-		 */
-		$declared_classes = get_declared_classes();
-		$declared_tmp     = array();
+		// Get Includes class
+		$declaredClasses = get_declared_classes();
+		$declaredTmp     = [];
 
-		foreach ($declared_classes AS $key => $class)
+		foreach ($declaredClasses AS $key => $class)
 		{
 			if (isset($classes[$class]))
 			{
-				$declared_tmp[$class] = $classes[$class];
+				$declaredTmp[$class] = $classes[$class];
 			}
 			else
 			{
-				$key = RedDebugHelper::findJoomlaClassFile($class, null, $extension_name);
+				$key = RedDebugHelper::findJoomlaClassFile($class, null, $extensionName);
 
 				if ($key == null)
 				{
-					$key = JText::sprintf('PLG_SYSTEM_REDDEBUG_DEFAULT_PHP_CLASS_PATH', $extension_name);
+					$key = JText::sprintf('PLG_SYSTEM_REDDEBUG_DEFAULT_PHP_CLASS_PATH', $extensionName);
 				}
 
-				$declared_tmp[$class] = $key;
+				$declaredTmp[$class] = $key;
 			}
 		}
 
-		$declared_classes = $declared_tmp;
+		$declaredClasses = $declaredTmp;
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_CLASSES_LABEL'),
-				$declared_classes,
-				count($declared_classes),
+				$declaredClasses,
+				count($declaredClasses),
 				'default'
 			),
 			'classes'
@@ -581,12 +588,12 @@ class PlgSystemRedDebug extends JPlugin
 			'server'
 		);
 
-		$session_vars = RedDebugHelper::MultiArrayToSingleArray($_SESSION, '$_SESSION');
+		$sessionVars = RedDebugHelper::MultiArrayToSingleArray($_SESSION, '$_SESSION');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_SESSION_LABEL'),
-				$session_vars,
-				count($session_vars),
+				$sessionVars,
+				count($sessionVars),
 				'default'
 			),
 			'session'
@@ -614,8 +621,6 @@ class PlgSystemRedDebug extends JPlugin
 			),
 			'php_ini'
 		);
-
-		return;
 	}
 
 	/**
@@ -632,12 +637,12 @@ class PlgSystemRedDebug extends JPlugin
 	{
 		$category = $entry->category;
 
-		if (!isset(self::$logs[$entry->category]))
+		if (!isset(self::$logs[$category]))
 		{
-			self::$logs[$entry->category] = array();
+			self::$logs[$category] = [];
 		}
 
-		self::$logs[$entry->category][] = array(
+		self::$logs[$category][] = array(
 			'entry' => $entry,
 			'debug' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)
 		);
