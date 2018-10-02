@@ -59,7 +59,7 @@ class RedDebugJoomlaModule
 		catch (Exception $e)
 		{
 			$update_time = filemtime($filename);
-			$code_file = JPATH_CACHE . '/module_helper.php';
+			$code_file   = JPATH_CACHE . '/module_helper.php';
 			$code_update = file_exists($code_file) ? filemtime($code_file) : 0;
 
 			if ($update_time > $code_update)
@@ -92,20 +92,20 @@ class RedDebugJoomlaModule
 			/**
 			 * if we not have in array so it before
 			 */
-			$module->start_time         = microtime(true);
-			$module->close_time         = 0;
-			$module->start_memory       = memory_get_usage() / 1048576;
-			self::$logger[$module->id]  = $module;
+			$module->start_time        = microtime(true);
+			$module->close_time        = 0;
+			$module->start_memory      = memory_get_usage() / 1048576;
+			self::$logger[$module->id] = $module;
 		}
 		else
 		{
 			/**
 			 * We have run it before and add some new data
 			 */
-			self::$logger[$module->id]->content         = $module->content;
-			self::$logger[$module->id]->close_time      = microtime(true);
-			self::$logger[$module->id]->closed_memory   = memory_get_usage() / 1048576;
-			self::$logger[$module->id]->change          = $module;
+			self::$logger[$module->id]->content       = $module->content;
+			self::$logger[$module->id]->close_time    = microtime(true);
+			self::$logger[$module->id]->closed_memory = memory_get_usage() / 1048576;
+			self::$logger[$module->id]->change        = $module;
 		}
 
 		return false;
@@ -132,7 +132,7 @@ class RedDebugJoomlaModule
 	public static function renderModule($module, $attribs = array())
 	{
 		self::debugger($module, 'before');
-		$content = JModuleHelper::xRenderModule($module, $attribs);
+		$content         = JModuleHelper::xRenderModule($module, $attribs);
 		$module->content = $content;
 		self::debugger($module, 'after', $content);
 

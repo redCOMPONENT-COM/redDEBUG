@@ -70,37 +70,37 @@ ob_start();
 						</th>
 					</tr>
 				<?php
-					foreach ($trace as $i => $t):
+				foreach ($trace as $i => $t):
 				?>
-					<tr>
-						<td>
-							<?php echo $i; ?>
-						</td>
-						<td>
-							<?php echo isset($t['file']) ? $t['file'] : JText::_('PLG_SYSTEM_REDDEBUG_STACK_UNDEFINED'); ?>
-						</td>
-						<td>
-							<?php echo isset($t['line']) ? $t['line'] : JText::_('PLG_SYSTEM_REDDEBUG_STACK_UNDEFINED'); ?>
-						</td>
-						<td>
-							<?php echo isset($t['function']) ? $t['function'] : JText::_('PLG_SYSTEM_REDDEBUG_STACK_UNDEFINED'); ?>
-						</td>
-					</tr>
-					<?php
-						if ($t['file'] && is_file($t['file'])):
-					?>
-					<tr>
-						<td colspan="4">
-							<div class="redDebugCodeBox">
-								<?php echo RedDebugHelper::highlightFile($t['file'], $t['line'], 10); ?>
-							</div>
-						</td>
-					</tr>
-					<?php
-						endif;
-					?>
+				<tr>
+				<td>
+					<?php echo $i; ?>
+				</td>
+				<td>
+					<?php echo isset($t['file']) ? $t['file'] : JText::_('PLG_SYSTEM_REDDEBUG_STACK_UNDEFINED'); ?>
+				</td>
+				<td>
+					<?php echo isset($t['line']) ? $t['line'] : JText::_('PLG_SYSTEM_REDDEBUG_STACK_UNDEFINED'); ?>
+				</td>
+				<td>
+					<?php echo isset($t['function']) ? $t['function'] : JText::_('PLG_SYSTEM_REDDEBUG_STACK_UNDEFINED'); ?>
+				</td>
+				</tr>
 				<?php
-					endforeach;
+				if ($t['file'] && is_file($t['file'])):
+					?>
+					<tr>
+				<td colspan="4">
+					<div class="redDebugCodeBox">
+					<?php echo RedDebugHelper::highlightFile($t['file'], $t['line'], 10); ?>
+					</div>
+				</td>
+					</tr>
+					<?php
+				endif;
+				?>
+				<?php
+				endforeach;
 				?>
 				</table>
 			</div>

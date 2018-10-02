@@ -33,7 +33,7 @@ class RedDebugPanelList implements RedDebugPanelInterface
 	public $layout;
 
 	/**
-	 * @var int
+	 * @var integer
 	 */
 	public $count;
 
@@ -47,10 +47,10 @@ class RedDebugPanelList implements RedDebugPanelInterface
 	 */
 	public function __construct($title, $data=null, $count = null, $layout=null)
 	{
-		$this->title	= $title;
-		$this->count	= $count;
-		$this->data		= $data;
-		$this->layout	= $layout;
+		$this->title  = $title;
+		$this->count  = $count;
+		$this->data   = $data;
+		$this->layout = $layout;
 	}
 
 	/**

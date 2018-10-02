@@ -17,7 +17,7 @@ JLoader::import('reddebug.library');
 class PlgSystemRedDebug extends JPlugin
 {
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $autoloadLanguage = true;
 
@@ -27,12 +27,12 @@ class PlgSystemRedDebug extends JPlugin
 	public static $logPlugin;
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	public static $afterRespond = false;
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	protected static $reset = false;
 
@@ -42,7 +42,7 @@ class PlgSystemRedDebug extends JPlugin
 	protected static $ModuleHelperName = 'default';
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	protected static $checkIp = false;
 
@@ -72,7 +72,7 @@ class PlgSystemRedDebug extends JPlugin
 
 		// Check debug mode for this page
 		$arrayValidIPs = array();
-		$validIPs = trim($this->params->get('ip'));
+		$validIPs      = trim($this->params->get('ip'));
 
 		if ($validIPs != '')
 		{
@@ -249,9 +249,9 @@ class PlgSystemRedDebug extends JPlugin
 			return;
 		}
 
-		$app            = JFactory::getApplication();
-		$session        = JFactory::getSession();
-		$classes        = $session->get('joomlaClasses', array(), 'redDebug');
+		$app     = JFactory::getApplication();
+		$session = JFactory::getSession();
+		$classes = $session->get('joomlaClasses', array(), 'redDebug');
 
 		// So we can se class we need to load
 		if (count($classes) == 0 || static::$reset)
@@ -288,19 +288,19 @@ class PlgSystemRedDebug extends JPlugin
 
 		$classes = $session->get('joomlaClasses', array(), 'redDebug');
 
-		$plugins = RedDebugJoomlaDispatcher::$logger;
+		$plugins     = RedDebugJoomlaDispatcher::$logger;
 		$event_count = 0;
-		$plg = array();
-		$evt = array();
+		$plg         = array();
+		$evt         = array();
 
 		foreach ($plugins AS $plugin => $events)
 		{
 			foreach ($events AS $event => $info)
 			{
-				$plg[($info[0]->type)][$plugin][$event] = array();
-				$plg[($info[0]->type)][$plugin][$event]['count']	= count($info);
-				$plg[($info[0]->type)][$plugin][$event]['time']		= 0;
-				$plg[($info[0]->type)][$plugin][$event]['memory']	= 0;
+				$plg[($info[0]->type)][$plugin][$event]           = array();
+				$plg[($info[0]->type)][$plugin][$event]['count']  = count($info);
+				$plg[($info[0]->type)][$plugin][$event]['time']   = 0;
+				$plg[($info[0]->type)][$plugin][$event]['memory'] = 0;
 
 				foreach ($info AS $key => $row)
 				{
@@ -308,10 +308,10 @@ class PlgSystemRedDebug extends JPlugin
 
 					if (count($mark) == 2)
 					{
-						$time = $mark[1]->totalTime - $mark[0]->totalTime;
+						$time   = $mark[1]->totalTime - $mark[0]->totalTime;
 						$memory = $mark[1]->totalMemory - $mark[0]->totalMemory;
 
-						$plg[($info[0]->type)][$plugin][$event]['time'] = $time;
+						$plg[($info[0]->type)][$plugin][$event]['time']   = $time;
 						$plg[($info[0]->type)][$plugin][$event]['memory'] = $memory;
 					}
 				}
@@ -392,9 +392,9 @@ class PlgSystemRedDebug extends JPlugin
 			}
 			else
 			{
-				$class = new ReflectionClass('JControllerLegacy');
+				$class       = new ReflectionClass('JControllerLegacy');
 				$propsStatic = $class->getStaticProperties();
-				$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($propsStatic));
+				$data        = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($propsStatic));
 			}
 
 			if (count($data) > 0)
@@ -469,9 +469,9 @@ class PlgSystemRedDebug extends JPlugin
 
 		if ($this->params->get('show_user_infor', 1))
 		{
-			$jUser  = JFactory::getUser();
-			$user   = get_object_vars($jUser);
-			$user	= RedDebugHelper::MultiArrayToSingleArray((object) $user, 'JUser');
+			$jUser = JFactory::getUser();
+			$user  = get_object_vars($jUser);
+			$user  = RedDebugHelper::MultiArrayToSingleArray((object) $user, 'JUser');
 
 			unset($user['password'], $user['password_clear']);
 
@@ -525,7 +525,7 @@ class PlgSystemRedDebug extends JPlugin
 		 * Get Includes class
 		 */
 		$declared_classes = get_declared_classes();
-		$declared_tmp = array();
+		$declared_tmp     = array();
 
 		foreach ($declared_classes AS $key => $class)
 		{

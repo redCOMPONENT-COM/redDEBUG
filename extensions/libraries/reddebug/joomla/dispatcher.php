@@ -22,7 +22,7 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	{
 		if (get_class(self::$instance) == 'JEventDispatcher')
 		{
-			$instance = self::$instance;
+			$instance       = self::$instance;
 			self::$instance = new self;
 			self::$instance->fixed(clone $instance);
 		}
@@ -105,8 +105,8 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 			self::$logger[$class][$event] = array();
 		}
 
-		$isJObject  = $plugin instanceof JPlugin;
-		$result     = self::$logger[$class][$event][] = (object) array(
+		$isJObject = $plugin instanceof JPlugin;
+		$result    = self::$logger[$class][$event][] = (object) array(
 			'plugin'	=> $class,
 			'args'		=> $args,
 			'value'		=> null,
@@ -163,7 +163,7 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 			if (is_object($this->_observers[$key]))
 			{
 				$args['event'] = $event;
-				$value = $this->_observers[$key]->update($args);
+				$value         = $this->_observers[$key]->update($args);
 			}
 			// Fire the event for a function based observer.
 			elseif (is_array($this->_observers[$key]))
@@ -171,7 +171,7 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 				$value = call_user_func_array($this->_observers[$key]['handler'], $args);
 			}
 
-			$debug->value = $value;
+			$debug->value      = $value;
 			$debug->args_after = $args;
 			$debug->profile->mark('after');
 

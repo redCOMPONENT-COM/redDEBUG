@@ -108,9 +108,9 @@ class RedDebugHelper
 		// Autoload class
 		if (class_exists($class, true))
 		{
-			$class = new ReflectionClass($class);
+			$class          = new ReflectionClass($class);
 			$extension_name = $class->getExtensionName();
-			$filename = $class->getFileName();
+			$filename       = $class->getFileName();
 
 			return empty($filename) ? $default : $filename;
 		}
@@ -123,7 +123,7 @@ class RedDebugHelper
 	 *
 	 * @param   array  $list  List of ips
 	 *
-	 * @return bool|int
+	 * @return boolean|integer
 	 */
 	public static function checkDebugMode(array $list)
 	{
@@ -137,9 +137,9 @@ class RedDebugHelper
 		$list[] = '::1';
 		$list   = array_map('trim', $list);
 
-		$check  = implode('|', $list);
-		$ip     = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : php_uname('n');
-		$ipx    = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : '';
+		$check = implode('|', $list);
+		$ip    = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : php_uname('n');
+		$ipx   = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : '';
 
 		$found = preg_match('#^(' . $check . ')$#', $ip);
 
@@ -209,7 +209,7 @@ class RedDebugHelper
 		is_null($lines) && $lines = count($source);
 
 		// Get Start line number
-		$start  = $i = max(1, ($line - floor($lines * 2 / 3)));
+		$start = $i = max(1, ($line - floor($lines * 2 / 3)));
 
 		while (--$i >= 1)
 		{
@@ -225,16 +225,16 @@ class RedDebugHelper
 			}
 		}
 
-		$source = array_slice($source, $start, $lines, true);
+		$source  = array_slice($source, $start, $lines, true);
 		$max_len = strlen(count($source));
 
 		foreach ($source as $l => $c)
 		{
 			$spans += substr_count($c, '<span') - substr_count($c, '</span');
-			$s = str_replace(array("\r", "\n"), array('', ''), $c);
+			$s      = str_replace(array("\r", "\n"), array('', ''), $c);
 			preg_match_all('#<[^>]+>#', $c, $tags);
 
-			$class = $l == $start ? 'line line-start':'line';
+			$class = $l == $start ? 'line line-start' : 'line';
 
 			if ($l == $line)
 			{

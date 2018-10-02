@@ -28,7 +28,7 @@ class RedDebugScreen
 	private $directory = null;
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 * @since version
 	 */
 	public $jQuery = false;
@@ -72,9 +72,9 @@ class RedDebugScreen
 	public function render($exception)
 	{
 		$panels = $this->panels;
-		$info = array_filter($this->info);
+		$info   = array_filter($this->info);
 		$source = JUri::base();
-		$title = $exception instanceof ErrorException ? RedDebugHelper::errorTypeToString($exception->getSeverity()) : get_class($exception);
+		$title  = $exception instanceof ErrorException ? RedDebugHelper::errorTypeToString($exception->getSeverity()) : get_class($exception);
 
 		require $this->directory . '/screen/screen.php';
 	}

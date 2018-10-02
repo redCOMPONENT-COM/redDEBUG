@@ -17,8 +17,8 @@ defined('_JEXEC') or die;
 		</thead>
 		<tbody>
 
-		<?php foreach($data AS $type => $events): ?>
-			<?php foreach($events AS $event => $info): ?>
+		<?php foreach ($data AS $type => $events): ?>
+			<?php foreach ($events AS $event => $info): ?>
 				<tr>
 					<td>
 						<?php echo $type;?>
@@ -37,7 +37,7 @@ defined('_JEXEC') or die;
 									<td>Memory</td>
 								</tr>
 							</thead>
-							<?php foreach($info AS $key => $row): ?>
+							<?php foreach ($info AS $key => $row): ?>
 								<?php $marks = $row->profile->getMarks(); ?>
 								<tr>
 									<td>
@@ -49,7 +49,8 @@ defined('_JEXEC') or die;
 											$data = RedDebugHelper::MultiArrayToSingleArray($row->args, '$args');
 										?>
 											<table class="table table-bordered table-args">
-											<?php foreach ($data AS $key => $val): if(empty($val)): continue; endif; ?>
+											<?php foreach ($data AS $key => $val): if (empty($val)): continue;
+											endif; ?>
 												<tr>
 													<td><?php echo $key; ?></td>
 													<td title="<?php echo htmlentities($val);?>"><?php echo htmlentities(substr($val, 0, 50)); ?></td>
@@ -64,7 +65,8 @@ defined('_JEXEC') or die;
 											$data = RedDebugHelper::MultiArrayToSingleArray($row->value, 'Array');
 											?>
 											<table class="table table-bordered table-args">
-												<?php foreach ($data AS $key => $val): if(empty($val)): continue; endif; ?>
+												<?php foreach ($data AS $key => $val): if (empty($val)): continue;
+												endif; ?>
 													<tr>
 														<td><?php echo $key; ?></td>
 														<td title="<?php echo htmlentities($val);?>"><?php echo htmlentities(substr($val, 0, 50)); ?></td>

@@ -2,7 +2,7 @@
 <extension type="package" version="1.6" method="upgrade">
 	<name>redDEBUG Package</name>
 	<author>redCOMPONENT</author>
- 	<creationDate>March 2018</creationDate>
+ 	<creationDate>October 2018</creationDate>
  	<packagename>reddebug</packagename>
  	<version>1.1.0</version>
 	<releaseName>beta1</releaseName>

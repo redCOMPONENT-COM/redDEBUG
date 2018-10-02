@@ -2,13 +2,13 @@
 <extension type="library" method="upgrade" version="2.5">
 	<name>redDEBUG - Libraries</name>
 	<libraryname>reddebug</libraryname>
-	<creationDate>March 2018</creationDate>
+	<creationDate>October 2018</creationDate>
 	<author>redCOMPONENT</author>
 	<authorEmail>email@redcomponent.com</authorEmail>
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later, see LICENSE.</license>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<description>redDEBUG Diagnostic Tool Library</description>
 	<files>
 		<filename>index.html</filename>

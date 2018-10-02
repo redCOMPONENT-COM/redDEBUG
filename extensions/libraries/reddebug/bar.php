@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 class RedDebugBar
 {
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $hasRun = false;
 
@@ -35,7 +35,7 @@ class RedDebugBar
 	public function render()
 	{
 		$obLevel = ob_get_level();
-		$panels = array();
+		$panels  = array();
 
 		if ($this->hasRun)
 		{
@@ -50,20 +50,21 @@ class RedDebugBar
 			 * fix id to htmlID
 			 */
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id);
-			$class = get_class($panel);
+			$class  = get_class($panel);
 
 			try
 			{
-				$panel->directory	= $this->directory;
-				$tab				= (string) $panel->getTab();
-				$panelHtml			= $tab ? (string) $panel->getPanel() : null;
-				$panels[]			= array(
+				$panel->directory = $this->directory;
+				$tab              = (string) $panel->getTab();
+				$panelHtml        = $tab ? (string) $panel->getPanel() : null;
+				$panels[]         = array(
 					'id' => $idHtml,
 					'tab' => $tab,
 					'class' => $class,
 					'panel' => $panelHtml
 				);
 			}
+
 			// If exception so give us some report into debugbar
 			catch (Exception $e)
 			{
@@ -137,7 +138,7 @@ class RedDebugBar
 			foreach ($old_panels as $panel)
 			{
 				$panel['id'] .= '-' . $id;
-				$panels[] = $panel;
+				$panels[]     = $panel;
 			}
 		}
 

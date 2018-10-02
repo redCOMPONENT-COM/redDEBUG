@@ -66,7 +66,7 @@ class RedDebugJoomlaView extends JObject
 		catch (Exception $e)
 		{
 			$update_time = filemtime(JPATH_LIBRARIES . '/cms/module/helper.php');
-			$code_file = JPATH_CACHE . '/view_helper.php';
+			$code_file   = JPATH_CACHE . '/view_helper.php';
 			$code_update = file_exists($code_file) ? filemtime($code_file) : 0;
 
 			if ($update_time > $code_update)

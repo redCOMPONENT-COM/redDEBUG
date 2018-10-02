@@ -22,8 +22,12 @@ ob_start();
  */
 ?>
 <div id="redDebug-panel">
-	<?php foreach ($panels as $panel): if (!empty($panel['previous'])) continue; ?>
-		<?php if(!empty($panel['panel']) && $panel['panel'] != null): ?>
+	<?php foreach ($panels as $panel): if (!empty($panel['previous']))
+		{
+			continue;
+} ?>
+
+		<?php if (!empty($panel['panel']) && $panel['panel'] != null): ?>
 			<div aria-labelledby="" aria-hidden="true" class="modal reddebug-panel <?php echo trim($panel['class']) ?>" id="redDebug-panel-<?php echo $panel['id'] ?>">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -35,7 +39,8 @@ ob_start();
 						</h4>
 					</div>
 					<div class="modal-body">
-						<?php if ($panel['panel']): echo $panel['panel']; endif; ?>
+						<?php if ($panel['panel']): echo $panel['panel'];
+						endif; ?>
 					</div>
 				</div>
 			</div>
@@ -54,8 +59,13 @@ ob_start();
 				<img src="data:image/png;base64,<?php echo base64_encode(file_get_contents(__DIR__ . '/../reddebug_65x20.png')); ?>" alt="*Logo*" />
 			</a>
 		</li>
-		<?php foreach ($panels as $panel): if (!$panel['tab']) continue; ?>
-			<?php if (!empty($panel['previous'])): echo '</ul><ul class="reddebug-previous">'; endif; ?>
+		<?php foreach ($panels as $panel): if (!$panel['tab'])
+			{
+				continue;
+		} ?>
+
+			<?php if (!empty($panel['previous'])): echo '</ul><ul class="reddebug-previous">';
+			endif; ?>
 			<li>
 				<?php if ($panel['panel']): ?>
 					<a href="#" rel="<?php echo $panel['id'] ?>">

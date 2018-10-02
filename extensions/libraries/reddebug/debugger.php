@@ -18,7 +18,7 @@ class RedDebugDebugger
 	private static $instance;
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	private $enable;
 
@@ -28,7 +28,7 @@ class RedDebugDebugger
 	private $time;
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	private $done;
 
@@ -192,7 +192,7 @@ class RedDebugDebugger
 	 * @param   int     $line      Line
 	 * @param   string  $context   Content
 	 *
-	 * @return  bool
+	 * @return  boolean
 	 *
 	 * @throws ErrorException
 	 */
@@ -227,14 +227,14 @@ class RedDebugDebugger
 
 			if (RedDebugHelper::findTrace(debug_backtrace($debug), '*::__toString'))
 			{
-				$previous   = isset($context['e']) && $context['e'] instanceof Exception ? $context['e'] : null;
-				$exception  = new ErrorException($message, 0, $severity, $file, $line, $previous);
+				$previous           = isset($context['e']) && $context['e'] instanceof Exception ? $context['e'] : null;
+				$exception          = new ErrorException($message, 0, $severity, $file, $line, $previous);
 				$exception->context = $context;
 
 				$this->exceptionHandler($exception);
 			}
 
-			$exception = new ErrorException($message, 0, $severity, $file, $line);
+			$exception          = new ErrorException($message, 0, $severity, $file, $line);
 			$exception->context = $context;
 
 			throw $exception;

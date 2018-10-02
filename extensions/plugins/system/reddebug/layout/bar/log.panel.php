@@ -7,7 +7,7 @@ defined('_JEXEC') or die;
 ?>
 <div>
 	<table class="table">
-		<?php foreach($data as $category => $entries): ?>
+		<?php foreach ($data as $category => $entries): ?>
 			<?php if (empty($entries)): ?>
 				<?php continue; ?>
 			<?php endif; ?>
@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 			</tr>
 			<?php foreach ($entries as $entry): ?>
 				<?php
-				$log = $entry['entry'];
+				$log    = $entry['entry'];
 				$debugs = array_reverse($entry['debug']);
 				?>
 			<tr>
