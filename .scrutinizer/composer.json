@@ -4,8 +4,7 @@
     "vortrixs/composer-scrutinizer-plugin": "~1.0.0",
     "squizlabs/php_codesniffer": "2.9.1",
     "joomla/coding-standards": "v1.4.1",
-    "joomla/joomla-cms": "3.6.5",
-    "vortrixs/joomla-namespace-checker": "1.0.0"
+    "joomla/joomla-cms": "3.6.5"
   },
   "scripts": {
     "phpcs": "phpcs -n --standard=./vendor/joomla/coding-standards/Joomla/ruleset.xml",
@@ -20,9 +19,6 @@
       "phpcs": [
         "squizlabs/php_codesniffer",
         "joomla/coding-standards"
-      ],
-      "namespace": [
-        "vortrixs/joomla-namespace-checker"
       ]
     }
   },

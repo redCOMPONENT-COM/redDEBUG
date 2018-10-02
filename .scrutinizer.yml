@@ -37,9 +37,3 @@ build:
       - cd ./code/.scrutinizer/
       - composer install
       - composer phpcs -- ../extensions/
-    namespace:
-      commands:
-      - checkout-code ~/code
-      - cd ./code/.scrutinizer/
-      - composer install
-      - composer jnsc -- ../extensions
