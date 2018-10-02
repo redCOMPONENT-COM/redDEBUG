@@ -1,0 +1,53 @@
+filter:
+  paths:
+  - 'extensions/'
+  dependency_paths:
+  - '.scrutinizer/vendor/'
+build:
+  nodes:
+    analysis:
+      dependencies:
+        override:
+        - cd .scrutinizer/
+        - HASH=$(sha1sum composer.lock | awk '{print $1}')
+        -
+          command: restore-from-cache repository "analysis-$HASH"
+          only_if: exists-in-cache repository "analysis-$HASH"
+        -
+          command: composer install
+          not_if: exists-in-cache repository "analysis-$HASH"
+        -
+          command: store-in-cache repository "analysis-$(sha1sum composer.lock | awk '{print $1}')" vendor/
+          not_if: exists-in-cache repository "analysis-$HASH"
+        - cd ../
+        after:
+        - composer require --no-update squizlabs/php_codesniffer:2.* && composer update --no-dev
+
+      tests:
+        before:
+        -
+          command: phpcs-run --standard=.scrutinizer/vendor/joomla/coding-standards/Joomla/ruleset.xml extensions/
+          use_website_config: false
+        override:
+        - js-scrutinizer-run
+        - php-scrutinizer-run
+    phpcs:
+      commands:
+      - checkout-code ~/code
+      - cd ./code/.scrutinizer/
+      - composer install
+      - composer phpcs -- ../cli/com_reditem/
+      - composer phpcs -- ../component/
+      - composer phpcs -- ../libraries/reditem/
+      - composer phpcs -- ../modules/
+      - composer phpcs -- ../plugins/
+    namespace:
+      commands:
+      - checkout-code ~/code
+      - cd ./code/.scrutinizer/
+      - composer install
+      - composer jnsc -- ../cli/com_reditem/
+      - composer jnsc -- ../component/
+      - composer jnsc -- --exclude=/reditem/helper/channels.php,/reditem/src/Entity/Joomla/Extension/Plugin.php ../libraries/
+      - composer jnsc -- ../modules/
+      - composer jnsc -- --exclude=/osmap/aesir/aesir.php ../plugins/
