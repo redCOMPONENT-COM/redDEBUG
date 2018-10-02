@@ -36,18 +36,10 @@ build:
       - checkout-code ~/code
       - cd ./code/.scrutinizer/
       - composer install
-      - composer phpcs -- ../cli/com_reditem/
-      - composer phpcs -- ../component/
-      - composer phpcs -- ../libraries/reditem/
-      - composer phpcs -- ../modules/
-      - composer phpcs -- ../plugins/
+      - composer phpcs -- ../extensions/
     namespace:
       commands:
       - checkout-code ~/code
       - cd ./code/.scrutinizer/
       - composer install
-      - composer jnsc -- ../cli/com_reditem/
-      - composer jnsc -- ../component/
-      - composer jnsc -- --exclude=/reditem/helper/channels.php,/reditem/src/Entity/Joomla/Extension/Plugin.php ../libraries/
-      - composer jnsc -- ../modules/
-      - composer jnsc -- --exclude=/osmap/aesir/aesir.php ../plugins/
+      - composer jnsc -- ../extensions
