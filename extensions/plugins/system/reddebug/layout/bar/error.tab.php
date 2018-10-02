@@ -9,9 +9,12 @@ if (empty($data))
 {
 	return;
 }
+
+$sum = array_sum($data)
+
 ?>
 <span class="reddebug-errorbox">
 	<span class="reddebug-label">
-		<?php echo $sum = array_sum($data), $sum > 1 ? ' errors' : ' error' ?>
+		<?php echo $sum > 1 ? ' errors' : ' error' ?>
 	</span>
 </span>
