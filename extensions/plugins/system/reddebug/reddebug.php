@@ -104,6 +104,7 @@ class PlgSystemRedDebug extends JPlugin
 		$app     = JFactory::getApplication();
 		$session = JFactory::getSession();
 		$classes = $session->get('joomlaClasses', array(), 'redDebug');
+		RedDebugJoomlaDispatcher::getInstance();
 
 		static::$reset = $app->input->get('reset_class_files', !isset($classes['JModuleHelper']));
 
