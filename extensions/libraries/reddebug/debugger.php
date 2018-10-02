@@ -13,42 +13,50 @@ defined('_JEXEC') or die;
 class RedDebugDebugger
 {
 	/**
-	 * @var RedDebugDebugger
+	 * @var    RedDebugDebugger
+	 * @since  1.0.0
 	 */
 	private static $instance;
 
 	/**
-	 * @var boolean
+	 * @var    boolean
+	 * @since  1.0.0
 	 */
 	private $enable;
 
 	/**
-	 * @var float
+	 * @var    float
+	 * @since  1.0.0
 	 */
 	private $time;
 
 	/**
-	 * @var boolean
+	 * @var    boolean
+	 * @since  1.0.0
 	 */
 	private $done;
 
 	/**
-	 * @var mixed
+	 * @var    mixed
+	 * @since  1.0.0
 	 */
 	private $screen;
 
 	/**
-	 * @var RedDebugBar
+	 * @var    RedDebugBar
+	 * @since  1.0.0
 	 */
 	private $bar;
 
 	/**
-	 * @var  string
+	 * @var    string
+	 * @since  1.0.0
 	 */
 	public $directory;
 
 	/**
-	 * @var array
+	 * @var    array
+	 * @since  1.0.0
 	 */
 	public static $onFatalError = array();
 
@@ -56,16 +64,20 @@ class RedDebugDebugger
 	 * getInstance
 	 *
 	 * @return RedDebugDebugger
+	 * @since  1.0.0
 	 */
 	static public function getInstance()
 	{
-		return (self::$instance instanceof self ? self::$instance : (self::$instance = new self));
+		self::$instance = self::$instance instanceof self ? self::$instance : (new self);
+
+		return self::$instance;
 	}
 
 	/**
 	 * getTime
 	 *
 	 * @return float
+	 * @since  1.0.0
 	 */
 	public function getTime()
 	{
@@ -76,6 +88,7 @@ class RedDebugDebugger
 	 * enable
 	 *
 	 * @return void
+	 * @since  1.0.0
 	 */
 	public function enable()
 	{
@@ -117,6 +130,7 @@ class RedDebugDebugger
 	 * shutdownHandler
 	 *
 	 * @return void
+	 * @since  1.0.0
 	 */
 	public function shutdownHandler()
 	{
@@ -142,6 +156,7 @@ class RedDebugDebugger
 	 * @param   bool   $exit       Exit
 	 *
 	 * @return void
+	 * @since  1.0.0
 	 */
 	public function exceptionHandler($exception, $exit = true)
 	{
@@ -190,11 +205,11 @@ class RedDebugDebugger
 	 * @param   string  $message   Message
 	 * @param   string  $file      File
 	 * @param   int     $line      Line
-	 * @param   string  $context   Content
+	 * @param   mixed   $context   Content
 	 *
 	 * @return  boolean
-	 *
-	 * @throws ErrorException
+	 * @since   1.0.0
+	 * @throws  ErrorException
 	 */
 	public function errorHandler($severity, $message, $file, $line, $context)
 	{
@@ -227,15 +242,13 @@ class RedDebugDebugger
 
 			if (RedDebugHelper::findTrace(debug_backtrace($debug), '*::__toString'))
 			{
-				$previous           = isset($context['e']) && $context['e'] instanceof Exception ? $context['e'] : null;
-				$exception          = new ErrorException($message, 0, $severity, $file, $line, $previous);
-				$exception->context = $context;
+				$previous  = isset($context['e']) && $context['e'] instanceof Exception ? $context['e'] : null;
+				$exception = new ErrorException($message, 0, $severity, $file, $line, $previous);
 
 				$this->exceptionHandler($exception);
 			}
 
-			$exception          = new ErrorException($message, 0, $severity, $file, $line);
-			$exception->context = $context;
+			$exception = new ErrorException($message, 0, $severity, $file, $line);
 
 			throw $exception;
 		}
@@ -259,6 +272,7 @@ class RedDebugDebugger
 	 * getRedScreen
 	 *
 	 * @return RedDebugScreen
+	 * @since  1.0.0
 	 */
 	public function getRedScreen()
 	{
@@ -275,6 +289,7 @@ class RedDebugDebugger
 	 * getBar
 	 *
 	 * @return RedDebugBar
+	 * @since  1.0.0
 	 */
 	public function getBar()
 	{

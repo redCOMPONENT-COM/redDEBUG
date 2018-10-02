@@ -13,6 +13,10 @@ defined('_JEXEC') or die;
  */
 class RedDebugJoomlaModule
 {
+	/**
+	 * @var    array
+	 * @since  1.0.0
+	 */
 	static private $logger;
 
 	/**
@@ -23,6 +27,8 @@ class RedDebugJoomlaModule
 	 * @param   string  $filename  FileName
 	 *
 	 * @return void
+	 * @since  1.0.0
+	 * @throws \Exception
 	 */
 	public static function changeJoomlaCode($filename)
 	{
@@ -51,34 +57,37 @@ class RedDebugJoomlaModule
 		{
 			if (!@eval("return true;"))
 			{
-				throw new Exception('PHP');
+				throw new \Exception('PHP');
 			}
 
 			eval($code);
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
-			$update_time = filemtime($filename);
-			$code_file   = JPATH_CACHE . '/module_helper.php';
-			$code_update = file_exists($code_file) ? filemtime($code_file) : 0;
+			$updateTime = filemtime($filename);
+			$codeFile   = JPATH_CACHE . '/module_helper.php';
+			$codeUpdate = file_exists($codeFile) ? filemtime($codeFile) : 0;
 
-			if ($update_time > $code_update)
+			if ($updateTime > $codeUpdate)
 			{
-				file_put_contents($code_file, "<?php \n" . $code);
+				file_put_contents($codeFile, "<?php \n" . $code);
 			}
 
-			include_once $code_file;
+			include_once $codeFile;
 		}
 	}
 
 	/**
 	 * debugger
 	 *
-	 * @param   object  $module  Module
+	 * @param   object  $module   Module
+	 * @param   string  $when     When it's executed (before/after)
+	 * @param   string  $content  Resulting content (after)
 	 *
-	 * @return false
+	 * @return  false
+	 * @since   1.0.0
 	 */
-	public static function debugger($module)
+	public static function debugger($module, $when = '', $content = '')
 	{
 		// Check that $module is a valid module object
 		if (!is_object($module) || !isset($module->module) || !isset($module->params))
@@ -115,6 +124,7 @@ class RedDebugJoomlaModule
 	 * getLog
 	 *
 	 * @return array
+	 * @since  1.0.0
 	 */
 	public static function getLog()
 	{
@@ -124,10 +134,11 @@ class RedDebugJoomlaModule
 	/**
 	 * renderModule
 	 *
-	 * @param   string  $module   Module
+	 * @param   object  $module   Module
 	 * @param   array   $attribs  Module attributes
 	 *
 	 * @return array
+	 * @since  1.0.0
 	 */
 	public static function renderModule($module, $attribs = array())
 	{

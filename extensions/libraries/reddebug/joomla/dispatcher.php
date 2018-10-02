@@ -12,11 +12,16 @@ defined('_JEXEC') or die;
  */
 class RedDebugJoomlaDispatcher extends JEventDispatcher
 {
+	/**
+	 * @var    array
+	 * @since  1.0.0
+	 */
 	static public $logger = array();
 	/**
 	 * getInstance
 	 *
-	 * @return RedRedubDispatcher
+	 * @return self
+	 * @since  1.0.0
 	 */
 	static public function getInstance()
 	{
@@ -50,7 +55,8 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	 *
 	 * @param   JEventDispatcher  $instance  JEventDispatcher
 	 *
-	 * @return void
+	 * @return  void
+	 * @since   1.0.0
 	 */
 	public function fixed($instance)
 	{
@@ -63,11 +69,12 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	/**
 	 * debugger
 	 *
-	 * @param   null  $plugin  Plugin
-	 * @param   null  $event   Events
-	 * @param   null  $args    Args
+	 * @param   JPlugin  $plugin  Plugin
+	 * @param   null     $event   Events
+	 * @param   null     $args    Args
 	 *
 	 * @return object
+	 * @since   1.0.0
 	 */
 	static public function debugger($plugin = null, $event = null, $args = null)
 	{
@@ -106,13 +113,15 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 		}
 
 		$isJObject = $plugin instanceof JPlugin;
-		$result    = self::$logger[$class][$event][] = (object) array(
+		$result    = (object) array(
 			'plugin'	=> $class,
 			'args'		=> $args,
 			'value'		=> null,
 			'profile'	=> $jProfile,
 			'type'		=> $isJObject ? $plugin->get('_type', null) : null
 		);
+
+		self::$logger[$class][$event][] = $result;
 
 		return $result;
 	}
@@ -124,9 +133,11 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	 * @param   string  $event  Event name
 	 * @param   array   $args   Gets an array of the function's argument list.
 	 *
-	 * @todo i have some idea to made this better in next version
 	 *
 	 * @return array
+	 * @since  1.0.0
+	 *
+	 * @todo i have some idea to made this better in next version
 	 */
 	public function trigger($event, $args = array())
 	{
