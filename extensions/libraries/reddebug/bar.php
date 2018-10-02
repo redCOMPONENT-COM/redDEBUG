@@ -13,17 +13,20 @@ defined('_JEXEC') or die;
 class RedDebugBar
 {
 	/**
-	 * @var boolean
+	 * @var    boolean
+	 * @since  1.0.0
 	 */
 	protected $hasRun = false;
 
 	/**
-	 * @var array
+	 * @var    array
+	 * @since  1.0.0
 	 */
 	protected $panel = array();
 
 	/**
-	 * @var null
+	 * @var    string
+	 * @since  1.0.0
 	 */
 	protected $directory = null;
 
@@ -31,6 +34,7 @@ class RedDebugBar
 	 * render
 	 *
 	 * @return  void
+	 * @since  1.0.0
 	 */
 	public function render()
 	{
@@ -96,21 +100,21 @@ class RedDebugBar
 		 *
 		 * why not using joomla session.
 		 * on some version of joomla or config joomla session is closed here in shutdown function.
-		 * so for fixed it we using php session
+		 * so to it we using php session
 		 */
 		if (session_id() === '')
 		{
-			@session_start();
+			session_start();
 		}
 
-		$session_debug = & $_SESSION['__REDDEBUG__']['debuggerbar'];
+		$sessionDebug = & $_SESSION['__REDDEBUG__']['debuggerbar'];
 
 		/**
 		 * if Location in header so we save data so we can see errors
 		 */
 		if (preg_match('#^Location:#im', implode("\n", headers_list())))
 		{
-			$session_debug[] = $panels;
+			$sessionDebug[] = $panels;
 
 			return;
 		}
@@ -118,12 +122,12 @@ class RedDebugBar
 		/**
 		 * Takes input in array and returns a new array with the order of the elements reversed.
 		 */
-		$list = array_reverse((array) $session_debug);
+		$list = array_reverse((array) $sessionDebug);
 
 		/**
 		 * run foreach to
 		 */
-		foreach ($list as $id => $old_panels)
+		foreach ($list as $id => $oldPanels)
 		{
 			$panels[] = array(
 				'tab' => '<span title="before redirect">previous</span>',
@@ -135,14 +139,14 @@ class RedDebugBar
 			/**
 			 * run all olds panels
 			 */
-			foreach ($old_panels as $panel)
+			foreach ($oldPanels as $panel)
 			{
 				$panel['id'] .= '-' . $id;
 				$panels[]     = $panel;
 			}
 		}
 
-		$session_debug = null;
+		$sessionDebug = null;
 
 		/**
 		 * Include file
@@ -156,6 +160,7 @@ class RedDebugBar
 	 * @param   string  $name  Name
 	 *
 	 * @return  RedDebugPanelDefault
+	 * @since   1.0.0
 	 */
 	public function getPanel($name)
 	{
@@ -169,10 +174,13 @@ class RedDebugBar
 	 * @param   string                  $name      Name
 	 *
 	 * @return RedDebugPanelDefault
+	 * @since  1.0.0
 	 */
 	public function addPanel(RedDebugPanelInterface $instance, $name = null)
 	{
-		return $this->panel[$name] = $instance;
+		$this->panel[$name] = $instance;
+
+		return $this->panel[$name];
 	}
 
 	/**
@@ -181,6 +189,7 @@ class RedDebugBar
 	 * @param   string  $dir  Dir
 	 *
 	 * @return  void
+	 * @since   1.0.0
 	 */
 	public function addDirectory($dir)
 	{
