@@ -1,9 +1,13 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
+
+/**
+ * @var   array  $data  Data
+ */
 ?>
 <h1>
 	Modules
@@ -20,7 +24,7 @@ defined('_JEXEC') or die;
 				<td width="20%">params</td>
 			</tr>
 		</thead>
-		<?php foreach($data AS $type => $row): ?>
+		<?php foreach ($data AS $type => $row): ?>
 			<tr>
 				<td><?php echo $row->id;?></td>
 				<td><?php echo $row->title;?></td>
@@ -39,23 +43,22 @@ defined('_JEXEC') or die;
 					</table>
 				</td>
 				<td>
-					<textarea style="width: 200px; resize: none;"><?php echo htmlentities($row->content); ?></textarea>
+					<textarea title="row<?php echo $row->id ?>"
+							  style="width: 200px; resize: none;"><?php echo htmlentities($row->content); ?></textarea>
 				</td>
 				<td>
 					<?php
-					if(count($row->params) > 0)
-					{
+					if (count($row->params) > 0) :
 						echo '<table class="table table-bordered table-params">';
 
-						$data = RedDebugHelper::MultiArrayToSingleArray(json_decode($row->params), '$params');
+						$data = RedDebugHelper::multiArrayToSingleArray(json_decode($row->params), '$params');
 
-						foreach ($data AS $key => $val)
-						{
-							echo '<tr><td>' . $key .'</td><td>' . htmlentities($val) . '</td></tr>';
-						}
+						foreach ($data AS $key => $val) :
+							echo '<tr><td>' . $key . '</td><td>' . htmlentities($val) . '</td></tr>';
+						endforeach;
 
 						echo '</table>';
-					}
+					endif;
 
 					?>
 				</td>

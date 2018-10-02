@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
@@ -9,7 +9,7 @@ defined('_JEXEC') or die;
 	<?php echo $this->title; ?>
 </h1>
 <table class="table default-panel table-bordered">
-	<?php foreach($data AS $key => $val): ?>
+	<?php foreach ($data AS $key => $val): ?>
 		<tr>
 			<td>
 				<?php echo htmlspecialchars($key, null, 'UTF-8'); ?>

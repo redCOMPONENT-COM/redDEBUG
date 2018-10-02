@@ -1,9 +1,13 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
+
+/**
+ * @var   array  $data  Data
+ */
 ?>
 <h1>Event</h1>
 <div>
@@ -17,8 +21,8 @@ defined('_JEXEC') or die;
 		</thead>
 		<tbody>
 
-		<?php foreach($data AS $type => $events): ?>
-			<?php foreach($events AS $event => $info): ?>
+		<?php foreach ($data AS $type => $events): ?>
+			<?php foreach ($events AS $event => $info): ?>
 				<tr>
 					<td>
 						<?php echo $type;?>
@@ -37,7 +41,7 @@ defined('_JEXEC') or die;
 									<td>Memory</td>
 								</tr>
 							</thead>
-							<?php foreach($info AS $key => $row): ?>
+							<?php foreach ($info AS $key => $row): ?>
 								<?php $marks = $row->profile->getMarks(); ?>
 								<tr>
 									<td>
@@ -46,12 +50,13 @@ defined('_JEXEC') or die;
 									<td>
 										<?php
 										if (count($row->args) > 0):
-											$data = RedDebugHelper::MultiArrayToSingleArray($row->args, '$args');
+											$data = RedDebugHelper::multiArrayToSingleArray($row->args, '$args');
 										?>
 											<table class="table table-bordered table-args">
-											<?php foreach ($data AS $key => $val): if(empty($val)): continue; endif; ?>
+											<?php foreach ($data AS $key2 => $val): if (empty($val)): continue;
+											endif; ?>
 												<tr>
-													<td><?php echo $key; ?></td>
+													<td><?php echo $key2; ?></td>
 													<td title="<?php echo htmlentities($val);?>"><?php echo htmlentities(substr($val, 0, 50)); ?></td>
 												</tr>
 											<?php endforeach; ?>
@@ -61,13 +66,16 @@ defined('_JEXEC') or die;
 									<td>
 										<?php
 										if (count($row->value) > 0):
-											$data = RedDebugHelper::MultiArrayToSingleArray($row->value, 'Array');
+											$data = RedDebugHelper::multiArrayToSingleArray($row->value, 'Array');
 											?>
 											<table class="table table-bordered table-args">
-												<?php foreach ($data AS $key => $val): if(empty($val)): continue; endif; ?>
+												<?php foreach ($data AS $key3 => $val): if (empty($val)): continue;
+												endif; ?>
 													<tr>
-														<td><?php echo $key; ?></td>
-														<td title="<?php echo htmlentities($val);?>"><?php echo htmlentities(substr($val, 0, 50)); ?></td>
+														<td><?php echo $key3; ?></td>
+														<td
+															title="<?php echo htmlentities($val);?>"><?php echo htmlentities(substr($val, 0, 50)); ?>
+														</td>
 													</tr>
 												<?php endforeach; ?>
 											</table>

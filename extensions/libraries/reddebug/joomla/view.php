@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
@@ -8,18 +8,28 @@ defined('_JEXEC') or die;
 /**
  * Class RedDebugJoomlaView
  *
- * @since  1.0
+ * @since  1.0.0
  */
 class RedDebugJoomlaView extends JObject
 {
+	/**
+	 * @var     self
+	 * @since   1.0.0
+	 */
 	static protected $instance = null;
 
+	/**
+	 * @var     array
+	 * @since   1.0.0
+	 */
 	static protected $view;
 
 	/**
 	 * getInstance
 	 *
-	 * @return RedDebugJoomlaView
+	 * @return  RedDebugJoomlaView
+	 * @since   1.0.0
+	 * @throws  \Exception
 	 */
 	static public function getInstance()
 	{
@@ -33,9 +43,14 @@ class RedDebugJoomlaView extends JObject
 
 	/**
 	 * Constructor
+	 *
+	 * @since   1.0.0
+	 * @throws  \Exception
 	 */
 	public function __construct()
 	{
+		parent::__construct();
+
 		$code = file_get_contents(JPATH_LIBRARIES . '/legacy/view/legacy.php');
 
 		$code = strtr(
@@ -58,23 +73,23 @@ class RedDebugJoomlaView extends JObject
 		{
 			if (!@eval("return true;"))
 			{
-				throw new Exception('PHP');
+				throw new \Exception('PHP');
 			}
 
 			eval($code);
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
-			$update_time = filemtime(JPATH_LIBRARIES . '/cms/module/helper.php');
-			$code_file = JPATH_CACHE . '/view_helper.php';
-			$code_update = file_exists($code_file) ? filemtime($code_file) : 0;
+			$updateTime = filemtime(JPATH_LIBRARIES . '/cms/module/helper.php');
+			$codeFile   = JPATH_CACHE . '/view_helper.php';
+			$codeUpdate = file_exists($codeFile) ? filemtime($codeFile) : 0;
 
-			if ($update_time > $code_update)
+			if ($updateTime > $codeUpdate)
 			{
-				file_put_contents($code_file, "<?php \n" . $code);
+				file_put_contents($codeFile, "<?php \n" . $code);
 			}
 
-			include_once $code_file;
+			include_once $codeFile;
 		}
 	}
 
@@ -84,6 +99,7 @@ class RedDebugJoomlaView extends JObject
 	 * @param   null  $tpl  Tpl
 	 *
 	 * @return  void
+	 * @since   1.0.0
 	 */
 	public function display($tpl = null)
 	{
@@ -94,7 +110,8 @@ class RedDebugJoomlaView extends JObject
 	/**
 	 * getView
 	 *
-	 * @return mixed
+	 * @return  mixed
+	 * @since   1.0.0
 	 */
 	public function getView()
 	{

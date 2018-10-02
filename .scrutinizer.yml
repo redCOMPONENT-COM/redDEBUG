@@ -1,0 +1,39 @@
+filter:
+  paths:
+  - 'extensions/'
+  dependency_paths:
+  - '.scrutinizer/vendor/'
+build:
+  nodes:
+    analysis:
+      dependencies:
+        override:
+        - cd .scrutinizer/
+        - HASH=$(sha1sum composer.lock | awk '{print $1}')
+        -
+          command: restore-from-cache repository "analysis-$HASH"
+          only_if: exists-in-cache repository "analysis-$HASH"
+        -
+          command: composer install
+          not_if: exists-in-cache repository "analysis-$HASH"
+        -
+          command: store-in-cache repository "analysis-$(sha1sum composer.lock | awk '{print $1}')" vendor/
+          not_if: exists-in-cache repository "analysis-$HASH"
+        - cd ../
+        after:
+        - composer require --no-update squizlabs/php_codesniffer:2.* && composer update --no-dev
+
+      tests:
+        before:
+        -
+          command: phpcs-run --standard=.scrutinizer/vendor/joomla/coding-standards/Joomla/ruleset.xml extensions/
+          use_website_config: false
+        override:
+        - js-scrutinizer-run
+        - php-scrutinizer-run
+    phpcs:
+      commands:
+      - checkout-code ~/code
+      - cd ./code/.scrutinizer/
+      - composer install
+      - composer phpcs -- ../extensions/

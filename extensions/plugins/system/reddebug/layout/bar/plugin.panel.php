@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
@@ -10,11 +10,11 @@ defined('_JEXEC') or die;
 	Plugin
 </h1>
 <table class="table">
-	<?php foreach($data AS $type => $plugins): ?>
+	<?php foreach ($data AS $type => $plugins): ?>
 		<tr>
 			<td colspan="4"><h1 class="text-center"><?php echo $type;?></h1></td>
 		</tr>
-		<?php foreach($plugins AS $pluginname => $row): ?>
+		<?php foreach ($plugins AS $pluginname => $row): ?>
 			<tr id="view">
 				<td style="width: 20%"><?php echo $type;?></td>
 				<td style="width: 50%">
@@ -33,7 +33,7 @@ defined('_JEXEC') or die;
 						</tr>
 						</thead>
 						<tbody>
-						<?php foreach($row AS $name => $info): ?>
+						<?php foreach ($row AS $name => $info): ?>
 							<tr>
 								<td><?php echo $name; ?></td>
 								<td><?php echo $info['count']; ?></td>

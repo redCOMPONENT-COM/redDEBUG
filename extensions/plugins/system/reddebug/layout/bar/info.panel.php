@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
@@ -38,7 +38,7 @@ $info = array_filter(
 				Copyright
 			</td>
 			<td>
-				Copyright (C) 2015 - 2015 <a target="_blank" href="http://redcomponent.com">redcomponent.com</a>. All rights reserved.
+				Copyright (C) 2015 - 2018 <a target="_blank" href="http://redcomponent.com">redcomponent.com</a>. All rights reserved.
 			</td>
 		</tr>
 	</table>

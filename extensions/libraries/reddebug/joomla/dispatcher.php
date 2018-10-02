@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
@@ -8,21 +8,26 @@ defined('_JEXEC') or die;
 /**
  * Class RedRedubDispatcher
  *
- * @since  1
+ * @since  1.0.0
  */
 class RedDebugJoomlaDispatcher extends JEventDispatcher
 {
+	/**
+	 * @var    array
+	 * @since  1.0.0
+	 */
 	static public $logger = array();
 	/**
 	 * getInstance
 	 *
-	 * @return RedRedubDispatcher
+	 * @return self
+	 * @since  1.0.0
 	 */
 	static public function getInstance()
 	{
 		if (get_class(self::$instance) == 'JEventDispatcher')
 		{
-			$instance = self::$instance;
+			$instance       = self::$instance;
 			self::$instance = new self;
 			self::$instance->fixed(clone $instance);
 		}
@@ -50,7 +55,8 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	 *
 	 * @param   JEventDispatcher  $instance  JEventDispatcher
 	 *
-	 * @return void
+	 * @return  void
+	 * @since   1.0.0
 	 */
 	public function fixed($instance)
 	{
@@ -63,11 +69,12 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	/**
 	 * debugger
 	 *
-	 * @param   null  $plugin  Plugin
-	 * @param   null  $event   Events
-	 * @param   null  $args    Args
+	 * @param   JPlugin  $plugin  Plugin
+	 * @param   null     $event   Events
+	 * @param   null     $args    Args
 	 *
 	 * @return object
+	 * @since   1.0.0
 	 */
 	static public function debugger($plugin = null, $event = null, $args = null)
 	{
@@ -105,14 +112,16 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 			self::$logger[$class][$event] = array();
 		}
 
-		$isJObject  = $plugin instanceof JPlugin;
-		$result     = self::$logger[$class][$event][] = (object) array(
+		$isJObject = $plugin instanceof JPlugin;
+		$result    = (object) array(
 			'plugin'	=> $class,
 			'args'		=> $args,
 			'value'		=> null,
 			'profile'	=> $jProfile,
 			'type'		=> $isJObject ? $plugin->get('_type', null) : null
 		);
+
+		self::$logger[$class][$event][] = $result;
 
 		return $result;
 	}
@@ -124,9 +133,11 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 	 * @param   string  $event  Event name
 	 * @param   array   $args   Gets an array of the function's argument list.
 	 *
-	 * @todo i have some idea to made this better in next version
 	 *
 	 * @return array
+	 * @since  1.0.0
+	 *
+	 * @todo i have some idea to made this better in next version
 	 */
 	public function trigger($event, $args = array())
 	{
@@ -150,6 +161,8 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 		// Loop through all plugins having a method matching our event
 		foreach ($this->_methods[$event] as $key)
 		{
+			$value = '';
+
 			// Check if the plugin is present.
 			if (!isset($this->_observers[$key]))
 			{
@@ -163,7 +176,7 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 			if (is_object($this->_observers[$key]))
 			{
 				$args['event'] = $event;
-				$value = $this->_observers[$key]->update($args);
+				$value         = $this->_observers[$key]->update($args);
 			}
 			// Fire the event for a function based observer.
 			elseif (is_array($this->_observers[$key]))
@@ -171,7 +184,7 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 				$value = call_user_func_array($this->_observers[$key]['handler'], $args);
 			}
 
-			$debug->value = $value;
+			$debug->value      = $value;
 			$debug->args_after = $args;
 			$debug->profile->mark('after');
 

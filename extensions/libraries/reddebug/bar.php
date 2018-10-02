@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
@@ -8,22 +8,25 @@ defined('_JEXEC') or die;
 /**
  * Class RedDebugBar
  *
- * @since  1
+ * @since  1.0.0
  */
 class RedDebugBar
 {
 	/**
-	 * @var bool
+	 * @var    boolean
+	 * @since  1.0.0
 	 */
 	protected $hasRun = false;
 
 	/**
-	 * @var array
+	 * @var    array
+	 * @since  1.0.0
 	 */
 	protected $panel = array();
 
 	/**
-	 * @var null
+	 * @var    string
+	 * @since  1.0.0
 	 */
 	protected $directory = null;
 
@@ -31,11 +34,12 @@ class RedDebugBar
 	 * render
 	 *
 	 * @return  void
+	 * @since  1.0.0
 	 */
 	public function render()
 	{
 		$obLevel = ob_get_level();
-		$panels = array();
+		$panels  = array();
 
 		if ($this->hasRun)
 		{
@@ -50,20 +54,21 @@ class RedDebugBar
 			 * fix id to htmlID
 			 */
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id);
-			$class = get_class($panel);
+			$class  = get_class($panel);
 
 			try
 			{
-				$panel->directory	= $this->directory;
-				$tab				= (string) $panel->getTab();
-				$panelHtml			= $tab ? (string) $panel->getPanel() : null;
-				$panels[]			= array(
+				$panel->directory = $this->directory;
+				$tab              = (string) $panel->getTab();
+				$panelHtml        = $tab ? (string) $panel->getPanel() : null;
+				$panels[]         = array(
 					'id' => $idHtml,
 					'tab' => $tab,
 					'class' => $class,
 					'panel' => $panelHtml
 				);
 			}
+
 			// If exception so give us some report into debugbar
 			catch (Exception $e)
 			{
@@ -95,21 +100,21 @@ class RedDebugBar
 		 *
 		 * why not using joomla session.
 		 * on some version of joomla or config joomla session is closed here in shutdown function.
-		 * so for fixed it we using php session
+		 * so to it we using php session
 		 */
 		if (session_id() === '')
 		{
-			@session_start();
+			session_start();
 		}
 
-		$session_debug = & $_SESSION['__REDDEBUG__']['debuggerbar'];
+		$sessionDebug = & $_SESSION['__REDDEBUG__']['debuggerbar'];
 
 		/**
 		 * if Location in header so we save data so we can see errors
 		 */
 		if (preg_match('#^Location:#im', implode("\n", headers_list())))
 		{
-			$session_debug[] = $panels;
+			$sessionDebug[] = $panels;
 
 			return;
 		}
@@ -117,12 +122,12 @@ class RedDebugBar
 		/**
 		 * Takes input in array and returns a new array with the order of the elements reversed.
 		 */
-		$list = array_reverse((array) $session_debug);
+		$list = array_reverse((array) $sessionDebug);
 
 		/**
 		 * run foreach to
 		 */
-		foreach ($list as $id => $old_panels)
+		foreach ($list as $id => $oldPanels)
 		{
 			$panels[] = array(
 				'tab' => '<span title="before redirect">previous</span>',
@@ -134,14 +139,14 @@ class RedDebugBar
 			/**
 			 * run all olds panels
 			 */
-			foreach ($old_panels as $panel)
+			foreach ($oldPanels as $panel)
 			{
 				$panel['id'] .= '-' . $id;
-				$panels[] = $panel;
+				$panels[]     = $panel;
 			}
 		}
 
-		$session_debug = null;
+		$sessionDebug = null;
 
 		/**
 		 * Include file
@@ -155,6 +160,7 @@ class RedDebugBar
 	 * @param   string  $name  Name
 	 *
 	 * @return  RedDebugPanelDefault
+	 * @since   1.0.0
 	 */
 	public function getPanel($name)
 	{
@@ -168,10 +174,13 @@ class RedDebugBar
 	 * @param   string                  $name      Name
 	 *
 	 * @return RedDebugPanelDefault
+	 * @since  1.0.0
 	 */
 	public function addPanel(RedDebugPanelInterface $instance, $name = null)
 	{
-		return $this->panel[$name] = $instance;
+		$this->panel[$name] = $instance;
+
+		return $this->panel[$name];
 	}
 
 	/**
@@ -180,6 +189,7 @@ class RedDebugBar
 	 * @param   string  $dir  Dir
 	 *
 	 * @return  void
+	 * @since   1.0.0
 	 */
 	public function addDirectory($dir)
 	{

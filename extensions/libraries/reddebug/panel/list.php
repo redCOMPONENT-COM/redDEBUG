@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
@@ -8,7 +8,7 @@ defined('_JEXEC') or die;
 /**
  * Class RedDebugPanelList
  *
- * @since  1
+ * @since  1.0.0
  */
 class RedDebugPanelList implements RedDebugPanelInterface
 {
@@ -33,7 +33,7 @@ class RedDebugPanelList implements RedDebugPanelInterface
 	public $layout;
 
 	/**
-	 * @var int
+	 * @var integer
 	 */
 	public $count;
 
@@ -47,10 +47,10 @@ class RedDebugPanelList implements RedDebugPanelInterface
 	 */
 	public function __construct($title, $data=null, $count = null, $layout=null)
 	{
-		$this->title	= $title;
-		$this->count	= $count;
-		$this->data		= $data;
-		$this->layout	= $layout;
+		$this->title  = $title;
+		$this->count  = $count;
+		$this->data   = $data;
+		$this->layout = $layout;
 	}
 
 	/**
