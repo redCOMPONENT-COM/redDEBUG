@@ -47,6 +47,7 @@ tests/unit/phpunit.xml
 composer.lock
 composer.phar
 vendor/*
+.scrutinizer/vendor
 
 # Test related files
 /tests/system/servers/configdef.php
@@ -54,7 +55,6 @@ vendor/*
 /tests/acceptance.suite.yml
 codecept.phar
 tests/*/*Tester.php
-
 
 # Never ignore
 !.gitignore
