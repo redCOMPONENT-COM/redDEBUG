@@ -161,6 +161,8 @@ class RedDebugJoomlaDispatcher extends JEventDispatcher
 		// Loop through all plugins having a method matching our event
 		foreach ($this->_methods[$event] as $key)
 		{
+			$value = '';
+
 			// Check if the plugin is present.
 			if (!isset($this->_observers[$key]))
 			{

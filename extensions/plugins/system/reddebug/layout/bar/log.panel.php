@@ -4,13 +4,19 @@
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
+
+/**
+ * @var   array  $data  Data
+ */
 ?>
 <div>
 	<table class="table">
 		<?php foreach ($data as $category => $entries): ?>
-			<?php if (empty($entries)): ?>
-				<?php continue; ?>
-			<?php endif; ?>
+			<?php
+			if (empty($entries)) :
+				continue;
+			endif;
+			?>
 			<tr>
 				<td colspan="4"><h1 class="text-center"><?php echo $category ?> (<?php echo count($entries) ?>)</h1></td>
 			</tr>
@@ -82,18 +88,20 @@ defined('_JEXEC') or die;
 				</td>
 				<td width="50%">
 					<table class="table">
-						<thead>
-							<th>#</th>
-							<th>Line</th>
-							<th>Function</th>
-						</thead>
 						<tbody>
+							<tr>
+								<th>#</th>
+								<th>Line</th>
+								<th>Function</th>
+							</tr>
 						<?php foreach ($debugs as $i => $debug): ?>
-							<?php if (!isset($debug['line'])): ?>
-								<?php continue; ?>
-							<?php elseif ($debug['class'] == 'JLog'): ?>
-								<?php break; ?>
-							<?php else: ?>
+							<?php
+							if (!isset($debug['line'])) :
+								continue;
+							elseif ($debug['class'] == 'JLog'):
+								break;
+							else :
+							?>
 							<tr>
 								<td width="10px"><?php echo $i + 1; ?></td>
 								<td width="30%"><?php echo '<strong>' . $debug['class'] . '</strong>' . $debug['type'] . $debug['function'] ?>()</td>

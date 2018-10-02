@@ -4,6 +4,10 @@
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die;
+
+/**
+ * @var   array  $data  Data
+ */
 ?>
 <h1>Event</h1>
 <div>
@@ -49,10 +53,10 @@ defined('_JEXEC') or die;
 											$data = RedDebugHelper::multiArrayToSingleArray($row->args, '$args');
 										?>
 											<table class="table table-bordered table-args">
-											<?php foreach ($data AS $key => $val): if (empty($val)): continue;
+											<?php foreach ($data AS $key2 => $val): if (empty($val)): continue;
 											endif; ?>
 												<tr>
-													<td><?php echo $key; ?></td>
+													<td><?php echo $key2; ?></td>
 													<td title="<?php echo htmlentities($val);?>"><?php echo htmlentities(substr($val, 0, 50)); ?></td>
 												</tr>
 											<?php endforeach; ?>
@@ -65,11 +69,13 @@ defined('_JEXEC') or die;
 											$data = RedDebugHelper::multiArrayToSingleArray($row->value, 'Array');
 											?>
 											<table class="table table-bordered table-args">
-												<?php foreach ($data AS $key => $val): if (empty($val)): continue;
+												<?php foreach ($data AS $key3 => $val): if (empty($val)): continue;
 												endif; ?>
 													<tr>
-														<td><?php echo $key; ?></td>
-														<td title="<?php echo htmlentities($val);?>"><?php echo htmlentities(substr($val, 0, 50)); ?></td>
+														<td><?php echo $key3; ?></td>
+														<td
+															title="<?php echo htmlentities($val);?>"><?php echo htmlentities(substr($val, 0, 50)); ?>
+														</td>
 													</tr>
 												<?php endforeach; ?>
 											</table>
