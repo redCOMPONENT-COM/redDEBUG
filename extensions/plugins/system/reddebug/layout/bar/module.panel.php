@@ -51,7 +51,7 @@ defined('_JEXEC') or die;
 					if (count($row->params) > 0) :
 						echo '<table class="table table-bordered table-params">';
 
-						$data = RedDebugHelper::MultiArrayToSingleArray(json_decode($row->params), '$params');
+						$data = RedDebugHelper::multiArrayToSingleArray(json_decode($row->params), '$params');
 
 						foreach ($data AS $key => $val) :
 							echo '<tr><td>' . $key . '</td><td>' . htmlentities($val) . '</td></tr>';

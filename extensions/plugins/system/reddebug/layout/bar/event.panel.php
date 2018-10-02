@@ -46,7 +46,7 @@ defined('_JEXEC') or die;
 									<td>
 										<?php
 										if (count($row->args) > 0):
-											$data = RedDebugHelper::MultiArrayToSingleArray($row->args, '$args');
+											$data = RedDebugHelper::multiArrayToSingleArray($row->args, '$args');
 										?>
 											<table class="table table-bordered table-args">
 											<?php foreach ($data AS $key => $val): if (empty($val)): continue;
@@ -62,7 +62,7 @@ defined('_JEXEC') or die;
 									<td>
 										<?php
 										if (count($row->value) > 0):
-											$data = RedDebugHelper::MultiArrayToSingleArray($row->value, 'Array');
+											$data = RedDebugHelper::multiArrayToSingleArray($row->value, 'Array');
 											?>
 											<table class="table table-bordered table-args">
 												<?php foreach ($data AS $key => $val): if (empty($val)): continue;

@@ -399,13 +399,13 @@ class PlgSystemRedDebug extends JPlugin
 			{
 				$data = (object) RedDebugJoomlaView::getInstance()->getView();
 				unset($data->document);
-				$data = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($data));
+				$data = RedDebugHelper::multiArrayToSingleArray(RedDebugHelper::removeRecursion($data));
 			}
 			else
 			{
 				$class       = new ReflectionClass('JControllerLegacy');
 				$propsStatic = $class->getStaticProperties();
-				$data        = RedDebugHelper::MultiArrayToSingleArray(RedDebugHelper::removeRecursion($propsStatic));
+				$data        = RedDebugHelper::multiArrayToSingleArray(RedDebugHelper::removeRecursion($propsStatic));
 			}
 
 			if (count($data) > 0)
@@ -482,7 +482,7 @@ class PlgSystemRedDebug extends JPlugin
 		{
 			$jUser = JFactory::getUser();
 			$user  = get_object_vars($jUser);
-			$user  = RedDebugHelper::MultiArrayToSingleArray((object) $user, 'JUser');
+			$user  = RedDebugHelper::multiArrayToSingleArray((object) $user, 'JUser');
 
 			unset($user['password'], $user['password_clear']);
 
@@ -509,7 +509,7 @@ class PlgSystemRedDebug extends JPlugin
 		);
 
 		$request = array_merge(array('template' => JFactory::getApplication()->getTemplate()), $_REQUEST);
-		$request = RedDebugHelper::MultiArrayToSingleArray($request, '$_REQUEST');
+		$request = RedDebugHelper::multiArrayToSingleArray($request, '$_REQUEST');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_REQUEST_LABEL'),
@@ -577,7 +577,7 @@ class PlgSystemRedDebug extends JPlugin
 			'constants'
 		);
 
-		$server = RedDebugHelper::MultiArrayToSingleArray($_SERVER, '$_SERVER');
+		$server = RedDebugHelper::multiArrayToSingleArray($_SERVER, '$_SERVER');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_SERVER_LABEL'),
@@ -588,7 +588,7 @@ class PlgSystemRedDebug extends JPlugin
 			'server'
 		);
 
-		$sessionVars = RedDebugHelper::MultiArrayToSingleArray($_SESSION, '$_SESSION');
+		$sessionVars = RedDebugHelper::multiArrayToSingleArray($_SESSION, '$_SESSION');
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_SESSION_LABEL'),
@@ -602,7 +602,7 @@ class PlgSystemRedDebug extends JPlugin
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(
 				JText::_('PLG_SYSTEM_REDDEBUG_COOKIE_LABEL'),
-				RedDebugHelper::MultiArrayToSingleArray($_COOKIE, '$_COOKIE'),
+				RedDebugHelper::multiArrayToSingleArray($_COOKIE, '$_COOKIE'),
 				count($_COOKIE),
 				'default'
 			),
@@ -610,7 +610,7 @@ class PlgSystemRedDebug extends JPlugin
 		);
 
 		$configs = ini_get_all();
-		$configs = RedDebugHelper::MultiArrayToSingleArray($configs, 'INI');
+		$configs = RedDebugHelper::multiArrayToSingleArray($configs, 'INI');
 
 		$debug->getBar()->addPanel(
 			new RedDebugPanelList(

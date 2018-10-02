@@ -15,21 +15,23 @@ class RedDebugHelper
 	/**
 	 * findTrace
 	 *
-	 * @param   array   $trace   Trace
-	 * @param   string  $method  Method
-	 * @param   int     &$index  Index
+	 * @param   array    $trace   Trace
+	 * @param   string   $method  Method
+	 * @param   integer  $index   Index
 	 *
 	 * @return mixed
+	 * @since  1.0.0
 	 */
 	public static function findTrace(array $trace, $method, &$index = null)
 	{
-		$m = explode('::', $method);
+		$parts = explode('::', $method);
 
 		foreach ($trace as $i => $item)
 		{
-			$check = isset($item['function']) && $item['function'] === end($m);
-			$check = $check && isset($item['class']) === isset($m[1]);
-			$check = $check && (!isset($item['class']) || $item['class'] === $m[0] || $m[0] === '*' || is_subclass_of($item['class'], $m[0]));
+			$check = isset($item['function']) && $item['function'] === end($parts);
+			$check = $check && isset($item['class']) === isset($parts[1]);
+			$check = $check &&
+				(!isset($item['class']) || $item['class'] === $parts[0] || $parts[0] === '*' || is_subclass_of($item['class'], $parts[0]));
 
 			if ($check)
 			{
@@ -47,7 +49,8 @@ class RedDebugHelper
 	 *
 	 * @param   string  $string  String
 	 *
-	 * @return string
+	 * @return  string
+	 * @since   1.0.0
 	 */
 	public static function fixEncoding($string)
 	{
@@ -66,14 +69,15 @@ class RedDebugHelper
 	 *
 	 * @param   int  $code  Error Code
 	 *
-	 * @return string
+	 * @return  string
+	 * @since   1.0.0
 	 */
 	public static function errorTypeToString($code)
 	{
 		/**
 		 * Error Types get text from joomla language files
 		 */
-		$ErrorTypes = array(
+		$errorTypes = array(
 			E_ERROR				=> JText::_('PLG_SYSTEM_REDDEBUG_E_ERROR'),
 			E_USER_ERROR		=> JText::_('PLG_SYSTEM_REDDEBUG_E_USER_ERROR'),
 			E_RECOVERABLE_ERROR => JText::_('PLG_SYSTEM_REDDEBUG_E_RECOVERABLE_ERROR'),
@@ -91,26 +95,28 @@ class RedDebugHelper
 			E_USER_DEPRECATED	=> JText::_('PLG_SYSTEM_REDDEBUG_E_USER_DEPRECATED'),
 		);
 
-		return isset($ErrorTypes[$code]) ? $ErrorTypes[$code] : JText::_('E_UDEFINE');
+		return isset($errorTypes[$code]) ? $errorTypes[$code] : JText::_('E_UDEFINE');
 	}
 
 	/**
 	 * findJoomlaClassFile
 	 *
-	 * @param   string  $class            ClassName
-	 * @param   mixed   $default          DefaultValue
-	 * @param   mixed   &$extension_name  Extension Name
+	 * @param   string  $class          ClassName
+	 * @param   mixed   $default        DefaultValue
+	 * @param   mixed   $extensionName  Extension Name
 	 *
-	 * @return null|string
+	 * @return  null|string
+	 * @since   1.0.0
+	 * @throws  \Exception
 	 */
-	public static function findJoomlaClassFile($class, $default = null, &$extension_name = false)
+	public static function findJoomlaClassFile($class, $default = null, &$extensionName = false)
 	{
 		// Autoload class
 		if (class_exists($class, true))
 		{
-			$class          = new ReflectionClass($class);
-			$extension_name = $class->getExtensionName();
-			$filename       = $class->getFileName();
+			$class         = new ReflectionClass($class);
+			$extensionName = $class->getExtensionName();
+			$filename      = $class->getFileName();
 
 			return empty($filename) ? $default : $filename;
 		}
@@ -123,7 +129,8 @@ class RedDebugHelper
 	 *
 	 * @param   array  $list  List of ips
 	 *
-	 * @return boolean|integer
+	 * @return  boolean|integer
+	 * @since   1.0.0
 	 */
 	public static function checkDebugMode(array $list)
 	{
@@ -158,7 +165,8 @@ class RedDebugHelper
 	 * @param   int     $line   line number to show
 	 * @param   int     $lines  number of lines
 	 *
-	 * @return string|void
+	 * @return  string|null
+	 * @since   1.0.0
 	 */
 	public static function highlightFile($file = null, $line = null, $lines = null)
 	{
@@ -167,7 +175,7 @@ class RedDebugHelper
 
 		if (empty($source))
 		{
-			return;
+			return null;
 		}
 
 		$source = strtr(
@@ -206,32 +214,35 @@ class RedDebugHelper
 		$code   = '';
 		$spans  = 1;
 
-		is_null($lines) && $lines = count($source);
+		if (is_null($lines))
+		{
+			$lines = count($source);
+		}
 
 		// Get Start line number
-		$start = $i = max(1, ($line - floor($lines * 2 / 3)));
+		$count = max(1, ($line - floor($lines * 2 / 3)));
+		$start = $count;
 
-		while (--$i >= 1)
+		while (--$count >= 1)
 		{
-			if (preg_match('#.*(</?span[^>]*>)#', $source[$i], $m))
+			if (preg_match('#.*(</?span[^>]*>)#', $source[$count], $matches))
 			{
-				if ($m[1] !== '</span>')
+				if ($matches[1] !== '</span>')
 				{
 					$spans++;
-					$code .= $m[1];
+					$code .= $matches[1];
 				}
 
 				break;
 			}
 		}
 
-		$source  = array_slice($source, $start, $lines, true);
-		$max_len = strlen(count($source));
+		$source = array_slice($source, $start, $lines, true);
+		$maxLen = strlen(count($source));
 
 		foreach ($source as $l => $c)
 		{
 			$spans += substr_count($c, '<span') - substr_count($c, '</span');
-			$s      = str_replace(array("\r", "\n"), array('', ''), $c);
 			preg_match_all('#<[^>]+>#', $c, $tags);
 
 			$class = $l == $start ? 'line line-start' : 'line';
@@ -241,7 +252,7 @@ class RedDebugHelper
 				$code .= sprintf(
 					"<span class='%s highlight'>%s:</span><span class='highlight'>%s\n</span>%s",
 					$class,
-					str_pad($l, $max_len, "0", STR_PAD_LEFT),
+					str_pad($l, $maxLen, "0", STR_PAD_LEFT),
 					strip_tags($c),
 					implode('', $tags[0])
 				);
@@ -251,7 +262,7 @@ class RedDebugHelper
 				$code .= sprintf(
 					"<span class='%s'>%s:</span>%s\n",
 					$class,
-					str_pad($l, $max_len, "0", STR_PAD_LEFT),
+					str_pad($l, $maxLen, "0", STR_PAD_LEFT),
 					$c
 				);
 			}
@@ -265,10 +276,11 @@ class RedDebugHelper
 	/**
 	 * removeRecursion
 	 *
-	 * @param   object  &$object  Object
-	 * @param   array   &$stack   Stack
+	 * @param   object  $object  Object
+	 * @param   array   $stack   Stack
 	 *
 	 * @return string
+	 * @since  1.0.0
 	 */
 	public static function removeRecursion(&$object, &$stack = array())
 	{
@@ -293,37 +305,38 @@ class RedDebugHelper
 	}
 
 	/**
-	 * MultiArrayToSingleArray
+	 * multiArrayToSingleArray
 	 *
-	 * @param   array|object  $array       Array / Object
-	 * @param   string        $namespace   namespace
-	 * @param   array         &$new_array  New Output array
+	 * @param   array|object  $array      Array / Object
+	 * @param   string        $namespace  Namespace
+	 * @param   array         $newArray   New Output array
 	 *
-	 * @return array
+	 * @return  array
+	 * @since   1.0.0
 	 */
-	static public function MultiArrayToSingleArray($array, $namespace = '$this', &$new_array=array())
+	static public function multiArrayToSingleArray($array, $namespace = '$this', &$newArray = [])
 	{
-		$c = "%s->%s";
+		$temp = "%s->%s";
 
 		if (is_array($array))
 		{
-			$c = "%s[%s]";
+			$temp = "%s[%s]";
 		}
 
 		foreach ($array AS $key => $val)
 		{
-			$new_key = sprintf($c, $namespace, $key);
+			$newKey = sprintf($temp, $namespace, $key);
 
 			if (is_array($val) || is_object($val))
 			{
-				self::MultiArrayToSingleArray($val, $new_key, $new_array);
+				self::multiArrayToSingleArray($val, $newKey, $newArray);
 			}
 			else
 			{
-				$new_array[$new_key] = $val;
+				$newArray[$newKey] = $val;
 			}
 		}
 
-		return $new_array;
+		return $newArray;
 	}
 }
