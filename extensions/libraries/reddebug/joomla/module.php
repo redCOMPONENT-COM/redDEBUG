@@ -34,11 +34,22 @@ class RedDebugJoomlaModule
 	{
 		$code = file_get_contents($filename);
 
+		$moduleHelperReplace = [
+			'class ModuleHelper' => 'class ModuleHelper extends \RedDebugJoomlaModule'
+		];
+
+		if (file_exists(JPATH_SITE . '/libraries/cms/module/helper.php'))
+		{
+			$moduleHelperReplace = [
+				'abstract class JModuleHelper' => 'class JModuleHelper extends \RedDebugJoomlaModule'
+			];
+		}
+
 		$code = strtr(
 			$code,
-			array(
-				'abstract class JModuleHelper' => 'class JModuleHelper extends RedDebugJoomlaModule',
-				"renderModule(" => 'xRenderModule(&',
+			array_merge(
+				$moduleHelperReplace,
+				[ 'renderModule(' => 'xRenderModule(' ]
 			)
 		);
 
@@ -50,31 +61,16 @@ class RedDebugJoomlaModule
 			)
 		);
 
-		/**
-		 * Fix if you server not support for eval
-		 */
-		try
+		$updateTime = filemtime($filename);
+		$codeFile   = JPATH_CACHE . '/module_helper.php';
+		$codeUpdate = file_exists($codeFile) ? filemtime($codeFile) : 0;
+
+		if ($updateTime > $codeUpdate)
 		{
-			if (!@eval("return true;"))
-			{
-				throw new \Exception('PHP');
-			}
-
-			eval($code);
+			file_put_contents($codeFile, "<?php \n" . $code);
 		}
-		catch (\Exception $e)
-		{
-			$updateTime = filemtime($filename);
-			$codeFile   = JPATH_CACHE . '/module_helper.php';
-			$codeUpdate = file_exists($codeFile) ? filemtime($codeFile) : 0;
 
-			if ($updateTime > $codeUpdate)
-			{
-				file_put_contents($codeFile, "<?php \n" . $code);
-			}
-
-			include_once $codeFile;
-		}
+		include_once $codeFile;
 	}
 
 	/**

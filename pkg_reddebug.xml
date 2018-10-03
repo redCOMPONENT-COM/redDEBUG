@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="package" version="1.6" method="upgrade">
+<extension type="package" version="3.6" method="upgrade">
 	<name>redDEBUG Package</name>
 	<author>redCOMPONENT</author>
  	<creationDate>October 2018</creationDate>
  	<packagename>reddebug</packagename>
  	<version>2.0.0</version>
-	<releaseName>beta1</releaseName>
+	<releaseName/>
  	<description>redDEBUG Diagnostic tool</description>
  	<license>GNU General Public License version 2 or later, see LICENSE.</license>
 	<copyright>Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.</copyright>

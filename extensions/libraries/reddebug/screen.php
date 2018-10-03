@@ -13,23 +13,26 @@ defined('_JEXEC') or die;
 class RedDebugScreen
 {
 	/**
-	 * @var array
+	 * @var    array
+	 * @since  1.0.0
 	 */
 	public $info = array();
 
 	/**
-	 * @var array
+	 * @var    array
+	 * @since  1.0.0
 	 */
 	private $panels = array();
 
 	/**
-	 * @var null
+	 * @var    string
+	 * @since  1.0.0
 	 */
 	private $directory = null;
 
 	/**
-	 * @var boolean
-	 * @since version
+	 * @var    boolean
+	 * @since  1.0.0
 	 */
 	public $jQuery = false;
 
@@ -38,7 +41,8 @@ class RedDebugScreen
 	 *
 	 * @param   string  $dir  Directory
 	 *
-	 * @return void
+	 * @return  void
+	 * @since   1.0.0
 	 */
 	public function addDirectory($dir)
 	{
@@ -50,7 +54,8 @@ class RedDebugScreen
 	 *
 	 * @param   RedDebugPanelInterface  $panel  Panel
 	 *
-	 * @return RedDebugScreen
+	 * @return  RedDebugScreen
+	 * @since   1.0.0
 	 */
 	public function addPanel($panel)
 	{
@@ -68,6 +73,7 @@ class RedDebugScreen
 	 * @param   mixed  $exception  Error | Exception
 	 *
 	 * @return  void
+	 * @since   1.0.0
 	 */
 	public function render($exception)
 	{
