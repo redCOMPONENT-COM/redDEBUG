@@ -170,6 +170,11 @@ class RedDebugHelper
 	 */
 	public static function highlightFile($file = null, $line = null, $lines = null)
 	{
+		if (!file_exists($file))
+		{
+			return null;
+		}
+
 		// Get code in file
 		$source = file_get_contents($file);
 
@@ -214,18 +219,15 @@ class RedDebugHelper
 		$code   = '';
 		$spans  = 1;
 
-		if (is_null($lines))
-		{
-			$lines = count($source);
-		}
+		$lines = is_null($lines) ? count($source) : $lines;
 
 		// Get Start line number
-		$count = max(1, ($line - floor($lines * 2 / 3)));
-		$start = $count;
+		$counter = max(1, ($line - floor($lines * 2 / 3)));
+		$start   = $counter;
 
-		while (--$count >= 1)
+		while (--$counter >= 1)
 		{
-			if (preg_match('#.*(</?span[^>]*>)#', $source[$count], $matches))
+			if (preg_match('#.*(</?span[^>]*>)#', $source[$counter], $matches))
 			{
 				if ($matches[1] !== '</span>')
 				{
@@ -240,20 +242,20 @@ class RedDebugHelper
 		$source = array_slice($source, $start, $lines, true);
 		$maxLen = strlen(count($source));
 
-		foreach ($source as $l => $c)
+		foreach ($source as $line => $content)
 		{
-			$spans += substr_count($c, '<span') - substr_count($c, '</span');
-			preg_match_all('#<[^>]+>#', $c, $tags);
+			$spans += substr_count($content, '<span') - substr_count($content, '</span');
+			preg_match_all('#<[^>]+>#', $content, $tags);
 
-			$class = $l == $start ? 'line line-start' : 'line';
+			$class = ($line == $start) ? 'line line-start' : 'line';
 
-			if ($l == $line)
+			if ($line == $line)
 			{
 				$code .= sprintf(
 					"<span class='%s highlight'>%s:</span><span class='highlight'>%s\n</span>%s",
 					$class,
-					str_pad($l, $maxLen, "0", STR_PAD_LEFT),
-					strip_tags($c),
+					str_pad($line, $maxLen, "0", STR_PAD_LEFT),
+					strip_tags($content),
 					implode('', $tags[0])
 				);
 			}
@@ -262,8 +264,8 @@ class RedDebugHelper
 				$code .= sprintf(
 					"<span class='%s'>%s:</span>%s\n",
 					$class,
-					str_pad($l, $maxLen, "0", STR_PAD_LEFT),
-					$c
+					str_pad($line, $maxLen, "0", STR_PAD_LEFT),
+					$content
 				);
 			}
 		}

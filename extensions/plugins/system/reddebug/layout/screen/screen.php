@@ -5,6 +5,13 @@
  */
 defined('_JEXEC') or die;
 
+/**
+ * @var   \ErrorException  $exception  Exception
+ * @var   string           $title      Title
+ * @var   string           $source     Source
+ * @var   array            $panels     Panels
+ */
+
 $trace = $exception->getTrace();
 
 $buffer = JFactory::getApplication()->getBody(false);
@@ -87,7 +94,7 @@ ob_start();
 				</td>
 				</tr>
 				<?php
-				if ($t['file'] && is_file($t['file'])):
+				if (isset($t['file']) && is_file($t['file'])):
 					?>
 					<tr>
 				<td colspan="4">
