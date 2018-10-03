@@ -8,7 +8,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later, see LICENSE.</license>
-	<version>2.0.0</version>
+	<version>2.0.1</version>
 	<description>redDEBUG Diagnostic Tool Library</description>
 	<files>
 		<filename>index.html</filename>

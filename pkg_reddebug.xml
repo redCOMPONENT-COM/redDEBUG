@@ -4,8 +4,8 @@
 	<author>redCOMPONENT</author>
  	<creationDate>October 2018</creationDate>
  	<packagename>reddebug</packagename>
- 	<version>2.0.0</version>
-	<releaseName/>
+ 	<version>2.0.1</version>
+	<releaseName>beta1</releaseName>
  	<description>redDEBUG Diagnostic tool</description>
  	<license>GNU General Public License version 2 or later, see LICENSE.</license>
 	<copyright>Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.</copyright>
