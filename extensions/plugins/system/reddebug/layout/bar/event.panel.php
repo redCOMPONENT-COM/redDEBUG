@@ -50,7 +50,7 @@ defined('_JEXEC') or die;
 									<td>
 										<?php
 										if (count($row->args) > 0):
-											$data = RedDebugHelper::multiArrayToSingleArray($row->args, '$args');
+											$data = RedDebugHelper::multiArrayToSingleArray(RedDebugHelper::removeRecursion($row->args), '$args');
 										?>
 											<table class="table table-bordered table-args">
 											<?php foreach ($data AS $key2 => $val): if (empty($val)): continue;
